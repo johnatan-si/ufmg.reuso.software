@@ -3,20 +3,19 @@
  */
 package br.ufmg.dcc.simulesspl.tests.cartas;
 
-import jogador.Mesa;
-import jogador.Tabuleiro;
-import jogo.Jogo;
-import junit.framework.TestCase;
-
-import org.hamcrest.collection.IsArrayWithSize;
-import org.hamcrest.core.IsInstanceOf;
-import static org.hamcrest.MatcherAssert.*;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import cartas.CartaEngenheiro;
+import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
+import br.ufmg.reuso.negocio.jogo.Jogo;
+import br.ufmg.reuso.negocio.mesa.Mesa;
+import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
+import junit.framework.TestCase;
 
 /**
  * @author alcemir

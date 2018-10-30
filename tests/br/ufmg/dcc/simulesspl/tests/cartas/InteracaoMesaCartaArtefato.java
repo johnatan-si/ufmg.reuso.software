@@ -5,18 +5,16 @@ package br.ufmg.dcc.simulesspl.tests.cartas;
 
 import java.util.ArrayList;
 
-import jogador.Mesa;
-import jogo.BaralhoArtefatosBons;
-import jogo.BaralhoArtefatosRuins;
-import jogo.Jogo;
-import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import cartas.Artefato;
-
-import auxiliares.Modulo;
+import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosBons;
+import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosRuins;
+import br.ufmg.reuso.negocio.carta.Artefato;
+import br.ufmg.reuso.negocio.jogo.Jogo;
+import br.ufmg.reuso.negocio.mesa.Mesa;
+import br.ufmg.reuso.negocio.mesa.Modulo;
+import junit.framework.TestCase;
 
 /**
  * @author alcemir

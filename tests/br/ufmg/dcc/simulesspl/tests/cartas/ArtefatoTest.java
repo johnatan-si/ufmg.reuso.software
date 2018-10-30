@@ -16,7 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cartas.Artefato;
+import br.ufmg.reuso.negocio.carta.Artefato;
 
 /**
  * @author Alisson

@@ -1,15 +1,15 @@
 package br.ufmg.dcc.simulesspl.tests.jogo;
 
 import static org.junit.Assert.assertEquals;
-import interfaces.SetupInteraction;
-import jogo.Jogo;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import screenControllers.ScreenInteraction;
+import br.ufmg.reuso.negocio.jogo.Jogo;
+import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
+import br.ufmg.reuso.ui.ScreenInteraction;
 
 public class JogoTest {
 

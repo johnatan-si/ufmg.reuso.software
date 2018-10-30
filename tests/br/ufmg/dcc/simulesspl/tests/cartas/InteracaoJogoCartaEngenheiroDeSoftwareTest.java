@@ -5,23 +5,16 @@ package br.ufmg.dcc.simulesspl.tests.cartas;
 
 import java.util.Random;
 
-import interfaces.SetupInteraction;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import auxiliares.ModeGameConstants;
-
-import cartas.Carta;
-import cartas.CartaEngenheiro;
-import cartas.CartaoProjeto;
-
-import screenControllers.ScreenInteraction;
-
-import jogador.Jogador;
-import jogo.BaralhoCartas;
-import jogo.Jogo;
+import br.ufmg.reuso.negocio.baralho.BaralhoCartas;
+import br.ufmg.reuso.negocio.carta.Carta;
+import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
+import br.ufmg.reuso.negocio.carta.CartaoProjeto;
+import br.ufmg.reuso.negocio.jogador.Jogador;
+import br.ufmg.reuso.negocio.jogo.ModeGameConstants;
 import junit.framework.TestCase;
 
 /**

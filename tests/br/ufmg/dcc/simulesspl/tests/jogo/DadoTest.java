@@ -1,7 +1,7 @@
 package br.ufmg.dcc.simulesspl.tests.jogo;
 
 import static org.junit.Assert.*;
-import jogo.Dado;
+import br.ufmg.reuso.negocio.dado.Dado;
 
 import org.junit.After;
 import org.junit.Before;

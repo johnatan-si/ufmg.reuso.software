@@ -1,17 +1,17 @@
 package br.ufmg.dcc.simulesspl.tests.tabuleiro;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
-import jogador.Mesa;
-import jogador.Tabuleiro;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cartas.CartaEngenheiro;
+import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
+import br.ufmg.reuso.negocio.mesa.Mesa;
+import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
 
 public class TabuleiroTest {
 

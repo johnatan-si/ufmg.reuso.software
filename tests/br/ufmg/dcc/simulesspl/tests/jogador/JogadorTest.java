@@ -1,16 +1,19 @@
 package br.ufmg.dcc.simulesspl.tests.jogador;
 
-import static org.junit.Assert.*;
-import jogador.Jogador;
-import jogador.Tabuleiro;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import cartas.Carta;
-import cartas.CartaEngenheiro;
+import br.ufmg.reuso.negocio.carta.Carta;
+import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
+import br.ufmg.reuso.negocio.jogador.Jogador;
+import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
 
 public class JogadorTest {
 

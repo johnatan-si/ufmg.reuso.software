@@ -3,23 +3,22 @@
  */
 package br.ufmg.dcc.simulesspl.tests.cartas;
 
-import jogador.Jogador;
-import jogador.Mesa;
-import jogo.Jogo;
-import junit.framework.TestCase;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import screen.ScreenChooseArtefacts;
-
-import auxiliares.Modulo;
-
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.MatcherAssert.*;
-
-import cartas.CartaEngenheiro;
+import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
+import br.ufmg.reuso.negocio.jogador.Jogador;
+import br.ufmg.reuso.negocio.jogo.Jogo;
+import br.ufmg.reuso.negocio.mesa.Mesa;
+import br.ufmg.reuso.negocio.mesa.Modulo;
+import br.ufmg.reuso.ui.ScreenChooseArtefacts;
+import junit.framework.TestCase;
 /**
  * @author alcemir
  *

@@ -1,15 +1,15 @@
 package br.ufmg.dcc.simulesspl.tests.cartas;
 
-import static org.junit.Assert.*;
-import jogo.Jogo;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import auxiliares.Modulo;
-
-import cartas.CartaoProjeto;
+import br.ufmg.reuso.negocio.carta.CartaoProjeto;
+import br.ufmg.reuso.negocio.jogo.Jogo;
+import br.ufmg.reuso.negocio.mesa.Modulo;
 
 public class CartaoProjetoTest {
 	
