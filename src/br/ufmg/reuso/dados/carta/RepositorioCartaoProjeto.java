@@ -17,7 +17,6 @@ public class RepositorioCartaoProjeto extends RepositorioArquivo implements IRep
 				a.getProperty("titulo"),
 				a.getProperty("texto"),
 				a.getProperty("referenciaBibliografica")); 
-
 		return c;
 	}
 

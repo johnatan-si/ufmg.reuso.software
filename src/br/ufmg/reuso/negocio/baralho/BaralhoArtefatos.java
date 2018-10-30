@@ -5,17 +5,16 @@ import br.ufmg.reuso.negocio.jogo.Jogo;
 
 /**
  * @author Marina
- * trabalho de reuso de software 2016/1
  */
 public abstract class BaralhoArtefatos {
 
-	/** controla o n�mero de artefatos que o baralho tem no decorrer do jogo */
+	//controla o numero de artefatos que o baralho tem no decorrer do jogo
 	protected int numeroArtefatosAtual;
 
-	/** indice da proxima carta de artefato a ser distribuida durante o jogo. */
+	//indice da proxima carta de artefato a ser distribuida durante o jogo
 	protected int currentArtifact;
 	
-	/** baralho */
+	// baralho
 	protected Artefato[] listaArtefatos;
 
 	public BaralhoArtefatos() {
@@ -44,8 +43,9 @@ public abstract class BaralhoArtefatos {
 	public abstract void recolherArtefato(Artefato pArtefatoDevolvido);
 
 	protected void mostrarBaralhoArtefatos() {
-		for (int i = 0; i < getNumeroArtefatosAtual(); i++)
+		for (int i = 0; i < getNumeroArtefatosAtual(); i++) {
 			listaArtefatos[i].mostrarArtefato();
+		}
 	}
 	
 	public int getNumeroArtefatosAtual() {
@@ -71,4 +71,5 @@ public abstract class BaralhoArtefatos {
 	public void setListaArtefatos(Artefato[] listaArtefatos) {
 		this.listaArtefatos = listaArtefatos;
 	}
+	
 }

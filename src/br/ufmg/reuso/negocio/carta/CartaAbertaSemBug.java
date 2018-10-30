@@ -3,7 +3,7 @@
  * Department of Computer Science
  * Simules-SPL Project
  *
- * Created by Charles / Pedro / Salatiel / Suelen
+ * Created by Charles, Pedro, Salatiel, Suelen
  * Date: 14/11/2014
  */
 
@@ -14,12 +14,9 @@ package br.ufmg.reuso.negocio.carta;
  * - Inspecionado: TRUE
  * - Possui Bug: FALSE
  */
-
-
 public class CartaAbertaSemBug extends CartaAberta {
 	
 	public void setBug(Artefato carta) {
-		//define que o artefato nao possui bug
-		carta.setQualidadeArtefatoRuim(false);
+		carta.setQualidadeArtefatoRuim(false); //define que o artefato nao possui bug
 	}
 }

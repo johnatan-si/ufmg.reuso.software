@@ -15,8 +15,7 @@ import br.ufmg.reuso.negocio.carta.Artefato;
 
 /**
  * @author Michael David
- * modificado por Marina (trabalho de reuso de software 2016/1):
- * herdando da classe abstrata BaralhoArtefatos
+ * Update by Marina (2016/1)
  */
 public class BaralhoArtefatosRuins extends BaralhoArtefatos {
 
@@ -34,18 +33,11 @@ public class BaralhoArtefatosRuins extends BaralhoArtefatos {
 	public Artefato[] iniciarArtefatos() {
 		Artefato[] ruins = new Artefato[getNumeroArtefatosAtual()];
 		for (int i = 0; i < ((int) (PERCENTUAL_ARTEFATOS_RUINS_QUALIDADE_RUIM * getNumeroArtefatosAtual())); i++) {
-			/*
-			 * iniciando o comeco do vetor com artefatos ruins com bug
-			 */
-			ruins[i] = new Artefato(true, true);
+			ruins[i] = new Artefato(true, true); // iniciando o comeco do vetor com artefatos ruins com bug
 		}
 
-		for (int i = ((int) (PERCENTUAL_ARTEFATOS_RUINS_QUALIDADE_RUIM
-				* getNumeroArtefatosAtual())); i < getNumeroArtefatosAtual(); i++) {
-			/*
-			 * iniciando o final do vetor com artefatos ruins sem bug
-			 */
-			ruins[i] = new Artefato(false, true);
+		for (int i = ((int) (PERCENTUAL_ARTEFATOS_RUINS_QUALIDADE_RUIM * getNumeroArtefatosAtual())); i < getNumeroArtefatosAtual(); i++) {
+			ruins[i] = new Artefato(false, true); // iniciando o final do vetor com artefatos ruins sem bug
 		}
 
 		return ruins;
@@ -67,45 +59,26 @@ public class BaralhoArtefatosRuins extends BaralhoArtefatos {
 	 */
 	@Override
 	public Artefato darArtefato() {
-		/*
-		 * Determina se ainda ha artefato a ser distribuido
-		 */
-		if (listaArtefatos[currentArtifact] != null) {
-			/*
-			 * Diminui o numero de artefatos que o baralho contem
-			 */
-			setNumeroArtefatosAtual(getNumeroArtefatosAtual() - 1);
 
+		if (listaArtefatos[currentArtifact] != null) { //Determina se ainda ha artefato a ser distribuido
+
+			setNumeroArtefatosAtual(getNumeroArtefatosAtual() - 1); // Diminui o numero de artefatos que o baralho contem
 			Artefato temporario = listaArtefatos[currentArtifact];
 			listaArtefatos[currentArtifact] = null;
-
-			/*
-			 * Incrementa indice do proximo artefato a ser distribuido
-			 */
-			this.currentArtifact++;
+			this.currentArtifact++; // Incrementa indice do proximo artefato a ser distribuido
 
 			return temporario;
+			
 		} else {
-			/* Retorna nulo para indicar que baralho esta vazio */
-			return null;
+			return null; // Retorna nulo para indicar que baralho esta vazio
 		}
 	}
 
 	@Override
 	public void recolherArtefato(Artefato artefatoDevolvido) {
-		/*
-		 * atualizando variavel do artefato para entrada no baralho auxiliar
-		 */
-		artefatoDevolvido.setArtefatoInspecionado(false);
-
-		/*
-		 * colocando artefato no baralho
-		 */
-		listaArtefatos[getNumeroArtefatosAtual()] = artefatoDevolvido;
-
-		/*
-		 * adicionando numero de artefatos ao baralho que recolhe
-		 */
-		setNumeroArtefatosAtual(getNumeroArtefatosAtual() + 1);
+		
+		artefatoDevolvido.setArtefatoInspecionado(false); // atualizando variavel do artefato para entrada no baralho auxiliar
+		listaArtefatos[getNumeroArtefatosAtual()] = artefatoDevolvido; // colocando artefato no baralho
+		setNumeroArtefatosAtual(getNumeroArtefatosAtual() + 1); // adicionando numero de artefatos ao baralho que recolhe
 	}
 }

@@ -16,94 +16,76 @@ package br.ufmg.reuso.negocio.carta;
 
 public class CartaEngenheiro extends Carta
 {
-	private String nomeEngenheiro;								//variável que guarda nome do engenheiro
-	private int salarioEngenheiro;								//variável que guarda salário do engenheiro
-	private int habilidadeEngenheiro;							//variável que guarda habilidade do engenheiro
-	private int maturidadeEngenheiro;							//variável que guarda a maturidade do engenheiro
-	private boolean engenheiroTrabalhouNestaRodada; 			/**se true-> trabalhou, se false-> não trabalhou na rodada*/ 
-	
-	private int habilidadeEngenheiroAtual;						/**contém a pontos de habilidade que engenheiro tem na rodada*/ 
+	private String nomeEngenheiro; //variável que guarda nome do engenheiro
+	private int salarioEngenheiro; //variável que guarda salário do engenheiro
+	private int habilidadeEngenheiro; //variável que guarda habilidade do engenheiro
+	private int maturidadeEngenheiro; //variável que guarda a maturidade do engenheiro
+	private boolean engenheiroTrabalhouNestaRodada;// se true-> trabalhou, se false-> não trabalhou na rodada
+	private int habilidadeEngenheiroAtual; // contém a pontos de habilidade que engenheiro tem na rodada 
 
-	public CartaEngenheiro (String codigo, String texto, String nomeEng, //construindo a carta de engenheiro
-			int salarioEng, int habilidadeEng, int maturidadeEng)
-	{
-		super ("Eng.Software", codigo, texto,ENGENHEIRO);				 //inicializando a superclasse explicitamente
-		
+	public CartaEngenheiro (String codigo, String texto, String nomeEng, int salarioEng, int habilidadeEng, int maturidadeEng){
+		super ("Eng.Software", codigo, texto,ENGENHEIRO);
 		setNomeEngenheiro(nomeEng);
 		setSalarioEngenheiro(salarioEng);
 		setHabilidadeEngenheiro(habilidadeEng);
-		setHabilidadeEngenheiroAtual(getHabilidadeEngenheiro());		/**habilidade atual na construção da carta do engenheiro é igual à habildade da carta*/
+		setHabilidadeEngenheiroAtual(getHabilidadeEngenheiro()); // habilidade atual na construção da carta do engenheiro é igual à habildade da carta
 		setMaturidadeEngenheiro(maturidadeEng);
 		this.engenheiroTrabalhouNestaRodada=false;
 	}
-	
 		
 	@Override
-	public void mostrarCarta()
-	{
+	//TODO: Refatorar
+	public void mostrarCarta(){
 		System.out.printf("%s\t%s\t%s\n%s\nSalário: %d\nHabilidade: %d\nMaturidade: %d\n\n\n", super.getTituloCarta(), super.getCodigoCarta(),
 				getNomeEngenheiro(),super.getTextoCarta(), getSalarioEngenheiro(),getHabilidadeEngenheiro(),getMaturidadeEngenheiro());
 	}
 	
-	public String getNomeEngenheiro() 
-	{
+	public String getNomeEngenheiro(){
 		return nomeEngenheiro;
 	}
 
-	public void setNomeEngenheiro(String nomeEngenheiro) 
-	{
+	public void setNomeEngenheiro(String nomeEngenheiro){
 		this.nomeEngenheiro = nomeEngenheiro;
 	}
 
-	public int getSalarioEngenheiro() 
-	{
+	public int getSalarioEngenheiro(){
 		return salarioEngenheiro;
 	}
 
-	public void setSalarioEngenheiro(int salarioEngenheiro) 
-	{
+	public void setSalarioEngenheiro(int salarioEngenheiro){
 		this.salarioEngenheiro = salarioEngenheiro;
 	}
 
-	public int getHabilidadeEngenheiro() 
-	{
+	public int getHabilidadeEngenheiro(){
 		return habilidadeEngenheiro;
 	}
 
-	public void setHabilidadeEngenheiro(int habilidadeEngenheiro) 
-	{
+	public void setHabilidadeEngenheiro(int habilidadeEngenheiro){
 		this.habilidadeEngenheiro = habilidadeEngenheiro;
 	}
 
-	public int getMaturidadeEngenheiro() 
-	{
+	public int getMaturidadeEngenheiro(){
 		return maturidadeEngenheiro;
 	}
 
-	public void setMaturidadeEngenheiro(int maturidadeEngenheiro) 
-	{
+	public void setMaturidadeEngenheiro(int maturidadeEngenheiro){
 		this.maturidadeEngenheiro = maturidadeEngenheiro;
 	}
 
-	public boolean isEngenheiroTrabalhouNestaRodada() 
-	{
+	public boolean isEngenheiroTrabalhouNestaRodada(){
 		return engenheiroTrabalhouNestaRodada;
 	}
 
-	public void setEngenheiroTrabalhouNestaRodada(boolean engenheiroTrabalhouNestaRodada) 
-	{
+	public void setEngenheiroTrabalhouNestaRodada(boolean engenheiroTrabalhouNestaRodada){
 		this.engenheiroTrabalhouNestaRodada = engenheiroTrabalhouNestaRodada;
 	}
 
-	public int getHabilidadeEngenheiroAtual() 
-	{
+	public int getHabilidadeEngenheiroAtual(){
 		return habilidadeEngenheiroAtual;
 	}
 
-	public void setHabilidadeEngenheiroAtual(int habilidadeEngenheiroAtual)
-	{
+	public void setHabilidadeEngenheiroAtual(int habilidadeEngenheiroAtual){
 		this.habilidadeEngenheiroAtual = habilidadeEngenheiroAtual;
 	}
-	
 	
 }

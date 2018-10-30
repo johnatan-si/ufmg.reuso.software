@@ -4,12 +4,12 @@ public class CartaProgramador extends Carta {
 
 	public CartaProgramador(String titulo, String codigo, String texto, int tipo) {
 		super(titulo, codigo, texto, tipo);
-		// TODO Auto-generated constructor stub
+		// TODO Incluir carta programador
 	}
 
 	@Override
 	public void mostrarCarta() {
-		// TODO Auto-generated method stub
+		// TODO Mostrar carta programador
 
 	}
 

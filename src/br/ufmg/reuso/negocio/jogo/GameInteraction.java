@@ -21,74 +21,124 @@ import br.ufmg.reuso.negocio.jogador.Jogador;
  * @author Michael David
  *
  */
-public interface GameInteraction  
-{
+public interface GameInteraction{
 	
-	/*************************************************************************************************************/
-	/*************************************************************************************************************/
-	/*************************************************************************************************************/
-	/****   BOM, DESTE PONTO PRA BAIXO, ENTÃO, FAZ PARTE DA CAMADA DE NEGÓCIOS -> J�? NÃO É MAIS TESTE[MD]       **/
-	/*************************************************************************************************************/
-	/*************************************************************************************************************/
-	/*************************************************************************************************************/
-
-	public Jogador jogarDados(Jogo jogoAtual,Jogador jogador); 			/**joga dados do jogadorAtual, no jogoAtual. É retornado as novas carcateristicas do jogadorAtual*/
+	/**
+	 * Joga dados do jogadorAtual, no jogoAtual. É retornado as novas carcateristicas do jogadorAtual
+	 * @param jogoAtual
+	 * @param jogador
+	 * @return
+	 */
+	public Jogador jogarDados(Jogo jogoAtual,Jogador jogador);
 	  
-	//vet tabuleiro oponente será de uso excluivo da GUI:troca a tela, habilita algumas funcionalidade e desabilita outras (não altera camada de negócios)
-	/**public vodi verTabuleiro();*/
-	/********************************************************************************************/
 	
+	/**
+	 * Termina jogada do jogadorAtual
+	 * @param jogadorAtual
+	 */
+	public void terminarJogada(Jogador jogadorAtual);
 	
+	/**
+	 * Mostra cartao de projeto do jogo
+	 * @param jogoAtual
+	 */
+	public void verProjeto(Jogo jogoAtual);
 	
-	public void terminarJogada(Jogador jogadorAtual);					/**Termina jogada do jogadorAtual*/
-	
-	public void verProjeto(Jogo jogoAtual); 		/**Mostra cartao de projeto do jogo*/
-	
-	
-	
-	/**retira as cartas do jogadorAtual e o retorna com características novas*/
+	/**
+	 * Retira as cartas do jogadorAtual e o retorna com características novas
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param cartasDescartadas
+	 * @return
+	 */
 	public Jogador descartarCartas(Jogo jogoAtual, Jogador jogadorAtual, Carta[] cartasDescartadas);
 	 
-	//metodo selecionar Carta será de uso excluivo da GUI, habilita algumas funcionalidade e desabilita outras (não altera camada de negócios) 
-	/**public void selecionarCarta();*/ 
-	/***************************************************************************/
 	 
-	/**retira carta de engenhero do tabuleiro do jogador*/
+	/**
+	 * Retira carta de engenhero do tabuleiro do jogador
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param engenheiroDemitido
+	 * @return
+	 */
 	public Jogador demitirEngenheiro(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroDemitido); 
 	  
+	/**
+	 * Retira cartas de engenheiro da mão do jogador e as insere no tabuleiro
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param engenheiroContratado
+	 * @return
+	 */
+	public Jogador contratarEngenheiroI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroContratado);
 	
-	//metodo selecionar engenheiro será de uso excluivo da GUI, habilita algumas funcionalidade e desabilita outras (não altera camada de negócios) 
-	/**public void selecionarEng();*/ 
-	/***************************************************************************/
-	
-
-	public Jogador contratarEngenheiroI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroContratado);	/**retira cartas de engenheiro da mão do jogador e as insere no tabuleiro*/
-	
-	public Jogador produzirArtefatoI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroProduzindo);		/**Engenheiro produz artefato*/
+	/**
+	 * Engenheiro produz artefato
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param engenheiroProduzindo
+	 * @return
+	 */
+	public Jogador produzirArtefatoI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroProduzindo);
 	  
-	public Jogador inspecionarArtefatoI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroInspecionando);	 /**Engenheiro inspeciona artefato*/
+	/**
+	 * Engenheiro inspeciona artefato
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param engenheiroInspecionando
+	 * @return
+	 */
+	public Jogador inspecionarArtefatoI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroInspecionando);
 	
-	public Jogador corrigirArtefatoI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroCorrigindo); /**Engenheiro corrige artefato com bug*/
+	/**
+	 * Engenheiro corrige artefato com bug
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param engenheiroCorrigindo
+	 * @return
+	 */
+	public Jogador corrigirArtefatoI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroCorrigindo);
 	
-	/** Integra um conjunto de artefatos em módulo, conforme cartão de projeto.*/
+	/**
+	 * Integra um conjunto de artefatos em módulo, conforme cartão de projeto
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param engenheiroIntegrador
+	 * @param mesaTrabalho
+	 * @return
+	 */
 	public Jogador integrarModuloI(Jogo jogoAtual, Jogador jogadorAtual,CartaEngenheiro engenheiroIntegrador, int mesaTrabalho); 
 	
-	public Jogador tranferirModuloIntegrado(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroTransferindo);	/**transfere modulo integrado de uma mesa para outra mesa sem módulo integrado*/
+	/**
+	 * Transfere modulo integrado de uma mesa para outra mesa sem módulo integrado
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param engenheiroTransferindo
+	 * @return
+	 */
+	public Jogador tranferirModuloIntegrado(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroTransferindo);
   	  
-	/**public void escolherModulo();   método exclusivo da GUI*/
-	 
-	/**public void selecionarCarta2();	método exclusivo da GUI*/ 
-	
-	/**public void selecionarOponente();	método exclusivo da GUI*/
-
 	
 	//#ifdef ConceptCard
-	/**Utiliza carta conceito da mão do jogador e insere efeito oriundo da respectiva carta no tabuleiro do jogador*/
+	/**
+	 * Utiliza carta conceito da mão do jogador e insere efeito oriundo da respectiva carta no tabuleiro do jogador
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param cartaUtilizada
+	 * @return
+	 */
 	public Jogador inserirBeneficio(Jogo jogoAtual, Jogador jogadorAtual, CartaBonificacao cartaUtilizada);
 	//#endif
 	
 	  
-	/**Utiliza carta problema da mão do jogadorAtual e insere efeito oriundo da respectiva carta no tabuleiro do jogadorAlvo*/
+	/**
+	 * Utiliza carta problema da mão do jogadorAtual e insere efeito oriundo da respectiva carta no tabuleiro do jogadorAlvo
+	 * @param jogoAtual
+	 * @param jogadorAtual
+	 * @param jogadorAlvo
+	 * @param cartaUtilizada
+	 * @return
+	 */
 	public Jogador inserirProblema(Jogo jogoAtual, Jogador jogadorAtual, Jogador jogadorAlvo, CartaPenalizacao cartaUtilizada); 
 	  
 	

@@ -14,28 +14,25 @@ package br.ufmg.reuso.negocio.carta;
  *
  */
 
-public class CartaPenalizacao extends Carta
-{
+public class CartaPenalizacao extends Carta{
 	private String referenciaBibliografica;
 	private int duracaoEfeito;
 	private String condicaoProblema;
 	
-	private int quantidadePrimeiroEfeito;								/** contém quanto de efeito será gerado.*/
-	private int quantidadeSegundoEfeito;								/** contém quanto de efeito será gerado.*/
-	private int tipoPrimeiroEfeito; 									/** será igual a uma das constantes de efeitos oriundos de carta problema de Constants.java */
-	private int tipoSegundoEfeito;										/** será igual a uma das constantes de efeitos oriundos de carta problema de Constants.java*/ 
+	private int quantidadePrimeiroEfeito; // contém quanto de efeito será gerado.
+	private int quantidadeSegundoEfeito; // contém quanto de efeito será gerado.
+	private int tipoPrimeiroEfeito; // será igual a uma das constantes de efeitos oriundos de carta problema de Constants.java 
+	private int tipoSegundoEfeito;// será igual a uma das constantes de efeitos oriundos de carta problema de Constants.java
 	
-	private int quantidadePrimeiraCondicao;								/** contém quanto de condicao é necessária.*/
-	private int quantidadeSegundaCondicao;								/** contém quanto de condicao é necessária.*/
-	private int tipoPrimeiraCondicao; 									/** será igual a uma das de condições oriundas de carta problema constantes de Constants.java*/
-	private int tipoSegundaCondicao;									/** será igual a uma das de condições oriundas de carta problema constantes de Constants.java*/
+	private int quantidadePrimeiraCondicao;// contém quanto de condicao é necessária.*/
+	private int quantidadeSegundaCondicao; // contém quanto de condicao é necessária.*/
+	private int tipoPrimeiraCondicao; // será igual a uma das de condições oriundas de carta problema constantes de Constants.java
+	private int tipoSegundaCondicao;// será igual a uma das de condições oriundas de carta problema constantes de Constants.java
 	
 		
-	public CartaPenalizacao (String titulo, String codigo, String texto,				//construindo a carta de conceito
-			String referencia, int duracao, String condicao,int efeito1,int efeito2, int quantidadeEfeito1,
-			int quantidadeEfeito2, int condicao1, int condicao2, int quantCondicao1, int quantCondicao2)
-	{
-		//inicializando a superclasse explicitamente, texto significa a descricao do problema ao utlizar a carta
+	//TODO: Refatorar
+	public CartaPenalizacao (String titulo, String codigo, String texto, String referencia, int duracao, String condicao,int efeito1,int efeito2, int quantidadeEfeito1,
+			int quantidadeEfeito2, int condicao1, int condicao2, int quantCondicao1, int quantCondicao2){
 		super (titulo, codigo, texto,PROBLEMA);												
 		setReferenciaBibliografica(referencia);
 		setDuracaoEfeito(duracao);
@@ -52,148 +49,102 @@ public class CartaPenalizacao extends Carta
 	
 		
 	@Override
-	public void mostrarCarta()
-	{
+	public void mostrarCarta(){
 		System.out.printf("%s\t%s\n%s\nCondicao: %s\n\n\n", super.getTituloCarta(), super.getCodigoCarta(), super.getTextoCarta(), getCondicaoProblema());
 	}
 	
-	public void inserirEfeito()
-	{
-		if (codigoCarta =="a")
-		{
+	public void inserirEfeito(){
+		if (codigoCarta =="a"){
 			//para cada codigo descrever problema
 		}
 	}
-		
 	
-	
-	
-	
-	public String getReferenciaBibliografica() 
-	{
+	public String getReferenciaBibliografica(){
 		return referenciaBibliografica;
 	}
 
-	public void setReferenciaBibliografica(String referenciaBibliografica) 
-	{
+	public void setReferenciaBibliografica(String referenciaBibliografica){
 		this.referenciaBibliografica = referenciaBibliografica;
 	}
 
-	public int getDuracaoEfeito() 
-	{
+	public int getDuracaoEfeito(){
 		return duracaoEfeito;
 	}
 
-	public void setDuracaoEfeito(int duracaoEfeito) 
-	{
+	public void setDuracaoEfeito(int duracaoEfeito){
 		this.duracaoEfeito = duracaoEfeito;
 	}
 
-	public String getCondicaoProblema() 
-	{
+	public String getCondicaoProblema() {
 		return condicaoProblema;
 	}
 
-	public void setCondicaoProblema(String condicaoProblema) 
-	{
+	public void setCondicaoProblema(String condicaoProblema){
 		this.condicaoProblema = condicaoProblema;
 	}
 
-
-	public int getQuantidadePrimeiroEfeito()
-	{
+	public int getQuantidadePrimeiroEfeito(){
 		return quantidadePrimeiroEfeito;
 	}
 
-
-	public void setQuantidadePrimeiroEfeito(int quantidadePrimeiroEfeito) 
-	{
+	public void setQuantidadePrimeiroEfeito(int quantidadePrimeiroEfeito){
 		this.quantidadePrimeiroEfeito = quantidadePrimeiroEfeito;
 	}
 
-
-	public int getQuantidadeSegundoEfeito() 
-	{
+	public int getQuantidadeSegundoEfeito()	{
 		return quantidadeSegundoEfeito;
 	}
 
-
-	public void setQuantidadeSegundoEfeito(int quantidadeSegundoEfeito) 
-	{
+	public void setQuantidadeSegundoEfeito(int quantidadeSegundoEfeito){
 		this.quantidadeSegundoEfeito = quantidadeSegundoEfeito;
 	}
 
-
-	public int getTipoPrimeiroEfeito() 
-	{
+	public int getTipoPrimeiroEfeito(){
 		return tipoPrimeiroEfeito;
 	}
 
-
-	public void setTipoPrimeiroEfeito(int tipoPrimeiroEfeito) 
-	{
+	public void setTipoPrimeiroEfeito(int tipoPrimeiroEfeito){
 		this.tipoPrimeiroEfeito = tipoPrimeiroEfeito;
 	}
 
-
-	public int getTipoSegundoEfeito() 
-	{
+	public int getTipoSegundoEfeito(){
 		return tipoSegundoEfeito;
 	}
 
-
-	public void setTipoSegundoEfeito(int tipoSegundoEfeito)
-	{
+	public void setTipoSegundoEfeito(int tipoSegundoEfeito){
 		this.tipoSegundoEfeito = tipoSegundoEfeito;
 	}
 
-
-	public int getQuantidadePrimeiraCondicao() 
-	{
+	public int getQuantidadePrimeiraCondicao(){
 		return quantidadePrimeiraCondicao;
 	}
 
-
-	public void setQuantidadePrimeiraCondicao(int quantidadePrimeiraCondicao) 
-	{
+	public void setQuantidadePrimeiraCondicao(int quantidadePrimeiraCondicao){
 		this.quantidadePrimeiraCondicao = quantidadePrimeiraCondicao;
 	}
 
-
-	public int getQuantidadeSegundaCondicao()
-	{
+	public int getQuantidadeSegundaCondicao(){
 		return quantidadeSegundaCondicao;
 	}
 
-
-	public void setQuantidadeSegundaCondicao(int quantidadeSegundaCondicao) 
-	{
+	public void setQuantidadeSegundaCondicao(int quantidadeSegundaCondicao){
 		this.quantidadeSegundaCondicao = quantidadeSegundaCondicao;
 	}
 
-
-	public int getTipoPrimeiraCondicao() 
-	{
+	public int getTipoPrimeiraCondicao(){
 		return tipoPrimeiraCondicao;
 	}
 
-
-	public void setTipoPrimeiraCondicao(int tipoPrimeiraCondicao)
-	{
+	public void setTipoPrimeiraCondicao(int tipoPrimeiraCondicao){
 		this.tipoPrimeiraCondicao = tipoPrimeiraCondicao;
 	}
 
-
-	public int getTipoSegundaCondicao()
-	{
+	public int getTipoSegundaCondicao(){
 		return tipoSegundaCondicao;
 	}
 
-
-	public void setTipoSegundaCondicao(int tipoSegundaCondicao)
-	{
+	public void setTipoSegundaCondicao(int tipoSegundaCondicao){
 		this.tipoSegundaCondicao = tipoSegundaCondicao;
 	}
 
-		
 }

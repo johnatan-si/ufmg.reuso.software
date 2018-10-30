@@ -13,22 +13,18 @@ package br.ufmg.reuso.negocio.dado;
  * @author Michael David
  *
  */
-
 import java.util.Random;
 
-public class Dado 
-{
+public class Dado{
 		
-	public static int sortearValor()
-	{
+	public static int sortearValor(){
 		int valorSorteado=0;
 		Random sorteio = new Random();
 		valorSorteado = sorteio.nextInt(6)+1;
 		return valorSorteado;
 	}
 	
-	public static int contarPontos()
-	{
+	public static int contarPontos(){
 		return sortearValor();
 	}
 }

@@ -52,10 +52,6 @@ public final class Jogo {
 	public static final String MODERADO = "moderado";
 	public static final String DIFICIL = "dificil";
 	public static final int NUMERO_TOTAL_ARTEFATOS = 400;
-	/**
-	 * numero total de artefatos, sendo metade bons(brancos) e metade
-	 * ruins(cinzas)
-	 */
 	private static final int ANY_ARTIFACTS = -1;
 	private static final int ALL_ARTIFACTS = 1000;
 
@@ -67,38 +63,38 @@ public final class Jogo {
 	private BaralhoArtefatosRuins[] baralhoArtefatosRuins;
 	public SetupInteraction setupController = ScreenInteraction.getScreenInteraction();
 
-	private Jogo() {
+	private Jogo(){
 	}
 
-	public Jogador[] getJogadores() {
+	public Jogador[] getJogadores(){
 		return jogadores;
 	}
 
-	public void setJogadores(Jogador[] jogadores) {
+	public void setJogadores(Jogador[] jogadores){
 		this.jogadores = jogadores;
 	}
 
-	public CartaoProjeto getProjeto() {
+	public CartaoProjeto getProjeto(){
 		return projeto;
 	}
 
-	public Status getGameStatus() {
+	public Status getGameStatus(){
 		return gameStatus;
 	}
 
-	public void setGameStatus(Status gameStatus) {
+	public void setGameStatus(Status gameStatus){
 		this.gameStatus = gameStatus;
 	}
 
-	public BaralhoCartas[] getBaralhoCartas() {
+	public BaralhoCartas[] getBaralhoCartas(){
 		return baralhoCartas;
 	}
 
-	public BaralhoArtefatosBons[] getBaralhoArtefatosBons() {
+	public BaralhoArtefatosBons[] getBaralhoArtefatosBons(){
 		return baralhoArtefatosBons;
 	}
 
-	public BaralhoArtefatosRuins[] getBaralhoArtefatosRuins() {
+	public BaralhoArtefatosRuins[] getBaralhoArtefatosRuins(){
 		return baralhoArtefatosRuins;
 	}
 
@@ -110,29 +106,20 @@ public final class Jogo {
 		return jogo;
 	}
 
-	private void init() {
-		int mode = setupController.exibirStart(); // exibe GUI(tela) para
-													// iniciar o jogo. Retorna 1
-													// caso ha a necessidade de
-													// configurar o jogo.
-													// Retorna 0 caso contrario
+	private void init(){
+		
+		// exibe GUI(tela) para iniciar o jogo. Retorna 1 caso ha a necessidade de configurar o jogo. Retorna 0 caso contrario
+		int mode = setupController.exibirStart(); 
+		
 		int dificuldade;
 		//#ifdef ConceptCard
 		int[] cartasConceito;
 		//#endif
 		int[] cartasProblema;
 
-		if (mode != ModeGameConstants.MODE_DEFAULT) // caso mode seja diferente
-													// do default
-		{
-			dificuldade = setupController.inserirDificuldadeJogo(); // modo de
-																	// jogo
-																	// escolhido
-																	// e
-																	// inserido
-																	// na
-																	// variavel
-																	// dificuldade
+		if (mode != ModeGameConstants.MODE_DEFAULT){ // caso mode seja diferente do default
+			
+			dificuldade = setupController.inserirDificuldadeJogo(); 
 			//#ifdef ConceptCard
 			cartasConceito = setupController.inserirCartasConceitoSelecionadas();
 			//#endif
@@ -147,14 +134,8 @@ public final class Jogo {
 			cartasProblema[0] = ModeGameConstants.ALL_CARDS_PROBLEMA;
 		}
 
-		String[] nomeJogadores = setupController.inserirNomesJogadores(); // insere
-																			// nome
-																			// dos
-																			// jogadores
-																			// no
-																			// vetor
-																			// de
-																			// string
+		String[] nomeJogadores = setupController.inserirNomesJogadores(); 
+		
 		switch (dificuldade) {
 		case 1:
 			configurarJogo(FACIL, nomeJogadores, 
@@ -185,37 +166,27 @@ public final class Jogo {
 		int jogador = 0;
 		jogo.init();
 
-		while (getGameStatus() == Status.CONTINUE) // ** Enquanto o status do
-													// jogo for continuar, esse
-													// metodo e executado*//*
-		{
-			setupController.exibirDefault(jogoAtual, getJogadores()[jogador]); // **Exibe
-																				// GUI
-																				// default
-																				// do
-																				// jogador
-																				// i*//*
+		while (getGameStatus() == Status.CONTINUE){ 
+			setupController.exibirDefault(jogoAtual, getJogadores()[jogador]); 
 			diminuirDuracaoEfeitosTemporario(jogador);
 			jogador++; // **Acrescentando jogador, ha a troca de jogador *//*
-			if (jogador >= getJogadores().length) // **Caso jogador ultrapasse
-													// vetor de jogadores, ja
-													// esta no ultimo
-													// jogador*//*
-			{
-				jogador = 0; // **Logo, retorna-se ao jogador inicial*//*
+			
+			//Caso jogador ultrapasse vetor de jogadores, ja esta no ultimo jogador
+			if (jogador >= getJogadores().length){
+				jogador = 0; //Logo, retorna-se ao jogador inicial
 				adicionarEfeitosFimTurno();
 			}
 		}
 
 	}
 
+	//TODO: Refatorar
 	public void configurarJogo(String facilidade, String[] nomeJogadores, 
 			//#ifdef ConceptCard
 			int[] cartasConceito, 
 			//#endif
 			int[] cartasProblema) {
 
-		/* F�brica de Baralhos de Artefatos */
 		AbstractCreatorBaralhoArtefatos fabricaBaralhoArtefatos = new CreatorBaralhoArtefatos();
 
 		this.baralhoCartas = new BaralhoCartas[2];
@@ -248,20 +219,16 @@ public final class Jogo {
 		ordenarJogadores();
 		embaralharCartaseArtefatos();
 		setupController.exibirProjeto(projeto);
-		// baralhoCartas[BARALHO_PRINCIPAL].mostrarBaralho(); //TODO so pra
-		// teste -> mostra baralho ja na ordem de distribuicao -> ok
 
 	}
 
 	public void cadastrarJogadores(String[] nomeJogadores) {
-		jogadores = new Jogador[nomeJogadores.length]; // criando o vetor de
-														// jogadores
+		jogadores = new Jogador[nomeJogadores.length]; 
 
 		int i = 0; // i e uma variavel auxiliar
 		while (i < jogadores.length) {
 			String nomeJogador;
-			nomeJogador = nomeJogadores[i]; // passando nome de jogadores para a
-											// variavel local
+			nomeJogador = nomeJogadores[i]; // passando nome de jogadores para a  variavel local
 			// construindo o jogador com parâmetros inicias iguais ao projeto
 			jogadores[i] = new Jogador(nomeJogador, projeto.getOrcamento());
 			inserirEngenheiroInicial(jogadores[i]);
@@ -273,61 +240,23 @@ public final class Jogo {
 		Random sorteioEngenheiro = new Random();
 		Carta novato = null;
 		while (novato == null) {
-			int sorteado = sorteioEngenheiro.nextInt(baralhoCartas[BARALHO_PRINCIPAL].getNumeroTotalEngenheiro()); // gera
-																													// numeros
-																													// aleatorios
-																													// de
-																													// 0
-																													// ate
-																													// o
-																													// numero
-																													// de
-																													// engenheiros
-																													// do
-																													// baralho
-			novato = baralhoCartas[BARALHO_PRINCIPAL].darCartaInicial(sorteado); // concerteza
-																					// sera
-																					// um
-																					// selecionado
-																					// um
-																					// engenheiro
-																					// no
-																					// baralho,
-																					// ja
-																					// que
-																					// as
-																					// cartas
-																					// de
-																					// engenheiro
-																					// ocupam
-																					// a
-																					// primeira
-																					// posicao
-																					// do
-																					// baralho
-																					// devido
-																					// ao
-																					// modo
-																					// de
-																					// construcao
-																					// do
-																					// baralho
+			// Gera numeros aleatoriaos de 0 até o numero de engenheiros do baralho.
+			int sorteado = sorteioEngenheiro.nextInt(baralhoCartas[BARALHO_PRINCIPAL].getNumeroTotalEngenheiro());
+			
+			//Será selecionado um engenheiro do baralho, ja que as cartas de engenheiro ocupam a primeira posicao do
+			// baralho devido ao modo de construção do baralho.
+			novato = baralhoCartas[BARALHO_PRINCIPAL].darCartaInicial(sorteado);
 		}
-		jogador.contratarEngenheiro(novato, 0); // chamando o metodo de
-												// contratar engenheiro passando
-												// como parâmetro o engenheiro
-												// novato e a mesa 0
-
+		
+		jogador.contratarEngenheiro(novato, 0);
 	}
 
-	public void ordenarJogadores() // ordena jogada dos jogadores
-	{
-		int[] pontuacaoJogador = new int[jogadores.length]; // vetor que tera a
-															// pontuacao de cada
-															// jogador
+	public void ordenarJogadores(){
+		int[] pontuacaoJogador = new int[jogadores.length]; 
+		
 		for (int i = 0; i < pontuacaoJogador.length; i++) {
-			pontuacaoJogador[i] = 0; // inicializando vetor com pontuacao de
-										// jogadores
+			pontuacaoJogador[i] = 0;
+		
 		}
 		for (int i = 0; i < jogadores.length; i++) {
 			// passando o nome do jogador i para que a GUI exiba o nome dele
@@ -339,36 +268,19 @@ public final class Jogo {
 														// guardando os pontos
 														// do jogadores
 
-			while (desempatarPontuacao(pontuacaoJogador[i], pontuacaoJogador) == true) // caso
-																						// da
-																						// empate
-																						// com
-																						// outro
-																						// jogador,
-																						// a
-																						// funcao
-																						// empatePontuacao
-																						// retorna
-																						// true
-			{
-				// passando pontuacao obtida por sorteio para que a GUI exiba
-				// tal pontuacao
+			//Em caso de empate com outro jogador, a funão empatePontuacao retorna true.
+			while (desempatarPontuacao(pontuacaoJogador[i], pontuacaoJogador) == true){
+				
+				// passando pontuacao obtida por sorteio para que a GUI exiba tal pontuacao
 				setupController.mostrarPontosObtidosInicial(pontuacaoJogador[i]);
 
-				// passando o nome do jogador i para que a GUI exiba o nome dele
-				// pedindo nova rolagem de dados devido e empate.
+				// passando o nome do jogador i para que a GUI exiba o nome dele pedindo nova rolagem de dados devido e empate.
 				setupController.mostrarEmpatePontosObtidosInicial(jogadores[i].getNome());
-				pontuacaoJogador[i] = Dado.sortearValor(); // tenta desempatar a
-															// pontuacao obtida
+				pontuacaoJogador[i] = Dado.sortearValor(); // tenta desempatar a pontuacao obtida
 			}
 
-			// passando pontuacao obtida por sorteio para que a GUI exiba tal
-			// pontuacao
-			setupController.mostrarPontosObtidosInicial(pontuacaoJogador[i]); // mostra
-																				// pontos
-																				// obtidos
-																				// pelo
-																				// jogador
+			// passando pontuacao obtida por sorteio para que a GUI exiba tal pontuacao
+			setupController.mostrarPontosObtidosInicial(pontuacaoJogador[i]);
 		}
 
 		// metodo de ordencacao
@@ -376,72 +288,46 @@ public final class Jogo {
 		int posicao = 0;
 		for (int j = 0; j < jogadores.length; j++) {
 			for (int i = j; i < jogadores.length; i++) {
-				if (pontuacaoJogador[i] > max) // caso a pontuacao no vetor de
-												// pontos seja maior que max ha
-												// atualizacao
-				{
+				// caso a pontuacao no vetor de pontos seja maior que max ha atualizacao
+				if (pontuacaoJogador[i] > max){
 					posicao = i;
 					max = pontuacaoJogador[i];
 				}
 			}
 			max = 0;
-			pontuacaoJogador[posicao] = pontuacaoJogador[j]; // aqui ha uma
-																// troca de
-																// posicao no
-																// vetor de
-																// pontos para
-																// que na
-																// proxima
-																// iteracao i
-																// nao precisa
-																// comecar de 0
+			// aqui ha uma troca de posicao no vetor de  pontos para  que na  proxima iteracao i   nao precisa comecar de 0
+			pontuacaoJogador[posicao] = pontuacaoJogador[j]; 
 			trocarOrdem(j, posicao);
 
 		}
 		mostrarOrdemJogo(); // mostra ordem do jogo
 	}
 
-	public void trocarOrdem(int posicao1, int posicao2) // metodo utilizado pelo
-														// ordenarJogadores()
-														// para trocar de
-														// jogdaores
-	{
+	public void trocarOrdem(int posicao1, int posicao2){
 		Jogador temporaria = jogadores[posicao1];
 		jogadores[posicao1] = jogadores[posicao2];
 		jogadores[posicao2] = temporaria;
 
 	}
 
-	public boolean desempatarPontuacao(int valor, int[] pontuacao) // metodo
-																	// utilizado
-																	// pelo
-																	// ordenarJogadores()
-																	// para
-																	// verificiar
-																	// se ha
-																	// empate de
-																	// pontos
-																	// entre
-																	// jogadores
-	{
+	public boolean desempatarPontuacao(int valor, int[] pontuacao) {
 		int repeticao = 0;
 		for (int i = 0; i < pontuacao.length; i++) {
 			if (pontuacao[i] == valor)
 				repeticao++;
 		}
-		if (repeticao < 2)
-			return false; // este retorno significa que nao ha empate na
-							// pontuacao entre os jogadores
-		return true; // este retorno significa que ha empate na pontuacao entre
-						// os jogadores
+		if (repeticao < 2) {
+			return false; //sem empate entre os jogadores
+		}
+		return true; //existe empate entre os jogadores
 	}
 
-	public void mostrarOrdemJogo() // mostra ordem do jogo
-	{
+	public void mostrarOrdemJogo(){
 		String[] nomeJogadoresOrdenados = new String[jogadores.length];
 
-		for (int i = 0; i < jogadores.length; i++)
+		for (int i = 0; i < jogadores.length; i++){
 			nomeJogadoresOrdenados[i] = jogadores[i].getNome();
+		}
 
 		setupController.mostrarOrdemJogo(nomeJogadoresOrdenados);
 	}
@@ -450,52 +336,33 @@ public final class Jogo {
 		baralhoCartas[BARALHO_PRINCIPAL].embaralharInicial();
 		baralhoArtefatosBons[BARALHO_PRINCIPAL].embaralhar();
 		baralhoArtefatosRuins[BARALHO_PRINCIPAL].embaralhar();
-
-		// System.out.printf("\n\n\nBaralho bom"); //TODO teste
-		// baralhoArtefatosBons[BARALHO_PRINCIPAL].mostrarBaralhoArtefatos();
-		// //TODO teste
-		// System.out.printf("\n\n\nBaralho ruin"); //TODO teste
-		// baralhoArtefatosRuins[BARALHO_PRINCIPAL].mostrarBaralhoArtefatos();
-		// //TODO teste
 	}
 
-	public Jogador jogarDado(
-			Jogador jogador) /**
-								 * Jogou dados, jogador recebe cartas do baralho
-								 * automaticamente
-								 */
-	{
+	/**
+	 * Jogou dados, jogador recebe cartas do baralho automaticamente
+	 */
+	public Jogador jogarDado(Jogador jogador){
 		int numberCardsDelivered = jogador.analisarPontuacao();
-		/**
-		 * recebe o numero de cartas a receber conforme pontuacao obtida nos
-		 * dados e limite de carta em maos
-		 */
-
+		//Numero de cartas a receber conforme pontuacao obtida nos dados e limite de carta em maos
 		for (int i = 0; i < numberCardsDelivered; i++) {
-			System.out.println(
-					"numero de cartas atual :" + baralhoCartas[BARALHO_PRINCIPAL].getNumeroCartasBaralhoAtual());
-			if (baralhoCartas[BARALHO_PRINCIPAL].getNumeroCartasBaralhoAtual() > 0)
-				/** verifica se ainda ha cartas no baralho principal */
+			System.out.println("numero de cartas atual :" + baralhoCartas[BARALHO_PRINCIPAL].getNumeroCartasBaralhoAtual());
+			if (baralhoCartas[BARALHO_PRINCIPAL].getNumeroCartasBaralhoAtual() > 0) {//verifica se ainda ha cartas no baralho principal
 				jogador.receberCarta(baralhoCartas[BARALHO_PRINCIPAL].darCarta());
-			/** concede carta ao jogador */
-			else {
+			}
+			else {//concede carta ao jogador
 				trocarBaralhoCartas();
 				jogador.receberCarta(baralhoCartas[BARALHO_PRINCIPAL].darCarta());
-				/** concede carta ao jogador */
 			}
 		}
 		jogador.mostrarCartaMao();
-		/*************/
-		// TODO so pra teste -> mostra carta do jogador recebida
-
 		return jogador;
 	}
 
-	public void trocarBaralhoCartas() /**
-										 * troca o baralho principal pelo
-										 * auxiliar
-										 */
-	{
+	/**
+	 * Troca o baralho principal pelo
+	 * auxiliar
+	 */
+	public void trocarBaralhoCartas(){
 		BaralhoCartas temporario = baralhoCartas[BARALHO_PRINCIPAL];
 		baralhoCartas[BARALHO_AUXILIAR].embaralhar();
 		/** embaralhando as cartas que foram retiradas */
@@ -514,118 +381,82 @@ public final class Jogo {
 			jogador.retirarCarta(cartasRetiradas[i]);
 			baralhoCartas[BARALHO_AUXILIAR].recolherCarta(cartasRetiradas[i]);
 		}
-		System.out.printf("\nMetodo retirarCarta\n"); // TODO so pra teste
+		System.out.printf("\nMetodo retirarCarta\n");
 		jogador.mostrarCartaMao();
-		/*************/
-		// TODO so pra teste -> mostra carta restante do jogador
-
-		System.out.printf("\nbaralho auxiliar:\n"); // TODO teste para ver
-													// baralho auxiliar
-													// funiconando
-		// baralhoCartas[BARALHO_AUXILIAR].mostrarBaralho(); //TODO teste para
-		// ver baralho auxiliar funiconando
-
 		return jogador;
 	}
 
+	/**
+	 * Tenta contratar o engenheiro
+	 * @param jogador
+	 * @param engenheiroContratado
+	 * @param posicaoMesa
+	 * @return
+	 */
 	public Jogador admitirEngenheiro(Jogador jogador, CartaEngenheiro engenheiroContratado, int posicaoMesa) {
 		jogador.contratarEngenheiro(engenheiroContratado, posicaoMesa);
-		/** Tenta contratar o engenheiro */
-
 		mostrarCartasDasMesasDoTabuleiro(jogador);
-
 		return jogador;
 	}
 
 	public Jogador despedirEngenheiro(Jogador jogador, CartaEngenheiro engenheiroDemitido) {
-		if (jogador.removerCarta(engenheiroDemitido) == true)
-			/** se pode demitir engenheiro */
+		if (jogador.removerCarta(engenheiroDemitido) == true) {//se pode demitir engenheiro
 			baralhoCartas[BARALHO_AUXILIAR].recolherCarta(engenheiroDemitido);
-
-		System.out.printf("engenheiro ainda contratados, demitidos nao consta na lista:\n");// TODO
-																							// teste
+		}
+		System.out.printf("engenheiro ainda contratados, demitidos nao consta na lista:\n");
 		mostrarCartasDasMesasDoTabuleiro(jogador);
-
 		return jogador;
-	}// TODO tem que conferir se o engenheiro a ser demitido ainda nao trabalhou
-		// na rodade.
+	}// TODO tem que conferir se o engenheiro a ser demitido ainda nao trabalhou na rodada.
 
-	/**
-	 * @param jogador
-	 */
-	private void mostrarCartasDasMesasDoTabuleiro(Jogador jogador) {
-		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++) // TODO
-																			// teste
-		{ // TODO teste
-			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)// TODO
-																			// teste
-				continue; // TODO teste
-			else // TODO TESTE
-			{ // TODO teste
-				System.out.printf("engenheiros contratados:\n");// TODO teste
-				jogador.getTabuleiro().getMesas()[i].getCartaMesa().mostrarCarta(); // utilizado
-																					// para
-																					// mostrar
-																					// a
-																					// carta
-																					// de
-																					// engenheiro
-																					// de
-																					// software
-																					// no
-																					// tabuleiro
-																					// deste
-																					// jogador
-																					// ->
-																					// ok
-			} // TODO teste
-		} // TODO teste
+
+	private void mostrarCartasDasMesasDoTabuleiro(Jogador jogador) {// FIXME: Método para teste.
+		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ 
+			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null) {																	// teste
+				continue;
+			}
+			else {
+				System.out.printf("engenheiros contratados:\n");
+				//Mostra carta de engenheiro de software no tabuleiro desse jogador.
+				jogador.getTabuleiro().getMesas()[i].getCartaMesa().mostrarCarta(); 
+			} 
+		}
 	}
 
 	public Jogador inserirArtefato(Jogador jogador, CartaEngenheiro engenheiroProduzindo, int mesaTrabalho) {
 		int habilidadeTemporaria = engenheiroProduzindo.getHabilidadeEngenheiroAtual();
 		System.out.println("habilidade do engenheiro que vai trabalhar: " + habilidadeTemporaria);
 
-		/**
-		 * Se engenheiro for trabalhar em mesa distinta da sua, codigo das
-		 * cartas das mesas comparadas sao disintas
-		 */
-		if (jogador.getTabuleiro().getMesas()[mesaTrabalho].getCartaMesa().getCodigoCarta()
-				.compareTo(engenheiroProduzindo.getCodigoCarta()) != 0)
-			habilidadeTemporaria--;
-		/** Se engenheiro ajuda outro engenheiro, habilidade decresce 1 */
-
-		System.out.println(
-				"habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
+		//Se engenheiro for trabalhar em mesa distinta da sua, codigo das cartas das mesas comparadas sao disintas
+		if (jogador.getTabuleiro().getMesas()[mesaTrabalho].getCartaMesa().getCodigoCarta().compareTo(engenheiroProduzindo.getCodigoCarta()) != 0) {
+			habilidadeTemporaria--; //Se engenheiro ajuda outro engenheiro, habilidade decresce 1
+		}
+		System.out.println("habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
 
 		Modulo[] pedido = setupController.exibirTabelaProducao(habilidadeTemporaria, projeto.getComplexidade());
 
-		if (pedido == null) // cancelou pedido
-		{
+		if (pedido == null){// cancelou pedido
 			System.out.println("\npedido cancelado pois retornou modulo null");
 			return jogador;
-		} else // ha pedido valido
-		{
+		} else{ // ha pedido valido
 			System.out.printf("tem pedido valido\n");
 
 			int numeroArtefatoBons = pedido[Mesa.ARTEFATOS_BONS].somatorioModulo();
 			int numeroArtefatosRuins = pedido[Mesa.ARTEFATOS_RUINS].somatorioModulo();
-			int somatorioComplexidade = numeroArtefatoBons * projeto.getComplexidade()
-					+ ((int) numeroArtefatosRuins * projeto.getComplexidade() / 2);
+			int somatorioComplexidade = numeroArtefatoBons * projeto.getComplexidade() + ((int) numeroArtefatosRuins * projeto.getComplexidade() / 2);
 
-			/** atualizando habilidade atual do engenheiro */
+			//atualizando habilidade atual do engenheiro
 			engenheiroProduzindo.setHabilidadeEngenheiroAtual(habilidadeTemporaria - somatorioComplexidade);
 
-			/** engenheiro trabalhou na rodada, logo atualizando isso */
+			//engenheiro trabalhou na rodada, logo atualizando isso
 			engenheiroProduzindo.setEngenheiroTrabalhouNestaRodada(true);
 
-			jogador.getTabuleiro().getMesas()[mesaTrabalho].receberArtefatos(pedido, baralhoArtefatosBons,
-					baralhoArtefatosRuins);
+			jogador.getTabuleiro().getMesas()[mesaTrabalho].receberArtefatos(pedido, baralhoArtefatosBons, baralhoArtefatosRuins);
 
 			return jogador;
 		}
 	}
-
+	
+	//TODO: Refatorar
 	public Jogador conferirArtefato(Jogador jogador, CartaEngenheiro engenheiroInspecionando, int mesaTrabalho) {
 		int habilidadeTemporaria = engenheiroInspecionando.getHabilidadeEngenheiroAtual();
 		System.out.println("habilidade do engenheiro que vai trabalhar: " + habilidadeTemporaria);
@@ -639,8 +470,7 @@ public final class Jogo {
 			habilidadeTemporaria--;
 		/** Se engenheiro ajuda outro engenheiro, habilidade decresce 1 */
 
-		System.out.println(
-				"habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
+		System.out.println("habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
 
 		int[] artefatosAjudasNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho]
 				.somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas());
@@ -651,8 +481,7 @@ public final class Jogo {
 		int[] artefatosRastrosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho]
 				.somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros());
 		int[] artefatosRequisitosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosNotInspecionadosSeparados(
-						jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
+				.somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
 		Modulo[] artefatosNotInspecionados = new Modulo[2];
 		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS] = new Modulo();
 		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS] = new Modulo();
@@ -678,12 +507,10 @@ public final class Jogo {
 
 		Modulo[] pedido = setupController.exibirTabelaInspecao(habilidadeTemporaria, artefatosNotInspecionados);
 
-		if (pedido == null) // TODO cancelou pedido
-		{
+		if (pedido == null){// TODO cancelou pedido
 			System.out.println("\npedido cancelado pois retornou modulo null");
 			return jogador;
-		} else // TODO ha pedido valido
-		{
+		} else{// TODO ha pedido valido
 			System.out.printf("tem pedido valido\n");
 
 			int numeroArtefatoBons = pedido[Mesa.ARTEFATOS_BONS].somatorioModulo();
@@ -704,6 +531,7 @@ public final class Jogo {
 		}
 	}
 
+	//TODO: Refatorar
 	public Jogador repararArtefato(Jogador jogador, CartaEngenheiro engenheiroCorrigindo, int mesaTrabalho) {
 		int habilidadeTemporaria = engenheiroCorrigindo.getHabilidadeEngenheiroAtual();
 		System.out.println("habilidade do engenheiro que vai trabalhar: " + habilidadeTemporaria);
@@ -717,8 +545,7 @@ public final class Jogo {
 			habilidadeTemporaria--;
 		/** Se engenheiro ajuda outro engenheiro, habilidade decresce 1 */
 
-		System.out.println(
-				"habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
+		System.out.println("habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
 
 		int[] artefatosAjudasInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho]
 				.somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas());
@@ -756,12 +583,10 @@ public final class Jogo {
 
 		Modulo[] pedido = setupController.exibirTabelaCorrecao(habilidadeTemporaria, artefatosInspecionadosBug);
 
-		if (pedido == null) // cancelou pedido
-		{
+		if (pedido == null){ // cancelou pedido{
 			System.out.println("\npedido cancelado pois retornou modulo null");
 			return jogador;
-		} else // ha pedido valido
-		{
+		} else{// ha pedido valido
 			System.out.printf("tem pedido valido\n");
 
 			int numeroArtefatoBons = pedido[Mesa.ARTEFATOS_BONS].somatorioModulo();
@@ -782,31 +607,21 @@ public final class Jogo {
 		}
 	}
 
-	public Jogador integrarModuloJ(Jogador jogador, CartaEngenheiro engenheiroCorrigindo, int mesaTrabalho,
-			int moduloEscolhido, int[][] artefatosEscolhidos) {
+	public Jogador integrarModuloJ(Jogador jogador, CartaEngenheiro engenheiroCorrigindo, int mesaTrabalho, 	int moduloEscolhido, int[][] artefatosEscolhidos) {
+		
 		int habilidadeTemporaria = engenheiroCorrigindo.getHabilidadeEngenheiroAtual();
+		
 		System.out.println("habilidade do engenheiro que vai trabalhar: " + habilidadeTemporaria);
+		
+		//Se engenheiro for trabalhar em mesa distinta da sua, codigo das  cartas das mesas comparadas sao disintas
+		if (jogador.getTabuleiro().getMesas()[mesaTrabalho].getCartaMesa().getCodigoCarta()	.compareTo(engenheiroCorrigindo.getCodigoCarta()) != 0) {
+			habilidadeTemporaria--; //Se engenheiro ajuda outro engenheiro, habilidade decresce 1
+		}
 
-		/**
-		 * Se engenheiro for trabalhar em mesa distinta da sua, codigo das
-		 * cartas das mesas comparadas sao disintas
-		 */
-		if (jogador.getTabuleiro().getMesas()[mesaTrabalho].getCartaMesa().getCodigoCarta()
-				.compareTo(engenheiroCorrigindo.getCodigoCarta()) != 0)
-			habilidadeTemporaria--;
-		/** Se engenheiro ajuda outro engenheiro, habilidade decresce 1 */
+		System.out.println("habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
 
-		System.out.println(
-				"habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
-
-		for (int i = 0; i < jogador.getTabuleiro()
-				.getMesas().length; i++) /**
-											 * 
-											 * 
-											 * verifica se o modulo ja foi
-											 * integrado
-											 */
-		{
+		// verifica se o modulo ja foi integrado
+		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
 			if (jogador.getTabuleiro().getMesas()[i].getEspecificacaoModuloIntegrado() == moduloEscolhido) {
 				setupController.exibirModuloJaIntegrado(i + 1);
 				return jogador;
@@ -830,16 +645,15 @@ public final class Jogo {
 
 		ScreenInteraction.getScreenInteraction().exibirMensagem("Modulo com integracao valida", "Integracaod e modulo");
 
-		/** atualizando habilidade atual do engenheiro */
+		//atualizando habilidade atual do engenheiro
+		
+		//Engenheiro nao faz mais nada na rodada depois de integrar modulo
 		engenheiroCorrigindo.setHabilidadeEngenheiroAtual(0);
-		/** Engenheiro nao faz mais nada na rodada depois de integrar modulo */
 
-		/** engenheiro trabalhou na rodada, logo atualizando isso */
+		// engenheiro trabalhou na rodada, logo atualizando isso
 		engenheiroCorrigindo.setEngenheiroTrabalhouNestaRodada(true);
 
-		ArrayList<Artefato>[] moduloIntegrado = construirModuloIntegrado(jogador, projeto, mesaTrabalho,
-				moduloEscolhido, artefatosEscolhidos);
-
+		ArrayList<Artefato>[] moduloIntegrado = construirModuloIntegrado(jogador, projeto, mesaTrabalho, moduloEscolhido, artefatosEscolhidos);
 		jogador.getTabuleiro().getMesas()[mesaTrabalho].setModuloIntegrado(moduloIntegrado);
 		jogador.getTabuleiro().getMesas()[mesaTrabalho].setEspecificacaoModuloIntegrado(moduloEscolhido);
 		jogador.getTabuleiro().getMesas()[mesaTrabalho].setModuloJaIntegrado(true);
@@ -847,16 +661,14 @@ public final class Jogo {
 
 	}
 
-	public boolean conferirQuantidadeArtefatosSuficiente(Jogador jogador, CartaoProjeto projeto, int mesaTrabalho,
-			int moduloEscolhido, int[][] artefatosEscolhidos) {
+	public boolean conferirQuantidadeArtefatosSuficiente(Jogador jogador, CartaoProjeto projeto, int mesaTrabalho, int moduloEscolhido, int[][] artefatosEscolhidos) {
 		System.out.println("modulo escolhido = " + moduloEscolhido);
 		int contador = 0;
 		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA].length; i++) {
 			if (artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA][i] == GameController.ARTEFATOS_SELECIONADO)
 				contador++;
 		}
-		System.out.println(
-				"contador = " + contador + "\tprojeto Ajuda = " + projeto.getModulos()[moduloEscolhido].getAjudas());
+		System.out.println("contador = " + contador + "\tprojeto Ajuda = " + projeto.getModulos()[moduloEscolhido].getAjudas());
 		if (contador != projeto.getModulos()[moduloEscolhido].getAjudas())
 			return false;
 
@@ -865,8 +677,7 @@ public final class Jogo {
 			if (artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO][i] == GameController.ARTEFATOS_SELECIONADO)
 				contador++;
 		}
-		System.out.println(
-				"contador = " + contador + "\tprojeto Codigo = " + projeto.getModulos()[moduloEscolhido].getCodigos());
+		System.out.println("contador = " + contador + "\tprojeto Codigo = " + projeto.getModulos()[moduloEscolhido].getCodigos());
 
 		if (contador != projeto.getModulos()[moduloEscolhido].getCodigos())
 			return false;
@@ -904,8 +715,8 @@ public final class Jogo {
 		return true;
 	}
 
-	public ArrayList<Artefato>[] construirModuloIntegrado(Jogador jogador, CartaoProjeto projeto, int mesaTrabalho,
-			int moduloEscolhido, int[][] artefatosEscolhidos) {
+	//TODO: Refatorar
+	public ArrayList<Artefato>[] construirModuloIntegrado(Jogador jogador, CartaoProjeto projeto, int mesaTrabalho,	int moduloEscolhido, int[][] artefatosEscolhidos) {
 		@SuppressWarnings("unchecked")
 		ArrayList<Artefato>[] moduloIntegrado = new ArrayList[5];
 		for (int i = 0; i < moduloIntegrado.length; i++)
@@ -913,36 +724,31 @@ public final class Jogo {
 
 		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA].length; i++) {
 			if (artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA][i] == GameController.ARTEFATOS_SELECIONADO) {
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas()
-						.get(artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA][i]);
+				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas().get(artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA][i]);
 				/** copiando um artefato escolhido numa variavel temporaria */
 				jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas()
 						.remove(artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA][i]);
 				/** retira artefato da mesa para o modulo a ser integrado */
 				moduloIntegrado[Mesa.ARTEFATOS_AJUDA].add(temporario);
 			}
-
 		}
+		
 		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO].length; i++) {
 			if (artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO][i] == GameController.ARTEFATOS_SELECIONADO) {
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos()
-						.get(artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO][i]);
+				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos().get(artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO][i]);
 				jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos()
 						.remove(artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO][i]);
 				moduloIntegrado[Mesa.ARTEFATOS_CODIGO].add(temporario);
 			}
-
 		}
 
 		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO].length; i++) {
 			if (artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO][i] == GameController.ARTEFATOS_SELECIONADO) {
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos()
-						.get(artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO][i]);
+				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos().get(artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO][i]);
 				jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos()
 						.remove(artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO][i]);
 				moduloIntegrado[Mesa.ARTEFATOS_DESENHO].add(temporario);
 			}
-
 		}
 
 		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_RASTROS].length; i++) {
@@ -972,23 +778,22 @@ public final class Jogo {
 
 	public Jogador trocarModuloMesa(Jogador jogadorAtual, CartaEngenheiro engenheiroTransferindo, int mesaEscolhida) {
 		for (int i = 0; i < jogadorAtual.getTabuleiro().getMesas().length; i++) {
-			if (jogadorAtual.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+			if (jogadorAtual.getTabuleiro().getMesas()[i].getCartaMesa() == null) {
 				continue;
-			if (!(jogadorAtual.getTabuleiro().getMesas()[i].getCartaMesa().getCodigoCarta()
-					.equals(engenheiroTransferindo.getCodigoCarta())))
+			}
+			if (!(jogadorAtual.getTabuleiro().getMesas()[i].getCartaMesa().getCodigoCarta().equals(engenheiroTransferindo.getCodigoCarta()))) {
 				continue;
+			}
 			/** encontrando a mesa do engenheiro que transfere o modulo */
-			if (jogadorAtual.getTabuleiro().getMesas()[i].getModuloJaIntegrado() == false)
+			if (jogadorAtual.getTabuleiro().getMesas()[i].getModuloJaIntegrado() == false) {
 				/** so por seguranca */
 				return jogadorAtual;
-
+			}
 			ArrayList<Artefato>[] temporario = jogadorAtual.getTabuleiro().getMesas()[mesaEscolhida]
 					.getModuloIntegrado();
 			/** trocando os modulos das mesas */
-			jogadorAtual.getTabuleiro().getMesas()[mesaEscolhida]
-					.setModuloIntegrado(jogadorAtual.getTabuleiro().getMesas()[i].getModuloIntegrado());
+			jogadorAtual.getTabuleiro().getMesas()[mesaEscolhida].setModuloIntegrado(jogadorAtual.getTabuleiro().getMesas()[i].getModuloIntegrado());
 			jogadorAtual.getTabuleiro().getMesas()[i].setModuloIntegrado(temporario);
-
 			jogadorAtual.getTabuleiro().getMesas()[mesaEscolhida].setModuloJaIntegrado(true);
 			jogadorAtual.getTabuleiro().getMesas()[i].setModuloJaIntegrado(false);
 			return jogadorAtual;
@@ -1004,55 +809,19 @@ public final class Jogo {
 	 */
 	public int validarProjeto(Jogador jogador) {
 		if (jogador.contarModuloJaIntegrado() == projeto.getTamanho()) {
-			for (int i = 0; i < projeto
-					.getQualidade(); i++) /**
-											 * conferindo x modulos integrados,
-											 * onde x e igual à qualidade do
-											 * projeto
-											 */
-			{
-				for (int z = 0; z < jogador.getTabuleiro()
-						.getMesas().length; z++)/**
-												 * 
-												 * 
-												 * percorrendo mesas do
-												 * tabuleiro
-												 */
-				{
-					if (jogador.getTabuleiro().getMesas()[z].getModuloJaIntegrado() == false)
-						/** se mesa nao tem modulo integrado */
+			// conferindo x modulos integrados,  onde x e igual à qualidade do projeto
+			for (int i = 0; i < projeto.getQualidade(); i++){
+				for (int z = 0; z < jogador.getTabuleiro().getMesas().length; z++){
+					if (jogador.getTabuleiro().getMesas()[z].getModuloJaIntegrado() == false) { //se mesa nao tem modulo integrado
 						continue;
-					for (int j = 0; j < jogador.getTabuleiro().getMesas()[z]
-							.getModuloIntegrado().length; j++) /**
-																 * Percorrendo
-																 * cada conjunto
-																 * de artefatos
-																 * do modulo
-																 * integrado da
-																 * mesa z do
-																 * jogador
-																 */
-					{// TODO caso tenha efeito de pular modulo integrado, entra
-						// aqui
-						for (int k = 0; k < jogador.getTabuleiro().getMesas()[z].getModuloIntegrado()[j]
-								.size(); k++) /**
-												 * 
-												 * 
-												 * percorrendo o array de
-												 * artefato da posicao j do
-												 * modulo integrado em analise
-												 */
-						{
-							if (jogador.getTabuleiro().getMesas()[z].getModuloIntegrado()[j].get(k)
-									.isPoorQuality() == true) /**
-																 * se qualidade
-																 * do artefato
-																 * for ruim, ou
-																 * seja, com bug
-																 */
-							{
-								System.out.println(
-										"cliente rejeitou modulo por ter bug-> metodo de validar na classe jogo");
+					}
+					for (int j = 0; j < jogador.getTabuleiro().getMesas()[z].getModuloIntegrado().length; j++){ //Percorrendo cada conjunto de artefatos do modulo integrado da mesa z do jogador
+						
+						// percorrendo o array de artefato da posicao j do modulo integrado em analise
+						for (int k = 0; k < jogador.getTabuleiro().getMesas()[z].getModuloIntegrado()[j].size(); k++){
+							// Se qualidade do artefato for ruim, ou seja, com bug.
+							if (jogador.getTabuleiro().getMesas()[z].getModuloIntegrado()[j].get(k).isPoorQuality() == true){
+								System.out.println("cliente rejeitou modulo por ter bug-> metodo de validar na classe jogo");
 								return SetupInteraction.PROJETO_NAO_CONCLUIDO;
 							}
 						}
@@ -1069,12 +838,7 @@ public final class Jogo {
 
 	//#ifdef ConceptCard
 	public Jogador usarConceito(Jogador jogador, CartaBonificacao cartaUtilizada) {
-		switch (cartaUtilizada
-				.getTipoPrimeiroEfeito()) /**
-											 * insere PRIMEIRO efeito no
-											 * tabuleiro do jogador
-											 */
-		{
+		switch (cartaUtilizada.getTipoPrimeiroEfeito()){
 		case (CardsConstants.NO_BENEFITS):
 			break;
 		case (CardsConstants.BUDGET_INCREASE): {
@@ -1096,14 +860,7 @@ public final class Jogo {
 			String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
 			if (engenheiro[0] == null)
 				break;
-			for (int i = 0; i < jogador.getTabuleiro()
-					.getMesas().length; i++) /**
-												 * 
-												 * 
-												 * percorrendo mesas do
-												 * tabuleiro
-												 */
-			{
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ // Percorre mesas do tabuleiro
 				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
 					continue;
 				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()

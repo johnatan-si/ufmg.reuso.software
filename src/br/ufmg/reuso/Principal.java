@@ -7,6 +7,8 @@ package br.ufmg.reuso;
  *
  * Created by Michael David
  * Date: 16/07/2011
+ * 
+ * Update by Aline Brito, Igor Muzetti (2018/2) 
  */
 
 import br.ufmg.reuso.negocio.jogo.Jogo;

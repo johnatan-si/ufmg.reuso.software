@@ -12,8 +12,6 @@ package br.ufmg.reuso.negocio.carta;
 /*
  * Interface que identifica o estado atual de uma carta: inspecionado ou nao, e se possui bug ou nao
  */
-
-
 public interface EstadoCarta {
 	
 	public boolean getEstado(Artefato carta);

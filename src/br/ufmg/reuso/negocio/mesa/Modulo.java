@@ -12,6 +12,9 @@ package br.ufmg.reuso.negocio.mesa;
 /**
  * @author Michael David
  * Classe que contém o objeto Módulo, composto por cinco variáveis inteiras.
+ * 
+ * dadada
+ *
  */
 
 public class Modulo 

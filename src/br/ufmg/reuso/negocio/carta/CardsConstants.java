@@ -75,7 +75,7 @@ public class CardsConstants
 
 	
 	
-	/** In�cio das constantes utilizadas  para condições oriundas de cartas de problema*/
+	/** Inicio das constantes utilizadas  para condições oriundas de cartas de problema*/
 
 	public static final int UNCONDITIONAL = 0;	
 	
