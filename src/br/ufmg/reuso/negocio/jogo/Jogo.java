@@ -839,439 +839,416 @@ public final class Jogo {
 	//#ifdef ConceptCard
 	public Jogador usarConceito(Jogador jogador, CartaBonificacao cartaUtilizada) {
 		switch (cartaUtilizada.getTipoPrimeiroEfeito()){
-		case (CardsConstants.NO_BENEFITS):
-			break;
-		case (CardsConstants.BUDGET_INCREASE): {
-			jogador.getTabuleiro().setEfeitoPositivoOrcamento(cartaUtilizada.getQuantidadePrimeiroEfeito());
-			break;
-		}
-		case (CardsConstants.CHANGE_GRAY_ARTIFACTS_BY_WHITE_ARTIFACTS): {
-			changeGrayArtifactsByWhiteArtifacts(jogador);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_HELP_ARTIFACTS): {
-			Random sorteio = new Random();
-			int sorteado = sorteio.nextInt(2);
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_AJUDA,
-					sorteado);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_MATURITY_POINTS_NOW): {
-			String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
-			if (engenheiro[0] == null)
+		
+			case (CardsConstants.NO_BENEFITS):
 				break;
-			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ // Percorre mesas do tabuleiro
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-					continue;
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()
-						.equals(engenheiro[0])) /**
-												 * encontra engenheiro que
-												 * recebera efeito
-												 */
-				{
-					jogador.getTabuleiro().getMesas()[i]
-							.setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadePrimeiroEfeito());
-				}
+			
+			case (CardsConstants.BUDGET_INCREASE): {
+				jogador.getTabuleiro().setEfeitoPositivoOrcamento(cartaUtilizada.getQuantidadePrimeiroEfeito());
+				break;
 			}
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_REQUIREMENTS_ARTIFACTS): {
-			Random sorteio = new Random();
-			int sorteado = sorteio.nextInt(2);
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_REQUISITOS,
-					sorteado);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_SKILL_POINTS_LATER): {
-			String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
-			for (int j = 0; j < engenheiro.length; j++) {
-				if (engenheiro[j] == null)
-					continue;
-				for (int i = 0; i < jogador.getTabuleiro()
-						.getMesas().length; i++) /**
-													 * 
-													 * 
-													 * percorrendo mesas do
-													 * tabuleiro
-													 */
-				{
-					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+			
+			case (CardsConstants.CHANGE_GRAY_ARTIFACTS_BY_WHITE_ARTIFACTS): {
+				changeGrayArtifactsByWhiteArtifacts(jogador);
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_HELP_ARTIFACTS): {
+				Random sorteio = new Random();
+				int sorteado = sorteio.nextInt(2);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_AJUDA,
+						sorteado);
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_MATURITY_POINTS_NOW): {
+				String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
+				if (engenheiro[0] == null) {
+					break;
+				}
+				for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ // Percorre mesas do tabuleiro
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null) {
 						continue;
-					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()
-							.equals(engenheiro[j])) /**
-													 * 
-													 * 
-													 * encontra engenheiro que
-													 * recebera efeito
-													 */
-					{
-						String[] auxiliar = new String[2];
-						auxiliar[0] = engenheiro[j];
-						auxiliar[1] = Integer.toString(cartaUtilizada.getQuantidadePrimeiroEfeito());
-						jogador.getTabuleiro().getEfeitoAumentarHabilidadeEngenheiroLater().add(auxiliar);
+					}
+					//Encontra engenheiro que receberá efeito.
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])) {
+						jogador.getTabuleiro().getMesas()[i].setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadePrimeiroEfeito());
 					}
 				}
-			}
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_SKILL_POINTS_NOW): {
-			String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
-			if (engenheiro[0] == null)
 				break;
-			for (int i = 0; i < jogador.getTabuleiro()
-					.getMesas().length; i++) /**
-												 * 
-												 * 
-												 * percorrendo mesas do
-												 * tabuleiro
-												 */
-			{
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-					continue;
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()
-						.equals(engenheiro[0])) /**
-												 * encontra engenheiro que
-												 * recebera efeito
-												 */
-				{
-					jogador.getTabuleiro().getMesas()[i]
-							.setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadePrimeiroEfeito());
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_REQUIREMENTS_ARTIFACTS): {
+				Random sorteio = new Random();
+				int sorteado = sorteio.nextInt(2);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_REQUISITOS, sorteado);
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_SKILL_POINTS_LATER): {
+				String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
+				for (int j = 0; j < engenheiro.length; j++) {
+					if (engenheiro[j] == null) {
+						continue;
+					}
+					//Percorrendo mesas do tabuleiro
+					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null) {
+							continue;
+						}
+						//Encontra engenheiro que receberá efeito.
+						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[j])){
+							String[] auxiliar = new String[2];
+							auxiliar[0] = engenheiro[j];
+							auxiliar[1] = Integer.toString(cartaUtilizada.getQuantidadePrimeiroEfeito());
+							jogador.getTabuleiro().getEfeitoAumentarHabilidadeEngenheiroLater().add(auxiliar);
+						}
+					}
 				}
-			}
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_TRAIL_ARTIFACTS): {
-			Random sorteio = new Random();
-			int sorteado = sorteio.nextInt(2);
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_RASTROS,
-					sorteado);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_ARTIFACT): {
-			Random sorteio = new Random();
-			int tipoArtefato = sorteio.nextInt(5);
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), tipoArtefato,
-					Mesa.ARTEFATOS_BONS);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_CODE_ARTIFACT): {
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_CODIGO,
-					Mesa.ARTEFATOS_BONS);
-			break;
-		}
-		case (CardsConstants.ENGINEER_CHOSEN_INSPECT_FREE_ARTIFACTS): {
-			String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
-			if (engenheiro[0] == null)
 				break;
-			for (int i = 0; i < jogador.getTabuleiro()
-					.getMesas().length; i++) /**
-												 * 
-												 * 
-												 * percorrendo mesas do
-												 * tabuleiro
-												 */
-			{
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-					continue;
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()
-						.equals(engenheiro[0])) /**
-												 * encontra engenheiro que
-												 * recebera efeito
-												 */
-				{
-					inspecionarArtefatoByEfeito(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito());
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_SKILL_POINTS_NOW): {
+				String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
+				if (engenheiro[0] == null) {
+					break;
 				}
-			}
-			break;
-		}
-		case (CardsConstants.TWO_ENGINNERS_CHOSEN_RECEIVE_DESIGN_ARTIFACTS): {
-			String[] engenheiros = setupController.escolherEngenheiro(jogador, 2);
-			Random sorteio = new Random();
-			int sorteado;
-			if (engenheiros[0] == null)
-				;
-			else {
-				sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_DESENHO,
-						sorteado, engenheiros[0]);
-			}
-			if (engenheiros[1] == null)
+				//Percorrendo mesas do tabuleiro
+				for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null){
+						continue;
+					}
+					
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])) {
+						jogador.getTabuleiro().getMesas()[i].setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadePrimeiroEfeito());
+					}
+				}
 				break;
-			else {
-				sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_DESENHO,
-						sorteado, engenheiros[1]);
 			}
-			break;
-		}
-		case (CardsConstants.TWO_ENGINNERS_CHOSEN_RECEIVE_TRAIL_ARTIFACTS): {
-			String[] engenheiros = setupController.escolherEngenheiro(jogador, 2);
-			Random sorteio = new Random();
-			int sorteado;
-			if (engenheiros[0] == null)
-				;
-			else {
-				sorteado = sorteio.nextInt(2);
+			
+			case(CardsConstants.ENGINNER_CHOSEN_RECEIVE_TRAIL_ARTIFACTS): {
+				Random sorteio = new Random();
+				int sorteado = sorteio.nextInt(2);
 				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_RASTROS,
-						sorteado, engenheiros[0]);
-			}
-			if (engenheiros[1] == null)
+						sorteado);
 				break;
-			else {
-				sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_RASTROS,
-						sorteado, engenheiros[1]);
 			}
-			break;
-		}
-		case (CardsConstants.UNIZING_COMPONENT_VALIDATION_PHASE): {
-			jogador.getTabuleiro().setEfeitoModuloIntegradoNeutralizadoValidacao(true);
-			break;
-		}
-		case (CardsConstants.UNIZING_HELP_ARTIFACTS_VALIDATION_PHASE): {
-			jogador.getTabuleiro().setEfeitoHelpArtifactsNeutralizadoValidacao(true);
-			break;
-		}
-		case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_CODE): {
-			jogador.getTabuleiro().setEfeitoProblemaArtefatoCodigoNeutralizado(true);
-			break;
-		}
-		case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_REQUIREMENTS): {
-			jogador.getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
-			break;
-		}
-		case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_TRAILSS): {
-			jogador.getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
-			break;
-		}
-		// default: /**nao havera essa opcao, mas a colocamos por seguranca*/
-		// break;
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_ARTIFACT): {
+				Random sorteio = new Random();
+				int tipoArtefato = sorteio.nextInt(5);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), tipoArtefato,
+						Mesa.ARTEFATOS_BONS);
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_CODE_ARTIFACT): {
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_CODIGO,
+						Mesa.ARTEFATOS_BONS);
+				break;
+			}
+			
+			case (CardsConstants.ENGINEER_CHOSEN_INSPECT_FREE_ARTIFACTS): {
+				String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
+				if (engenheiro[0] == null) {
+					break;
+				}
+				//Percorrendo mesas do tabuleiro
+				for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null) {
+						continue;
+					}
+					//Encontra engenheiro que receberá efeito.
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
+						inspecionarArtefatoByEfeito(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito());
+					}
+				}
+				break;
+			}
+			
+			case (CardsConstants.TWO_ENGINNERS_CHOSEN_RECEIVE_DESIGN_ARTIFACTS): {
+				String[] engenheiros = setupController.escolherEngenheiro(jogador, 2);
+				Random sorteio = new Random();
+				int sorteado;
+				if (engenheiros[0] == null)	;
+				else {
+					sorteado = sorteio.nextInt(2);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_DESENHO, sorteado, engenheiros[0]);
+				}
+				if (engenheiros[1] == null)
+					break;
+				else {
+					sorteado = sorteio.nextInt(2);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_DESENHO, sorteado, engenheiros[1]);
+				}
+				break;
+			}
+			
+			case (CardsConstants.TWO_ENGINNERS_CHOSEN_RECEIVE_TRAIL_ARTIFACTS): {
+				String[] engenheiros = setupController.escolherEngenheiro(jogador, 2);
+				Random sorteio = new Random();
+				int sorteado;
+				if (engenheiros[0] == null);
+				else {
+					sorteado = sorteio.nextInt(2);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_RASTROS, sorteado, engenheiros[0]);
+				}
+				if (engenheiros[1] == null)
+					break;
+				else {
+					sorteado = sorteio.nextInt(2);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_RASTROS, sorteado, engenheiros[1]);
+				}
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_COMPONENT_VALIDATION_PHASE): {
+				jogador.getTabuleiro().setEfeitoModuloIntegradoNeutralizadoValidacao(true);
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_HELP_ARTIFACTS_VALIDATION_PHASE): {
+				jogador.getTabuleiro().setEfeitoHelpArtifactsNeutralizadoValidacao(true);
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_CODE): {
+				jogador.getTabuleiro().setEfeitoProblemaArtefatoCodigoNeutralizado(true);
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_REQUIREMENTS): {
+				jogador.getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_TRAILSS): {
+				jogador.getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
+				break;
+			}
+			
+			 default:
+			 break;
 		}
 
-		switch (cartaUtilizada
-				.getTipoSegundoEfeito()) /**
-											 * insere SEGUNDO efeito no
-											 * tabuleiro do jogador
-											 */
-		{
-		case (CardsConstants.NO_BENEFITS):
-			break;
-		case (CardsConstants.BUDGET_INCREASE): {
-			jogador.getTabuleiro().setEfeitoPositivoOrcamento(cartaUtilizada.getQuantidadeSegundoEfeito());
-			break;
-		}
-		case (CardsConstants.CHANGE_GRAY_ARTIFACTS_BY_WHITE_ARTIFACTS): {
-			changeGrayArtifactsByWhiteArtifacts(jogador);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_HELP_ARTIFACTS): {
-			Random sorteio = new Random();
-			int sorteado = sorteio.nextInt(2);
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_AJUDA,
-					sorteado);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_MATURITY_POINTS_NOW): {
-			String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
-			if (engenheiro[0] == null)
+		//insere SEGUNDO efeito no  tabuleiro do jogador
+		switch (cartaUtilizada.getTipoSegundoEfeito()){
+		
+			case (CardsConstants.NO_BENEFITS):
 				break;
-			for (int i = 0; i < jogador.getTabuleiro()
-					.getMesas().length; i++) /**
-												 * 
-												 * 
-												 * percorrendo mesas do
-												 * tabuleiro
-												 */
-			{
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-					continue;
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()
-						.equals(engenheiro[0])) /**
-												 * encontra engenheiro que
-												 * recebera efeito
-												 */
-				{
-					jogador.getTabuleiro().getMesas()[i]
-							.setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadeSegundoEfeito());
-				}
+			
+			case (CardsConstants.BUDGET_INCREASE): {
+				jogador.getTabuleiro().setEfeitoPositivoOrcamento(cartaUtilizada.getQuantidadeSegundoEfeito());
+				break;
 			}
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_REQUIREMENTS_ARTIFACTS): {
-			Random sorteio = new Random();
-			int sorteado = sorteio.nextInt(2);
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_REQUISITOS,
-					sorteado);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_SKILL_POINTS_LATER): {
-			String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
-			for (int j = 0; j < engenheiro.length; j++) {
-				if (engenheiro[j] == null)
-					continue;
-				for (int i = 0; i < jogador.getTabuleiro()
-						.getMesas().length; i++) /**
-													 * 
-													 * 
-													 * percorrendo mesas do
-													 * tabuleiro
-													 */
-				{
+			
+			case (CardsConstants.CHANGE_GRAY_ARTIFACTS_BY_WHITE_ARTIFACTS): {
+				changeGrayArtifactsByWhiteArtifacts(jogador);
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_HELP_ARTIFACTS): {
+				Random sorteio = new Random();
+				int sorteado = sorteio.nextInt(2);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_AJUDA,
+						sorteado);
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_MATURITY_POINTS_NOW): {
+				
+				String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
+				
+				if (engenheiro[0] == null)
+					break;
+				
+				//Percorrendo mesas do tabuleiro
+				for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+					
 					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
 						continue;
-					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()
-							.equals(engenheiro[j])) /**
-													 * 
-													 * 
-													 * encontra engenheiro que
-													 * recebera efeito
-													 */
-					{
-						String[] auxiliar = new String[2];
-						auxiliar[0] = engenheiro[j];
-						auxiliar[1] = Integer.toString(cartaUtilizada.getQuantidadeSegundoEfeito());
-						jogador.getTabuleiro().getEfeitoAumentarHabilidadeEngenheiroLater().add(auxiliar);
+					
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
+						jogador.getTabuleiro().getMesas()[i].setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadeSegundoEfeito());
+					}
+					
+				}
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_REQUIREMENTS_ARTIFACTS): {
+				Random sorteio = new Random();
+				int sorteado = sorteio.nextInt(2);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_REQUISITOS,	sorteado);
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_SKILL_POINTS_LATER): {
+				
+				String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
+				
+				for (int j = 0; j < engenheiro.length; j++) {
+					
+					if (engenheiro[j] == null)
+						continue;
+					
+					//Percorrendo mesas do tabuleiro
+					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+						
+						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+							continue;
+						
+						//Encontra engenheiro que receberá efeito.
+						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[j])){
+							String[] auxiliar = new String[2];
+							auxiliar[0] = engenheiro[j];
+							auxiliar[1] = Integer.toString(cartaUtilizada.getQuantidadeSegundoEfeito());
+							jogador.getTabuleiro().getEfeitoAumentarHabilidadeEngenheiroLater().add(auxiliar);
+						}
 					}
 				}
-			}
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_SKILL_POINTS_NOW): {
-			String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
-			if (engenheiro[0] == null)
 				break;
-			for (int i = 0; i < jogador.getTabuleiro()
-					.getMesas().length; i++) /**
-												 * 
-												 * 
-												 * percorrendo mesas do
-												 * tabuleiro
-												 */
-			{
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-					continue;
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()
-						.equals(engenheiro[0])) /**
-												 * encontra engenheiro que
-												 * recebera efeito
-												 */
-				{
-					jogador.getTabuleiro().getMesas()[i]
-							.setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadeSegundoEfeito());
+			}
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_SKILL_POINTS_NOW): {
+				
+				String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
+				
+				if (engenheiro[0] == null)
+					break;
+				
+				//Percorrendo mesas do tabuleiro
+				for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+					
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+						continue;
+					
+					//Encontra engenheiro que receberá efeito.
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
+						jogador.getTabuleiro().getMesas()[i].setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadeSegundoEfeito());
+					}
 				}
-			}
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_TRAIL_ARTIFACTS): {
-			Random sorteio = new Random();
-			int sorteado = sorteio.nextInt(2);
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS,
-					sorteado);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_ARTIFACT): {
-			Random sorteio = new Random();
-			int tipoArtefato = sorteio.nextInt(5);
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), tipoArtefato,
-					Mesa.ARTEFATOS_BONS);
-			break;
-		}
-		case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_CODE_ARTIFACT): {
-			insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_CODIGO,
-					Mesa.ARTEFATOS_BONS);
-			break;
-		}
-		case (CardsConstants.ENGINEER_CHOSEN_INSPECT_FREE_ARTIFACTS): {
-			String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
-			if (engenheiro[0] == null)
 				break;
-			for (int i = 0; i < jogador.getTabuleiro()
-					.getMesas().length; i++) /**
-												 * 
-												 * 
-												 * percorrendo mesas do
-												 * tabuleiro
-												 */
-			{
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-					continue;
-				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()
-						.equals(engenheiro[0])) /**
-												 * encontra engenheiro que
-												 * recebera efeito
-												 */
-				{
-					inspecionarArtefatoByEfeito(jogador, cartaUtilizada.getQuantidadeSegundoEfeito());
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_TRAIL_ARTIFACTS): {
+				Random sorteio = new Random();
+				int sorteado = sorteio.nextInt(2);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS, sorteado);
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_ARTIFACT): {
+				Random sorteio = new Random();
+				int tipoArtefato = sorteio.nextInt(5);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), tipoArtefato,
+						Mesa.ARTEFATOS_BONS);
+				break;
+			}
+			
+			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_CODE_ARTIFACT): {
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_CODIGO,
+						Mesa.ARTEFATOS_BONS);
+				break;
+			}
+			
+			case (CardsConstants.ENGINEER_CHOSEN_INSPECT_FREE_ARTIFACTS): {
+				
+				String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
+				
+				if (engenheiro[0] == null)
+					break;
+				
+				//Percorrendo mesas do tabuleiro
+				for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+					
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+						continue;
+					
+					//Encontra engenheiro que receberá efeito.
+					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
+						inspecionarArtefatoByEfeito(jogador, cartaUtilizada.getQuantidadeSegundoEfeito());
+					}
 				}
-			}
-			break;
-		}
-		case (CardsConstants.TWO_ENGINNERS_CHOSEN_RECEIVE_DESIGN_ARTIFACTS): {
-			String[] engenheiros = setupController.escolherEngenheiro(jogador, 2);
-			Random sorteio = new Random();
-			int sorteado;
-			if (engenheiros[0] == null)
-				;
-			else {
-				sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_DESENHO,
-						sorteado, engenheiros[0]);
-			}
-			if (engenheiros[1] == null)
 				break;
-			else {
-				sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_DESENHO,
-						sorteado, engenheiros[1]);
 			}
-			break;
-		}
-		case (CardsConstants.TWO_ENGINNERS_CHOSEN_RECEIVE_TRAIL_ARTIFACTS): {
-			String[] engenheiros = setupController.escolherEngenheiro(jogador, 2);
-			Random sorteio = new Random();
-			int sorteado;
-			if (engenheiros[0] == null)
-				;
-			else {
-				sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS,
-						sorteado, engenheiros[0]);
-			}
-			if (engenheiros[1] == null)
+			
+			case (CardsConstants.TWO_ENGINNERS_CHOSEN_RECEIVE_DESIGN_ARTIFACTS): {
+				
+				String[] engenheiros = setupController.escolherEngenheiro(jogador, 2);
+				Random sorteio = new Random();
+				int sorteado;
+				
+				if (engenheiros[0] == null);
+				else {
+					sorteado = sorteio.nextInt(2);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_DESENHO,
+							sorteado, engenheiros[0]);
+				}
+				if (engenheiros[1] == null) {
+					break;
+				}
+				else {
+					sorteado = sorteio.nextInt(2);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_DESENHO,
+							sorteado, engenheiros[1]);
+				}
 				break;
-			else {
-				sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS,
-						sorteado, engenheiros[1]);
 			}
-			break;
-		}
-		case (CardsConstants.UNIZING_COMPONENT_NOW): {
-			int mesa = setupController.escolherMesaNeutralizaComponente();
-			jogador.getTabuleiro().getMesas()[mesa].setEfeitoModuloIntegradoNeutralizado(true);
-		}
-		case (CardsConstants.UNIZING_COMPONENT_VALIDATION_PHASE): {
-			jogador.getTabuleiro().setEfeitoModuloIntegradoNeutralizadoValidacao(true);
-			break;
-		}
-		case (CardsConstants.UNIZING_HELP_ARTIFACTS_VALIDATION_PHASE): {
-			jogador.getTabuleiro().setEfeitoHelpArtifactsNeutralizadoValidacao(true);
-			break;
-		}
-		case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_CODE): {
-			jogador.getTabuleiro().setEfeitoProblemaArtefatoCodigoNeutralizado(true);
-			break;
-		}
-		case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_REQUIREMENTS): {
-			jogador.getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
-			break;
-		}
-		case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_TRAILSS): {
-			jogador.getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
-			break;
-		}
-		// /default: /**nao havera essa opcao, mas a colocamos por seguranca*/
-		// break;
+			
+			case (CardsConstants.TWO_ENGINNERS_CHOSEN_RECEIVE_TRAIL_ARTIFACTS): {
+				
+				String[] engenheiros = setupController.escolherEngenheiro(jogador, 2);
+				Random sorteio = new Random();
+				int sorteado;
+				if (engenheiros[0] == null);
+				else {
+					sorteado = sorteio.nextInt(2);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS,
+							sorteado, engenheiros[0]);
+				}
+				if (engenheiros[1] == null) {
+					break;
+				}
+				else {
+					sorteado = sorteio.nextInt(2);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS,
+							sorteado, engenheiros[1]);
+				}
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_COMPONENT_NOW): {
+				int mesa = setupController.escolherMesaNeutralizaComponente();
+				jogador.getTabuleiro().getMesas()[mesa].setEfeitoModuloIntegradoNeutralizado(true);
+			}
+			
+			case (CardsConstants.UNIZING_COMPONENT_VALIDATION_PHASE): {
+				jogador.getTabuleiro().setEfeitoModuloIntegradoNeutralizadoValidacao(true);
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_HELP_ARTIFACTS_VALIDATION_PHASE): {
+				jogador.getTabuleiro().setEfeitoHelpArtifactsNeutralizadoValidacao(true);
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_CODE): {
+				jogador.getTabuleiro().setEfeitoProblemaArtefatoCodigoNeutralizado(true);
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_REQUIREMENTS): {
+				jogador.getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
+				break;
+			}
+			
+			case (CardsConstants.UNIZING_PROBLEM_CARD_RELATED_TRAILSS): {
+				jogador.getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
+				break;
+			}
+			
+			default:
+				break;
 		}
 
 		Carta[] carta = new Carta[1];
@@ -1284,73 +1261,63 @@ public final class Jogo {
 	//#endif
 
 	public void insertArtifactByEffect(Jogador jogador, int quantidade, int tipoArtefato, int sorteado) {
+		
 		String[] engenheiro = setupController.escolherEngenheiro(jogador, 1);
-		if (engenheiro[0] == null)
+		
+		if (engenheiro[0] == null) {
 			return;
-		/** encerra metodo */
-		for (int i = 0; i < jogador.getTabuleiro()
-				.getMesas().length; i++) /**
-											 * 
-											 * 
-											 * percorrendo mesas do tabuleiro
-											 */
-		{
-			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+		}
+		
+		//percorrendo mesas do tabuleiro
+		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+			
+			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null) {
 				continue;
-			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(
-					engenheiro[0])) /**
-									 * encontra engenheiro que recebera efeito
-									 */
-			{
-				for (int j = 0; j < quantidade; j++) /**
-														 * cedendo a quantidade
-														 * de efeito da carta
-														 */
-				{
+			}
+			
+			//encontra engenheiro que recebera efeito
+			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
+				// cedendo a quantidade de efeito da carta
+				for (int j = 0; j < quantidade; j++){
 					if (tipoArtefato == Mesa.ARTEFATOS_AJUDA) {
-						if (sorteado == Mesa.ARTEFATOS_BONS)
-							/** inserindo efeito */
-							jogador.getTabuleiro().getMesas()[i].getAjudas()
-									.add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
-						else
-							jogador.getTabuleiro().getMesas()[i].getAjudas()
-									.add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						if (sorteado == Mesa.ARTEFATOS_BONS) {
+							jogador.getTabuleiro().getMesas()[i].getAjudas().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
+						}
+						else {
+							jogador.getTabuleiro().getMesas()[i].getAjudas().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						}
 					}
 					if (tipoArtefato == Mesa.ARTEFATOS_CODIGO) {
-						if (sorteado == Mesa.ARTEFATOS_BONS)
-							/** inserindo efeito */
-							jogador.getTabuleiro().getMesas()[i].getCodigos()
-									.add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
-						else
-							jogador.getTabuleiro().getMesas()[i].getCodigos()
-									.add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						if (sorteado == Mesa.ARTEFATOS_BONS) {//inserindo efeito
+							jogador.getTabuleiro().getMesas()[i].getCodigos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
+						}
+						else {
+							jogador.getTabuleiro().getMesas()[i].getCodigos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						}
 					}
 					if (tipoArtefato == Mesa.ARTEFATOS_DESENHO) {
-						if (sorteado == Mesa.ARTEFATOS_BONS)
-							/** inserindo efeito */
-							jogador.getTabuleiro().getMesas()[i].getDesenhos()
-									.add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
-						else
-							jogador.getTabuleiro().getMesas()[i].getDesenhos()
-									.add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						if (sorteado == Mesa.ARTEFATOS_BONS) {//inserindo efeito
+							jogador.getTabuleiro().getMesas()[i].getDesenhos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
+						}
+						else {
+							jogador.getTabuleiro().getMesas()[i].getDesenhos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						}
 					}
 					if (tipoArtefato == Mesa.ARTEFATOS_RASTROS) {
-						if (sorteado == Mesa.ARTEFATOS_BONS)
-							/** inserindo efeito */
-							jogador.getTabuleiro().getMesas()[i].getRastros()
-									.add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
-						else
-							jogador.getTabuleiro().getMesas()[i].getRastros()
-									.add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						if (sorteado == Mesa.ARTEFATOS_BONS) {//inserindo efeito
+							jogador.getTabuleiro().getMesas()[i].getRastros().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
+						}
+						else {
+							jogador.getTabuleiro().getMesas()[i].getRastros().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						}
 					}
 					if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS) {
-						if (sorteado == Mesa.ARTEFATOS_BONS)
-							/** inserindo efeito */
-							jogador.getTabuleiro().getMesas()[i].getRequisitos()
-									.add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
-						else
-							jogador.getTabuleiro().getMesas()[i].getRequisitos()
-									.add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						if (sorteado == Mesa.ARTEFATOS_BONS) {//inserindo efeito
+							jogador.getTabuleiro().getMesas()[i].getRequisitos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
+						}
+						else {
+							jogador.getTabuleiro().getMesas()[i].getRequisitos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+						}
 					}
 				}
 			}
