@@ -18,8 +18,8 @@ package br.ufmg.reuso.negocio.carta;
  */
 
 
-public class Artefato 
-{
+public class Artefato{
+	
 	private boolean bug; // se true há bug, do contrário não há bug
 	private boolean qualidadeArtefatoRuim; // se true é ruim, se não é bom
 	private boolean artefatoInspecionado; // se true foi inspecionado, se false não foi inspecionado
