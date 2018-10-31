@@ -58,7 +58,7 @@ import br.ufmg.reuso.negocio.mesa.Mesa;
  *         complexidade e outro inteiro representando a habilidade do engenheiro
  * 
  */
-public class ScreenIntegrateModule extends JDialog implements ActionListener {
+public class ScreenIntegrateModule extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -103,7 +103,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 	 *            = habilidade do engenheiro
 	 * 
 	 */
-	public ScreenIntegrateModule(CartaoProjeto projeto, Mesa mesa) {
+	public ScreenIntegrateModule(CartaoProjeto projeto, Mesa mesa){
 		super();
 
 		this.projeto = projeto;
@@ -121,7 +121,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 
 	}
 
-	private void getPanels() {
+	private void getPanels(){
 				 
 		
 		this.setLayout(flw);
@@ -151,7 +151,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 	 * Painel com as informações da parte superior da tela
 	 * @return JPanel - painel com as informações da parte superio da tela
 	 */
-	JPanel getPanelInfo() {
+	JPanel getPanelInfo(){
 
 		String message = "Selecione um módulo e os artefatos";
 		JPanel panel = new JPanel(flw);
@@ -170,7 +170,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 	 * 
 	 * @return JPanel com as opções de artefatos
 	 */
-	JPanel getPanelModules() {
+	JPanel getPanelModules(){
 
 		flw.setAlignment(FlowLayout.CENTER);
 		JPanel panel = new JPanel(flw);
@@ -202,39 +202,39 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 		 * Função inicializa as variáveis do projeto para serem inicializadas.
 		 * 
 		 */
-		void initiVars() {
+		void initiVars(){
 
-			if (projeto == null) {
+			if (projeto == null){
 				
 				ScreenInteraction.getScreenInteraction().exibirMensagem("Projeto Nulo", "");
 
-			} else {
+			} else{
 				
 				modules = new String[projeto.getModulos().length];
 
-				for (int i = 0; i < projeto.getModulos().length; i++) {
+				for (int i = 0; i < projeto.getModulos().length; i++){
 					modules[i] = new String(Integer.toString(i + 1) + "é -   ");
 
-					if (projeto.getModulos()[i].getRequisitos() > 0) {
+					if (projeto.getModulos()[i].getRequisitos() > 0){
 						modules[i] += (Integer.toString(projeto.getModulos()[i]
 								.getRequisitos()) + " RQ");
 					}
-					if (projeto.getModulos()[i].getDesenhos() > 0) {
+					if (projeto.getModulos()[i].getDesenhos() > 0){
 						modules[i] += (" + "
 								+ Integer.toString(projeto.getModulos()[i]
 										.getDesenhos()) + "DS");
 					}
-					if (projeto.getModulos()[i].getCodigos() > 0) {
+					if (projeto.getModulos()[i].getCodigos() > 0){
 						modules[i] += (" + "
 								+ Integer.toString(projeto.getModulos()[i]
 										.getCodigos()) + "CD");
 					}
-					if (projeto.getModulos()[i].getRastros() > 0) {
+					if (projeto.getModulos()[i].getRastros() > 0){
 						modules[i] += (" + "
 								+ Integer.toString(projeto.getModulos()[i]
 										.getRastros()) + "RS");
 					}
-					if (projeto.getModulos()[i].getAjudas() > 0) {
+					if (projeto.getModulos()[i].getAjudas() > 0){
 						modules[i] += (" + "
 								+ Integer.toString(projeto.getModulos()[i]
 										.getAjudas()) + "AJ");
@@ -242,7 +242,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 
 				}
 
-				data = new String[] { Integer.toString(projeto.getComplexidade()),
+				data = new String[]{ Integer.toString(projeto.getComplexidade()),
 						Integer.toString(projeto.getTamanho()),
 						Integer.toString(projeto.getQualidade()),
 						Integer.toString(projeto.getOrcamento()) + "K" };
@@ -268,7 +268,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 		 * Função inicializa as variáveis do projeto para serem inicializadas.
 		 * 
 		 */		
-		JPanel getPanelArtefacts() {
+		JPanel getPanelArtefacts(){
 
 			JPanel panelBoard = new myPanel();
 			panelBoard.setBorder(null);
@@ -296,13 +296,13 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 				
 
 				Vector<String> names = new Vector<String>(
-						Arrays.asList(new String[] { "Ajudas","Códigos", 
+						Arrays.asList(new String[]{ "Ajudas","Códigos", 
 								"Desenhos", "Rastros", "Requisitos" }));
 				int i = 0;
 
 				// Para cada tipo de artefato
 				Iterator<ArrayList<Artefato>> itModulo = modulo.iterator();
-				while (itModulo.hasNext()) {
+				while (itModulo.hasNext()){
 
 					ArrayList<Artefato> artefatos = itModulo.next();					
 					y = 0;
@@ -314,14 +314,14 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 					//label.setBorder(borderW);
 					panelBoard.add(label);					
 
-					if (artefatos.size() > 0) {
+					if (artefatos.size() > 0){
 						Iterator<Artefato> it = artefatos.iterator();
 						int j = 0;
 						Artefato art = null;
 						ImageIcon img = null;
 						y += height;
 						height = yInc / 2;						
-						while (it.hasNext()) {
+						while (it.hasNext()){
 
 							art = it.next();
 
@@ -341,7 +341,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 							listCheck[i][j].setActionCommand(Integer.toBinaryString(i));
 							panelBoard.add(listCheck[i][j]);
 							//Vai ter que verificar o estado de cada check para ver.
-						    if (it.hasNext() == true) {
+						    if (it.hasNext() == true){
 								y += img.getIconHeight();
 							}
 						    j++;
@@ -351,7 +351,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 						// y += height/2;
 						height = yInc;
 
-					} else { // Se não há artefatos do tipo atual
+					} else{ // Se não há artefatos do tipo atual
 
 					}
 					x += xInc;
@@ -372,7 +372,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 	 * @return JPanel - com os resultados da seleção do usuário mais o botão de
 	 *         ok
 	 */
-	JPanel getPanelBase() {
+	JPanel getPanelBase(){
 
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
@@ -392,9 +392,9 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 	 * coloca-os no vetor de saída,
 	 * */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 
-		if (e.getActionCommand() == "OK") {			
+		if (e.getActionCommand() == "OK"){			
 			
 			for( int i = 0; i < 10; i++){
 				for( int j = 0; j < 10; j++){
@@ -422,44 +422,44 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 		 * 
 		 * @return a imagem no formato ImagIcon a ser pintada em um Label
 		 */
-		private ImageIcon getImageArtefact(Artefato art, int height) {
+		private ImageIcon getImageArtefact(Artefato art, int height){
 			ImageIcon img = null;
-			if (art.isPoorQuality() == true) { // Artifact
+			if (art.isPoorQuality() == true){ // Artifact
 				// Bad
 
-				if (art.inspected() == true) {
+				if (art.inspected() == true){
 
-					if (art.isBug() == true) {
+					if (art.isBug() == true){
 						img = ComponentCard.getImageScalable(
 								ScreenInteraction.imagePath
 										+ "artefactBadBugged.png", 0, height);
-					} else {
+					} else{
 						img = ComponentCard.getImageScalable(
 								ScreenInteraction.imagePath + "artefactBadOk.png",
 								0, height);
 					}
 
-				} else { // Artifact Bad not inspectioned
+				} else{ // Artifact Bad not inspectioned
 					img = ComponentCard.getImageScalable(
 							ScreenInteraction.imagePath + "artefactBad.png", 0,
 							height);
 				}
 
-			} else { // Artifact God
+			} else{ // Artifact God
 
-				if (art.inspected() == true) {
+				if (art.inspected() == true){
 
-					if (art.isBug() == true) {
+					if (art.isBug() == true){
 						img = ComponentCard.getImageScalable(
 								ScreenInteraction.imagePath
 										+ "artefactGoodBugged.png", 0, height);
-					} else {
+					} else{
 						img = ComponentCard.getImageScalable(
 								ScreenInteraction.imagePath + "artefactGoodOk.png",
 								0, height);
 					}
 
-				} else { // Artifact Bad not inspectioned
+				} else{ // Artifact Bad not inspectioned
 					img = ComponentCard.getImageScalable(
 							ScreenInteraction.imagePath + "artefactGood.png", 0,
 							height);
@@ -481,10 +481,10 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 		 * 
 		 * 
 		 */
-		private ComponentAdapter getComponentAdapter() {
+		private ComponentAdapter getComponentAdapter(){
 
-			ComponentAdapter adapter = new ComponentAdapter() {
-				public void componentResized(ComponentEvent e) {
+			ComponentAdapter adapter = new ComponentAdapter(){
+				public void componentResized(ComponentEvent e){
 
 					ScreenIntegrateModule.this.setPreferredSize(ScreenIntegrateModule.this.getSize());
 					updateBounds();
@@ -502,7 +502,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 		/**
 		 * Método responsável por posicionar os objetos na tela com base no tamanho total da tela e no tamanho percentual dos objetos. 
 		 */
-		void updateBounds() {
+		void updateBounds(){
 			int x, y, width, height;//, xgap, ygap;
 						
 			//xgap = x = dim.width * 2 / 100; // 2% para borda esquerda
@@ -548,7 +548,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 		 * @see java.awt.Component#setPreferredSize(java.awt.Dimension)
 		 */
 		@Override
-		public void setPreferredSize(Dimension preferredSize) {	
+		public void setPreferredSize(Dimension preferredSize){	
 			super.setPreferredSize(preferredSize);
 			mySize = preferredSize;
 		}
@@ -559,7 +559,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 	 * 
 	 * @return int = índice do módulo escolhido para integração no projeto.
 	 */
-	public  int getModuleReturn() {
+	public  int getModuleReturn(){
 
 		int retorno = listModules.getSelectedIndex();
 		
@@ -577,7 +577,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 		return retorno ;
 	}
 	
-	public  int[][] getArtefatosEscolhidos() {
+	public  int[][] getArtefatosEscolhidos(){
 		
 		return artefactsReturn;
 	}
@@ -594,7 +594,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 	 * @param habilidade
 	 *            = habilidade do engenheiro
 	 */
-	public static ScreenIntegrateModule createAndShowIntegrateModule(CartaoProjeto projeto, Mesa mesa) {
+	public static ScreenIntegrateModule createAndShowIntegrateModule(CartaoProjeto projeto, Mesa mesa){
 
 		// Cria e configura a tela.
 		ScreenIntegrateModule scr = new ScreenIntegrateModule( projeto,  mesa);
@@ -613,14 +613,14 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
+			public void run(){
 
 				CartaoProjeto projeto = new CartaoProjeto(Jogo.DIFICIL);
 				Mesa mesa= new Mesa();		
@@ -651,7 +651,7 @@ public class ScreenIntegrateModule extends JDialog implements ActionListener {
 		private static final long serialVersionUID = 1L;
 
 		//método implementado de JPanel
-		protected void paintComponent(final Graphics g) {
+		protected void paintComponent(final Graphics g){
 		               super.paintComponent(g);
 		               //g.drawImage(bImage, 0, 0, this);
 		               g.setColor(Color.white);

@@ -56,17 +56,17 @@ public class CartaoProjeto{
 			setComplexidade(2);	 // definindo complexidade do projeto com valor igual a 2
 			setTamanho((sorteio.nextInt(2)+1));		// definindo tamanho do projeto com valores de 1 a 2
 			setQualidade((sorteio.nextInt(getTamanho())));  // definindo qualidade do projeto conforme tamanho do projeto
-			if (this.qualidade==0) {// caso qualidade seja zero 
+			if (this.qualidade==0){// caso qualidade seja zero 
 				setQualidade(1); // ela é configurada como 1, para ter qualidade mínima
 			}
 			setOrcamento((sorteio.nextInt(31)+150)); // definindo orçamento de 150 a 180 
 
 			modulos= new Modulo[getTamanho()]; // criando o número de módulos conforme o tamanho do projeto
-			for (int i=0;i<modulos.length;i++) {
+			for (int i=0;i<modulos.length;i++){
 				modulos[i] = new Modulo(); // construindo os módulos
 			}
 			int contador; // controla o número do módulo para preenchimento
-			for (contador = 0;contador <getTamanho(); contador++) { //preenche os módulos 
+			for (contador = 0;contador <getTamanho(); contador++){ //preenche os módulos 
 				modulos[contador].setRequisitos((sorteio.nextInt(2)+1));
 				modulos[contador].setDesenhos((sorteio.nextInt(2)+1));
 				modulos[contador].setCodigos((sorteio.nextInt(2)+1));
@@ -80,13 +80,13 @@ public class CartaoProjeto{
 			setComplexidade(2);	// definindo complexidade do projeto com valor igual a 2
 			setTamanho((sorteio.nextInt(3)+2));	// definindo tamanho do projeto com valores de 2 a 4
 			setQualidade((sorteio.nextInt(getTamanho()))); // definindo qualidade do projeto conforme tamnho do projeto
-			if (this.qualidade<2) {// caso qualidade seja zero 
+			if (this.qualidade<2){// caso qualidade seja zero 
 				setQualidade(2);// ela é configurada como 1
 			}
 			setOrcamento((sorteio.nextInt(21)+190)); // definindo orçamento de 190 a 210
 
 			modulos= new Modulo[getTamanho()]; // criando o número de módulos conforme o tamanho do projeto
-			for (int i=0;i<modulos.length;i++) {
+			for (int i=0;i<modulos.length;i++){
 				modulos[i] = new Modulo();	 // construindo os módulos
 			}
 			int contador; // controla o número do mdulo para preenchimento
@@ -107,14 +107,14 @@ public class CartaoProjeto{
 			int sentinela = -1;
 			int controlador = 0;
 			while (sentinela ==-1){
-				if(arquivosDiretorio[projetoSorteado].endsWith(".properties")) {
+				if(arquivosDiretorio[projetoSorteado].endsWith(".properties")){
 					sentinela=0;												/**atualiza sentinela para sair do while*/
 				}
-				else {
+				else{
 					controlador++;
 					projetoSorteado = sorteio.nextInt(arquivosDiretorio.length);/**sorteia um número novamente*/
 				}
-				if (controlador>=arquivosDiretorio.length) {
+				if (controlador>=arquivosDiretorio.length){
 					sentinela=0; /**se chegar aqui, significa que pasta não tem arquivo propesties*/
 				}
 			}
@@ -139,7 +139,7 @@ public class CartaoProjeto{
 			setComplexidade(4);	 // definindo complexidade do projeto com valor igual a 4
 			setTamanho((sorteio.nextInt(3)+3)); // definindo tamanho do projeto com valores de 3 a 5
 			setQualidade((sorteio.nextInt(getTamanho())));  // definindo qualidade do projeto conforme tamnho do projeto
-			if (this.qualidade<3) { // caso qualidade seja zero
+			if (this.qualidade<3){ // caso qualidade seja zero
 				setQualidade(3); // ela é configurada como 1
 			}
 			setOrcamento((sorteio.nextInt(21)+230)); // definindo orçamento de 230 a 250
@@ -159,7 +159,7 @@ public class CartaoProjeto{
 
 	}
 
-	public int getComplexidade() {
+	public int getComplexidade(){
 		return complexidade;
 	}
 

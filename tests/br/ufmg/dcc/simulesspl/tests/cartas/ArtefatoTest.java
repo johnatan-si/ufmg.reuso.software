@@ -22,7 +22,7 @@ import br.ufmg.reuso.negocio.carta.Artefato;
  * @author Alisson
  *
  */
-public class ArtefatoTest {
+public class ArtefatoTest{
 
 	private Artefato artefato;
 	boolean buged = true;
@@ -34,7 +34,7 @@ public class ArtefatoTest {
 	 * @throws java.lang.Exception
 	 */
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 		artefato = new Artefato(buged, bad);
 	}
 
@@ -42,66 +42,66 @@ public class ArtefatoTest {
 	 * @throws java.lang.Exception
 	 */
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 		artefato = null;
 	}
 
 	/**
-	 * Test method for {@link cartas.Artefato#Artefato(boolean, boolean)}.
+	 * Test method for{@link cartas.Artefato#Artefato(boolean, boolean)}.
 	 */
 	@Test
-	public void testArtefato() {
+	public void testArtefato(){
 		assertNotNull(artefato);		
 	}
 
 	/**
-	 * Test method for {@link cartas.Artefato#isBug()}.
+	 * Test method for{@link cartas.Artefato#isBug()}.
 	 */
 	@Test
-	public void testIsBug() {
+	public void testIsBug(){
 		assertTrue(artefato.isBug());
 	}
 
 	/**
-	 * Test method for {@link cartas.Artefato#setBug(boolean)}.
+	 * Test method for{@link cartas.Artefato#setBug(boolean)}.
 	 */
 	@Test
-	public void testSetBug() {
+	public void testSetBug(){
 		artefato.setBug(notBuged);
 		assertFalse(artefato.isBug());
 		
 	}
 
 	/**
-	 * Test method for {@link cartas.Artefato#isPoorQuality()}.
+	 * Test method for{@link cartas.Artefato#isPoorQuality()}.
 	 */
 	@Test
-	public void testIsPoorQuality() {
+	public void testIsPoorQuality(){
 		assertTrue(artefato.isPoorQuality());		
 	}
 
 	/**
-	 * Test method for {@link cartas.Artefato#setQualidadeArtefatoRuim(boolean)}.
+	 * Test method for{@link cartas.Artefato#setQualidadeArtefatoRuim(boolean)}.
 	 */
 	@Test
-	public void testSetQualidadeArtefatoRuim() {
+	public void testSetQualidadeArtefatoRuim(){
 		artefato.setQualidadeArtefatoRuim(notBad);
 		assertFalse(artefato.isPoorQuality());		
 	}
 
 	/**
-	 * Test method for {@link cartas.Artefato#inspected()}.
+	 * Test method for{@link cartas.Artefato#inspected()}.
 	 */
 	@Test
-	public void testInspected() {
+	public void testInspected(){
 		assertFalse(artefato.inspected());
 	}
 
 	/**
-	 * Test method for {@link cartas.Artefato#setArtefatoInspecionado(boolean)}.
+	 * Test method for{@link cartas.Artefato#setArtefatoInspecionado(boolean)}.
 	 */
 	@Test
-	public void testSetArtefatoInspecionado() {
+	public void testSetArtefatoInspecionado(){
 		artefato.setArtefatoInspecionado(true);
 		assertTrue(artefato.inspected());
 	}

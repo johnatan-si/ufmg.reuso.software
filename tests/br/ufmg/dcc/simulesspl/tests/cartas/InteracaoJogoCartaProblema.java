@@ -13,10 +13,10 @@ import org.junit.Test;
  * @author alcemir
  *
  */
-public class InteracaoJogoCartaProblema extends TestCase {
+public class InteracaoJogoCartaProblema extends TestCase{
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 	}
 	
 	@Test
@@ -114,7 +114,7 @@ public class InteracaoJogoCartaProblema extends TestCase {
 
 	
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 		
 	}
 }

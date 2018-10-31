@@ -81,31 +81,31 @@ public class Modulo
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
-	public String toString() {
+	public String toString(){
 		// TODO [ARS] Michael-alterei para ficar facil debugar.
 		
 		String modules = "";
 
-			if (this.getRequisitos() > 0) {
+			if (this.getRequisitos() > 0){
 				modules += (Integer.toString(this
 						.getRequisitos()) + " RQ");
 			}
-			if (this.getDesenhos() > 0) {
+			if (this.getDesenhos() > 0){
 				modules += (" + "
 						+ Integer.toString(this
 								.getDesenhos()) + "DS");
 			}
-			if (this.getCodigos() > 0) {
+			if (this.getCodigos() > 0){
 				modules += (" + "
 						+ Integer.toString(this
 								.getCodigos()) + "CD");
 			}
-			if (this.getRastros() > 0) {
+			if (this.getRastros() > 0){
 				modules += (" + "
 						+ Integer.toString(this
 								.getRastros()) + "RS");
 			}
-			if (this.getAjudas() > 0) {
+			if (this.getAjudas() > 0){
 				modules += (" + "
 						+ Integer.toString(this
 								.getAjudas()) + "AJ");

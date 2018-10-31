@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DadoTest {
+public class DadoTest{
 
 	Dado dado = null;
 	int sup = 6;	
@@ -15,34 +15,34 @@ public class DadoTest {
 	
 			
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 		dado = new Dado();
 	}
 
 	@After
-	public void tearDown() throws Exception {		
+	public void tearDown() throws Exception{		
 	}
 
 	@Test
-	public void testSortearValorSuperior() {
+	public void testSortearValorSuperior(){
 		int valor = Dado.sortearValor();
 		assertTrue(valor <= sup);				
 	}
 	
 	@Test
-	public void testSortearValorInferior() {
+	public void testSortearValorInferior(){
 		int valor = Dado.sortearValor();		
 		assertTrue(valor >= inf);		
 	}
 
 	@Test
-	public void testContarPontosSuperior() {
+	public void testContarPontosSuperior(){
 		int valor = Dado.contarPontos();
 		assertTrue(valor <= sup);		
 	}
 	
 	@Test
-	public void testContarPontosInferior() {
+	public void testContarPontosInferior(){
 		int valor = Dado.contarPontos();		
 		assertTrue(valor >= inf);
 	}

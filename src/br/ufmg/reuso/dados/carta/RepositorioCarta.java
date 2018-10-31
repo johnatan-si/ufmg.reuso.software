@@ -9,11 +9,11 @@ import br.ufmg.reuso.negocio.carta.CartaBonificacao;
 import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.carta.CartaPenalizacao;
 
-public class RepositorioCarta extends RepositorioArquivo implements IRepositorioCarta {
+public class RepositorioCarta extends RepositorioArquivo implements IRepositorioCarta{
 
 	//#ifdef ConceptCard
 	@Override
-	public CartaBonificacao obterCartaConceito(String nome) {
+	public CartaBonificacao obterCartaConceito(String nome){
 
 		Properties a = getArquivoProperties(nome);
 
@@ -34,7 +34,7 @@ public class RepositorioCarta extends RepositorioArquivo implements IRepositorio
 	//#endif
 
 	@Override
-	public CartaPenalizacao obterCartaPenalizacao(String nome) {
+	public CartaPenalizacao obterCartaPenalizacao(String nome){
 
 		Properties a = getArquivoProperties(nome);
 
@@ -58,7 +58,7 @@ public class RepositorioCarta extends RepositorioArquivo implements IRepositorio
 	}
 
 	@Override
-	public CartaEngenheiro obterCartaEngenheiro(String nome) {
+	public CartaEngenheiro obterCartaEngenheiro(String nome){
 
 		Properties a = getArquivoProperties(nome);
 

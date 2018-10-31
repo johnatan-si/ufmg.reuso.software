@@ -28,7 +28,7 @@ import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
  * @author Alisson Rodrigo [AS]
  * 
  */
-public class ScreenInteraction implements SetupInteraction {
+public class ScreenInteraction implements SetupInteraction{
 
 	public static final int ARTEFATOS_BONS = 0;
 	public static final int ARTEFATOS_RUINS = 1;
@@ -48,16 +48,16 @@ public class ScreenInteraction implements SetupInteraction {
 
 	private static ScreenInteraction instance;
 
-	private ScreenInteraction() {
+	private ScreenInteraction(){
 	} // evita que cliente use new ScreenInteraction()
 
-	public ScreenTabuleiro getTabuleiro() {
+	public ScreenTabuleiro getTabuleiro(){
 		if (tabuleiro == null)
 			tabuleiro = ScreenTabuleiro.createAndShowTabuleiro(null, null);
 		return tabuleiro;
 	}
 
-	public static ScreenInteraction getScreenInteraction() {
+	public static ScreenInteraction getScreenInteraction(){
 		if (instance == null)
 			instance = new ScreenInteraction();
 		return instance;
@@ -178,7 +178,7 @@ public class ScreenInteraction implements SetupInteraction {
 	 * exibe GUI Default com todas as informações do tabuleiro, cartas na mão do
 	 * jogador, opções do jogo.
 	 */
-	public void exibirDefault(Jogo jogoAtual, Jogador jogador) {
+	public void exibirDefault(Jogo jogoAtual, Jogador jogador){
 
 		this.jogadorAtual = jogador;
 		this.jogoAtual = jogoAtual;
@@ -236,14 +236,14 @@ public class ScreenInteraction implements SetupInteraction {
 	 */
 	{
 		String messager = "Em qual mesa deve ser alocado o engenheiro contratado.";
-		String[] options = new String[] { "Mesa 1", "Mesa 2", "Mesa 3",
+		String[] options = new String[]{ "Mesa 1", "Mesa 2", "Mesa 3",
 				"Mesa 4", "Mesa 5" };
 
 		String retorno = ScreenGenericChoose.createAndShowGenericChoose(
 				messager, options, "Mesa1").getReturn();
 
-		for (int i = 0; i < options.length; i++) {
-			if (options[i].compareToIgnoreCase(retorno) == 0) {
+		for (int i = 0; i < options.length; i++){
+			if (options[i].compareToIgnoreCase(retorno) == 0){
 				return i + 1;
 			}
 		}
@@ -258,14 +258,14 @@ public class ScreenInteraction implements SetupInteraction {
 	{
 		String messager = "Escolha uma mesa sem módulo integrado para receber módulo transferido.";
 
-		String[] options = new String[] { "Mesa 1", "Mesa 2", "Mesa 3",
+		String[] options = new String[]{ "Mesa 1", "Mesa 2", "Mesa 3",
 				"Mesa 4", "Mesa 5" };
 
 		String retorno = ScreenGenericChoose.createAndShowGenericChoose(
 				messager, options, "Mesa1").getReturn();
 
-		for (int i = 0; i < options.length; i++) {
-			if (options[i].compareToIgnoreCase(retorno) == 0) {
+		for (int i = 0; i < options.length; i++){
+			if (options[i].compareToIgnoreCase(retorno) == 0){
 				return i + 1;
 			}
 		}
@@ -280,14 +280,14 @@ public class ScreenInteraction implements SetupInteraction {
 	{
 
 		String messager = "Em qual mesa o engenheiro vai trabalhar?";
-		String[] options = new String[] { "Mesa 1", "Mesa 2", "Mesa 3",
+		String[] options = new String[]{ "Mesa 1", "Mesa 2", "Mesa 3",
 				"Mesa 4", "Mesa 5" };
 
 		String retorno = ScreenGenericChoose.createAndShowGenericChoose(
 				messager, options, "Mesa1").getReturn();
 
-		for (int i = 0; i < options.length; i++) {
-			if (options[i].compareToIgnoreCase(retorno) == 0) {
+		for (int i = 0; i < options.length; i++){
+			if (options[i].compareToIgnoreCase(retorno) == 0){
 				return i + 1;
 			}
 		}
@@ -301,7 +301,7 @@ public class ScreenInteraction implements SetupInteraction {
 	 */
 	@Override
 	public Modulo[] exibirTabelaProducao(int habilidadeEngenheiro,
-			int complexidadeProjeto) {
+			int complexidadeProjeto){
 		Modulo[] modulo = null; // Não pinta modulo algum - apresenta um máximo
 								// de 4 elementos para criar.
 		return ScreenChooseArtefacts.createAndShowChooseArtefacts(
@@ -315,7 +315,7 @@ public class ScreenInteraction implements SetupInteraction {
 	 */
 	@Override
 	public Modulo[] exibirTabelaInspecao(int habilidadeEngenheiro,
-			Modulo[] artefatosNotInspecionados) { // os inteiros que iniciam com
+			Modulo[] artefatosNotInspecionados){ // os inteiros que iniciam com
 													// "artefatos..." servem
 													// para fazer teste para ver
 													// se houve tentativa de
@@ -339,7 +339,7 @@ public class ScreenInteraction implements SetupInteraction {
 	 */
 	@Override
 	public Modulo[] exibirTabelaCorrecao(int habilidadeEngenheiro,
-			Modulo[] artefatosInspecionadosBug) {
+			Modulo[] artefatosInspecionadosBug){
 
 		// os inteiros que iniciam com "artefatos..." servem para fazer teste
 		// para ver se houve tentativa de corrigir um número de artefatos
@@ -357,7 +357,7 @@ public class ScreenInteraction implements SetupInteraction {
 
 	// TODO [ARS] essa função não é mais usada com as Guis
 	@Override
-	public int escolherModuloProjeto(Modulo[] modulos) {
+	public int escolherModuloProjeto(Modulo[] modulos){
 
 		int mesa = -1;
 		String messager = "Selecione o módulo? (-1 para cancelar).";
@@ -365,23 +365,23 @@ public class ScreenInteraction implements SetupInteraction {
 
 		String s = "";
 
-		while (s == "") {
+		while (s == ""){
 
-			try {
+			try{
 				s = JOptionPane.showInputDialog(null, messager, title,
 						JOptionPane.QUESTION_MESSAGE);
 				System.out.println(s);
 				mesa = Integer.parseInt(s);
 
-			} catch (Exception e) {
+			} catch (Exception e){
 				e.printStackTrace();
-			} finally {
+			} finally{
 				if (s == null)
 					return 0;
 				if (mesa != -1)
 					return -1;
 
-				if ((mesa < 1) || (mesa > 6)) {
+				if ((mesa < 1) || (mesa > 6)){
 					messager = "Selecione o módulo?"
 							+ "\n Entre com um número entre 1 e 6. (-1 para cancelar)";
 					System.out.println(mesa + " final " + s);
@@ -499,7 +499,7 @@ public class ScreenInteraction implements SetupInteraction {
 	 * mesa do jogador para limitar escolha de artefatos
 	 */
 	@Override
-	public int[][] escolherArtefatos(int mesaTrabalho) {
+	public int[][] escolherArtefatos(int mesaTrabalho){
 		int[][] artefatosRetornados = artefatosEscolhidos;
 		artefatosEscolhidos = null;
 		moduloEscolhido = -1;
@@ -507,26 +507,26 @@ public class ScreenInteraction implements SetupInteraction {
 	}
 
 	@Override
-	public int escolherMesaNeutralizaComponente() {
+	public int escolherMesaNeutralizaComponente(){
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int escolherMesaSofrerProblema() {
+	public int escolherMesaSofrerProblema(){
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public String[] escolherEngenheiro(Jogador jogadorAtual,
-			int quantitdadeEngenheiro) {
+			int quantitdadeEngenheiro){
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void exibirQuantidadeBeneficio(int quantidade) {
+	public void exibirQuantidadeBeneficio(int quantidade){
 		// TODO Auto-generated method stub
 
 	}
@@ -534,7 +534,7 @@ public class ScreenInteraction implements SetupInteraction {
 	//#ifdef ConceptCard
 	@Override
 	public void exibirEfeitoinserido(Jogador jogadorAtual,
-			CartaBonificacao cartaUtilizada) {
+			CartaBonificacao cartaUtilizada){
 		// TODO Auto-generated method stub
 
 	}
@@ -542,7 +542,7 @@ public class ScreenInteraction implements SetupInteraction {
 
 	@Override
 	public void exibirEfeitoinserido(Jogador jogadorAtual, Jogador jogadorAlvo,
-			CartaPenalizacao cartaUtilizada, boolean condicaoSatisfeita) {
+			CartaPenalizacao cartaUtilizada, boolean condicaoSatisfeita){
 		// TODO Auto-generated method stub
 
 	}
@@ -558,7 +558,7 @@ public class ScreenInteraction implements SetupInteraction {
 		// Scanner in = new Scanner(System.in);
 		// int[] cartas = new int [in.nextInt()];
 		// for(int i=0;i<cartas.length;i++)
-		// {
+		//{
 		// System.out.println("quais tipos de cartas você deseja:\n0: todas\n1: código\n2:comunicação\n3:desenho\n4:gerencia\n5:RH\n6:requisitos");
 		// cartas[i]=in.nextInt();
 		// }
@@ -581,7 +581,7 @@ public class ScreenInteraction implements SetupInteraction {
 		// Scanner in = new Scanner(System.in);
 		// int[] cartas = new int [in.nextInt()];
 		// for(int i=0;i<cartas.length;i++)
-		// {
+		//{
 		// System.out.println("quais tipos de cartas você deseja:\n0: todas\n1: código\n2:comunicação\n3:desenho\n4:gerencia\n5:RH\n6:requisitos");
 		// cartas[i]=in.nextInt();
 		// }
@@ -600,7 +600,7 @@ public class ScreenInteraction implements SetupInteraction {
 	 * @param titulo
 	 */
 	@Override
-	public void exibirMensagem(String mensagem, String titulo) {
+	public void exibirMensagem(String mensagem, String titulo){
 		JOptionPane.showMessageDialog(null, mensagem, titulo,
 				JOptionPane.WARNING_MESSAGE);
 	}
@@ -613,7 +613,7 @@ public class ScreenInteraction implements SetupInteraction {
 	 * @param mesaTrabalho
 	 * @param jogadorAtual
 	 */
-	public void escolherModuloEArtefatos(int mesaTrabalho) {
+	public void escolherModuloEArtefatos(int mesaTrabalho){
 		ScreenIntegrateModule scr = ScreenIntegrateModule
 				.createAndShowIntegrateModule(Jogo.getJogo().getProjeto(),
 						jogadorAtual.getTabuleiro().getMesas()[mesaTrabalho]);
@@ -623,13 +623,13 @@ public class ScreenInteraction implements SetupInteraction {
 	}
 
 	@Override
-	public int escolherModuloProjeto(Modulo[] modulos, int mesa) {
+	public int escolherModuloProjeto(Modulo[] modulos, int mesa){
 		escolherModuloEArtefatos(mesa);
 		return moduloEscolhido;
 	}
 
 	@Override
-	public int[][] artefatosEscolhidos() {
+	public int[][] artefatosEscolhidos(){
 		int[][] returnArtefatosEscolhidos = artefatosEscolhidos;
 		artefatosEscolhidos = null;
 		moduloEscolhido = -1;
@@ -639,16 +639,16 @@ public class ScreenInteraction implements SetupInteraction {
 	// **----------------As tres funções anteriores trabalham
 	// juntas--------------------**//
 
-	public WindowAdapter windowsExitGame() {
-		WindowAdapter adapter = new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
+	public WindowAdapter windowsExitGame(){
+		WindowAdapter adapter = new WindowAdapter(){
+			public void windowClosing(WindowEvent we){
 				String messager = "Tem certeza que você quer sair do jogo?";
 				String title = "Sair do jogo";
 				int back = (int) JOptionPane
 						.showConfirmDialog(ScreenInteraction
 								.getScreenInteraction().getTabuleiro(),
 								messager, title, JOptionPane.OK_CANCEL_OPTION);
-				if (back == JOptionPane.OK_OPTION) {
+				if (back == JOptionPane.OK_OPTION){
 					System.exit(0);
 				}
 			}

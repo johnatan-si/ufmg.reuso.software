@@ -14,13 +14,13 @@ public class RepositorioArquivo implements IRepositorioArquivo{
 	public Properties getArquivoProperties(String nome){
 		FileInputStream arquivo;
 		this.arquivoProperties = new Properties();
-		try {
+		try{
 			arquivo = new FileInputStream(nome);
 			arquivoProperties.load(arquivo);
 			arquivo.close();					
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e){
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (IOException e){
 			e.printStackTrace();
 		}
 		return arquivoProperties;

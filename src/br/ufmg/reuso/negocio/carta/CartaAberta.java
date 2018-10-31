@@ -13,15 +13,15 @@ package br.ufmg.reuso.negocio.carta;
  * Implementa a interface EstadoCarta, definindo:
  * - Inspecionado: TRUE
  */
-public class CartaAberta implements EstadoCarta {
+public class CartaAberta implements EstadoCarta{
 	
 	@Override
-	public boolean getEstado(Artefato carta) {
+	public boolean getEstado(Artefato carta){
 		return carta.inspected();
 	}
 	
 	@Override
-	public void setEstado(Artefato carta) {
+	public void setEstado(Artefato carta){
 		carta.setArtefatoInspecionado(true);//define que o artefato ja foi inspecionado
 	}
 }

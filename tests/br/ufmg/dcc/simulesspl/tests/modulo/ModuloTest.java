@@ -20,7 +20,7 @@ import br.ufmg.reuso.negocio.mesa.Modulo;
  * @author Alisson
  *
  */
-public class ModuloTest {
+public class ModuloTest{
 	
 	private Modulo modulo; 
 	private int in = 5;
@@ -28,39 +28,39 @@ public class ModuloTest {
 	
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 		modulo = new Modulo();
 	}
 
 	@Test
-	public void testAjudas() {
+	public void testAjudas(){
 		modulo.setAjudas(in);
 		assertEquals(out,modulo.getAjudas());
 	}
 	@Test
-	public void testCodigos() {
+	public void testCodigos(){
 		modulo.setCodigos(in);
 		assertEquals(out,modulo.getCodigos());
 	}
 	
 	@Test
-	public void testDesenhos() {
+	public void testDesenhos(){
 		modulo.setDesenhos(in);
 		assertEquals(out,modulo.getDesenhos());
 	}
 	@Test
-	public void testRastros() {
+	public void testRastros(){
 		modulo.setRastros(in);
 		assertEquals(out,modulo.getRastros());
 	}
 	@Test
-	public void testRequisitos() {
+	public void testRequisitos(){
 		modulo.setRequisitos(in);
 		assertEquals(out,modulo.getRequisitos());		
 	}
 	
 	@Test
-	public void testTotal() {		
+	public void testTotal(){		
 		testAjudas();
 		testCodigos();
 		testDesenhos();
@@ -72,7 +72,7 @@ public class ModuloTest {
 	
 	
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 	
 	}
 

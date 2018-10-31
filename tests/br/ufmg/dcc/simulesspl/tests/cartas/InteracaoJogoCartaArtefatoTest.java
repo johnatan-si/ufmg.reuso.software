@@ -23,7 +23,7 @@ import junit.framework.TestCase;
  * @author alcemir
  *
  */
-public class InteracaoJogoCartaArtefatoTest extends TestCase {
+public class InteracaoJogoCartaArtefatoTest extends TestCase{
 
 	private Jogo jogo=null;
 	private Jogador jogador = null;
@@ -31,7 +31,7 @@ public class InteracaoJogoCartaArtefatoTest extends TestCase {
 	private int mesaTrabalho;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 		this.jogo = Jogo.getJogo();
 		this.jogo.mockinit();
 		
@@ -296,19 +296,19 @@ public class InteracaoJogoCartaArtefatoTest extends TestCase {
 	public void testMudarArtefatoBrancoPorArtefatoCinza(){}
 
 	@Test
-	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_AJUDA() {	}
+	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_AJUDA(){	}
 	@Test
-	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_CODIGO() {}
+	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_CODIGO(){}
 	@Test
-	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_DESENHO() {}
+	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_DESENHO(){}
 	@Test
-	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_RASTROS() {}
+	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_RASTROS(){}
 	@Test
-	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_REQUISITOS() {}
+	public void testRetirarTodosArtefatosCinzasTipoARTEFATOS_REQUISITOS(){}
 	
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 		
 	}
 

@@ -16,6 +16,6 @@ import br.ufmg.dcc.simulesspl.tests.tabuleiro.TabuleiroTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({ JogoTest.class, ModuloTest.class , ArtefatoTest.class, DadoTest.class,TabuleiroTest.class, AllCartasTests.class})
-public class AllTests {
+public class AllTests{
 
 }

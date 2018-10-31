@@ -48,7 +48,7 @@ import javax.swing.JPanel;
  *         = 4; RH = 5; REQUISITOS = 6;
  * 
  */
-public class ScreenSelectCards extends JDialog implements ActionListener {
+public class ScreenSelectCards extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -87,9 +87,9 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 	 * @param tabuleiro
 	 *            - tabuleiro do jogo atual
 	 */
-	public ScreenSelectCards(String title) {
+	public ScreenSelectCards(String title){
 		super();
-		names = new Vector<String>(Arrays.asList(new String[] { "Códigos",
+		names = new Vector<String>(Arrays.asList(new String[]{ "Códigos",
 				"Comunicação", "Desenhos", "Gerência", "Recursos Humanos",
 				"Requisitos" }));
 		this.title = title;
@@ -108,7 +108,7 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 	 * 
 	 * @return JPanel - painel com as informações da parte superio da tela
 	 */
-	JPanel getPanelInfo() {
+	JPanel getPanelInfo(){
 
 		String message = title;
 		JPanel panel = new JPanel();
@@ -121,7 +121,7 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 
 	}
 
-	private JPanel getPanelOptions() {
+	private JPanel getPanelOptions(){
 
 		JPanel panel = new JPanel();
 
@@ -131,7 +131,7 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 		String item = null;
 		Dimension dimension = new Dimension((mySize.width / 2) - mySize.width
 				* 10 / 100, 30);
-		while (it.hasNext()) {
+		while (it.hasNext()){
 			item = it.next();
 			option = new JCheckBox(item);
 			option.setSelected(true);
@@ -143,10 +143,10 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 		return panel;
 	}
 
-	private ItemListener getItemListener() {
-		ItemListener listener = new ItemListener() {
+	private ItemListener getItemListener(){
+		ItemListener listener = new ItemListener(){
 			@Override
-			public void itemStateChanged(ItemEvent e) {
+			public void itemStateChanged(ItemEvent e){
 
 			}
 		};
@@ -161,7 +161,7 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 	 * @return JPanel - com os resultados da seleção do usuário mais o botão de
 	 *         ok
 	 */
-	JPanel getPanelBase() {
+	JPanel getPanelBase(){
 
 		JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
@@ -180,33 +180,33 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 
 	/** Controlador de eventos dos botões. */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 
-		if (e.getActionCommand() == "OK") {
+		if (e.getActionCommand() == "OK"){
 			ComputeReturn();
 			ScreenSelectCards.this.dispose();
 		}
 	}
 
-	private void ComputeReturn() {
+	private void ComputeReturn(){
 
 		Iterator<JCheckBox> it = options.iterator();
 
 		int i = 0;
-		while (it.hasNext()) {
+		while (it.hasNext()){
 			if (it.next().isSelected())
 				i++;
 		}
 
 		int[] out = null;
-		if (i == names.size()) {
+		if (i == names.size()){
 			out = new int[1];
 			out[0] = 0;
-		} else {
+		} else{
 			out = new int[i];
 			i = 0;
-			for (int j = 0; j < options.size(); j++) {
-				if (options.get(j).isSelected()) {
+			for (int j = 0; j < options.size(); j++){
+				if (options.get(j).isSelected()){
 					out[i] = j;
 					i++;
 				}
@@ -226,7 +226,7 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 	 *         GERENCIA = 4; RH = 5; REQUISITOS = 6;
 	 * 
 	 */
-	public int[] getReturn() {
+	public int[] getReturn(){
 		return intReturn;
 	}
 
@@ -238,7 +238,7 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 	 * @param tabuleiro
 	 *            - Tabeuleiro atual do jogo
 	 */
-	public static ScreenSelectCards createAndShowSelectCards(String title) {
+	public static ScreenSelectCards createAndShowSelectCards(String title){
 		// Cria e configura a tela.
 		ScreenSelectCards scr = new ScreenSelectCards(title);
 		scr.rootPane.setOpaque(true);
@@ -256,18 +256,18 @@ public class ScreenSelectCards extends JDialog implements ActionListener {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
 
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
+			public void run(){
 				int[] out = (createAndShowSelectCards("Selecione os tipos de carta problema")
 						.getReturn());
 
-				for (int i = 0; i < out.length; i++) {
+				for (int i = 0; i < out.length; i++){
 					System.out.print(out[i]);
 				}
 			}

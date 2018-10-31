@@ -7,7 +7,7 @@ import br.ufmg.reuso.negocio.baralho.factory.CreatorBaralhoArtefatos;
  * Utilizando SingletonProtocol, de Hannemann & Kiczales, 
  * para definir quais classes que devem ser Singleton.
  */
-public aspect SingletonInstances extends SingletonProtocol { 
+public aspect SingletonInstances extends SingletonProtocol{ 
     
     /*
      * Configurar abaixo, assinalando Singleton para todas  

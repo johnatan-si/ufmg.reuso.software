@@ -38,7 +38,7 @@ import javax.swing.JPanel;
  *         Ou instanciando a classe ScreenResultDice como uma janela de diálogo.
  * 
  */
-public class ScreenResultDice extends JDialog implements ActionListener {
+public class ScreenResultDice extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +52,7 @@ public class ScreenResultDice extends JDialog implements ActionListener {
 	 *            resultDices - inteiro com o resultado dos dados.
 	 * 
 	 */
-	public ScreenResultDice(ScreenTabuleiro tabuleiro, int resultDices) {
+	public ScreenResultDice(ScreenTabuleiro tabuleiro, int resultDices){
 		super(tabuleiro);
 
 		this.setLayout(new BorderLayout());
@@ -114,7 +114,7 @@ public class ScreenResultDice extends JDialog implements ActionListener {
 	// =====================================================================================//
 	/** Controlador de eventos dos botões. */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 		ScreenResultDice.this.dispose();
 	}
 
@@ -123,7 +123,7 @@ public class ScreenResultDice extends JDialog implements ActionListener {
 	 * Retorna true se o jogador pressionou jogar dado ou false se o jogador
 	 * fechou a janela.
 	 */
-	public boolean getReturn() {
+	public boolean getReturn(){
 		return true;
 	}
 
@@ -139,7 +139,7 @@ public class ScreenResultDice extends JDialog implements ActionListener {
 	 *            - inteiro com o resultado dos dados.
 	 */
 	public static ScreenResultDice createAndShowResultDice(
-			ScreenTabuleiro tabuleiro, int resultDices) {
+			ScreenTabuleiro tabuleiro, int resultDices){
 
 		// Cria e configura a tela.
 		ScreenResultDice scr = new ScreenResultDice(tabuleiro, resultDices);
@@ -157,15 +157,15 @@ public class ScreenResultDice extends JDialog implements ActionListener {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
 		final ScreenTabuleiro tabuleiro = ScreenTabuleiro
 				.createAndShowTabuleiro(null, null);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
+			public void run(){
 				System.out.println(createAndShowResultDice(tabuleiro, 12)
 						.getReturn());
 			}

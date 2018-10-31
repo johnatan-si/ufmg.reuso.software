@@ -40,7 +40,7 @@ import javax.swing.JPanel;
  *         Ou instanciando a classe ScreenGamers como uma janela de diálogo.
  * 
  */
-public class ScreenChooseGamer extends JDialog implements ActionListener {
+public class ScreenChooseGamer extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -56,7 +56,7 @@ public class ScreenChooseGamer extends JDialog implements ActionListener {
 	 *            - Vetor de string com o nome dos jogadores
 	 * @param jogadorAtual - Será retirado da lista de escolha
 	 */
-	public ScreenChooseGamer(String[] nomeJogadores, String jogadorAtual) {
+	public ScreenChooseGamer(String[] nomeJogadores, String jogadorAtual){
 		super();
 		
 		gamerReturn = "";
@@ -79,7 +79,7 @@ public class ScreenChooseGamer extends JDialog implements ActionListener {
 
 		int i;
 		JButton btnJogador = null;
-		for (i = 0; i < nomeJogadores.length; i++) {
+		for (i = 0; i < nomeJogadores.length; i++){
 			
 				btnJogador = new JButton(nomeJogadores[i]);
 				btnJogador.addActionListener(this);
@@ -114,7 +114,7 @@ public class ScreenChooseGamer extends JDialog implements ActionListener {
 	 * 
 	 * */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 		gamerReturn = e.getActionCommand();
 		ScreenChooseGamer.this.dispose();
 	}
@@ -127,7 +127,7 @@ public class ScreenChooseGamer extends JDialog implements ActionListener {
 	 * @return Sting como nome do jogador selecionado.
 	 * 
 	 */
-	String getReturn() {
+	String getReturn(){
 		return gamerReturn;
 	}
 
@@ -138,7 +138,7 @@ public class ScreenChooseGamer extends JDialog implements ActionListener {
 	 * @param jogadorAtual nome do jogador atual - será retirado da lista.
 	 */
 	public static ScreenChooseGamer createAndShowGetGamers(
-			String[] nomeJogadores, String jogadorAtual) {
+			String[] nomeJogadores, String jogadorAtual){
 
 		// Cria e configura a tela.
 		ScreenChooseGamer scr = new ScreenChooseGamer(nomeJogadores, jogadorAtual);
@@ -156,15 +156,15 @@ public class ScreenChooseGamer extends JDialog implements ActionListener {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
-				String retorno = (createAndShowGetGamers(new String[] {
+			public void run(){
+				String retorno = (createAndShowGetGamers(new String[]{
 						"Alisson", "Rodrigo", "Michel", "Eduardo", "Rafael",
 						"Stephanie" }, "Rodrigo").getReturn());
 

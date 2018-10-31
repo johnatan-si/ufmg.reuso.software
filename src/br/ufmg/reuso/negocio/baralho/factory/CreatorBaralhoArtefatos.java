@@ -7,7 +7,7 @@ import br.ufmg.reuso.negocio.jogo.ModeGameConstants;
 
 public class CreatorBaralhoArtefatos implements AbstractCreatorBaralhoArtefatos{
 	
-	public CreatorBaralhoArtefatos() {
+	public CreatorBaralhoArtefatos(){
 		/* nao ha necessidade de executar nada no construtor */
 	}
 	
@@ -15,17 +15,17 @@ public class CreatorBaralhoArtefatos implements AbstractCreatorBaralhoArtefatos{
 
 		if (pTipoBaralho.equals(ModeGameConstants.BARALHO_ARTEFATOS_RUINS)){
 
-			if (pNumeroArtefatosAtual != null) {
+			if (pNumeroArtefatosAtual != null){
 				return new BaralhoArtefatosRuins(pNumeroArtefatosAtual);
-			} else {
+			} else{
 				return new BaralhoArtefatosRuins();
 			}
 		}
 
 		if (pTipoBaralho.equals(ModeGameConstants.BARALHO_ARTEFATOS_BONS)){
-			if (pNumeroArtefatosAtual != null) {
+			if (pNumeroArtefatosAtual != null){
 				return new BaralhoArtefatosBons(pNumeroArtefatosAtual);
-			} else {
+			} else{
 				return new BaralhoArtefatosBons();
 			}
 		}

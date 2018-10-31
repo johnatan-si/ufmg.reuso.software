@@ -48,7 +48,7 @@ public class Jogador{
 	public void contratarEngenheiro(Carta novato, int posicaoMesa){
 		if(novato instanceof CartaEngenheiro){//Utilizando uma verificação se novato está instanciando uma carta de entenheiro
 	
-			if(tabuleiro.getMesas()[posicaoMesa].getCartaMesa()!= null) {
+			if(tabuleiro.getMesas()[posicaoMesa].getCartaMesa()!= null){
 				Jogo.getJogo().setupController.exibirExcessoPessoal();
 			}
 			
@@ -64,7 +64,7 @@ public class Jogador{
 					tabuleiro.alocarMesa(Contratado,posicaoMesa);//  Contrata engenheiro
 					
 					for (int i=0;i<getCartas().length;i++){
-						if (getCartas()[i]==null) {
+						if (getCartas()[i]==null){
 							continue;
 						}
 						if (getCartas()[i].getCodigoCarta().compareTo(novato.getCodigoCarta())==0){ // Se a na mao de jogador e a carta de engenheeiro a ser contratado são iguais
@@ -87,7 +87,7 @@ public class Jogador{
 		numberCards = Dado.contarPontos();
 		Jogo.getJogo().setupController.mostrarPontosObtidosInicial(numberCards); // exibe a Gui mostrando pontos obtidos pelo jogador no lançamento de dados
 		
-		if ((getNumeroCartasMaoAtual() + numberCards) <= NUMERO_MAX_CARTAS_MAO) {
+		if ((getNumeroCartasMaoAtual() + numberCards) <= NUMERO_MAX_CARTAS_MAO){
 			return numberCards;
 		}
 		else{
@@ -112,7 +112,7 @@ public class Jogador{
 	
 	public void retirarCarta(Carta cartaRetirada){
 		for(int i=0; i<cartas.length;i++){//percorrendo cartas na mao do jogador
-			if (cartas[i]==null) {
+			if (cartas[i]==null){
 				continue;
 			}
 			if(cartas[i].getCodigoCarta().compareTo(cartaRetirada.getCodigoCarta())==0){//comparando a variável código das cartas, caso elas sejam iguais, retira-se a carta do jogador	
@@ -133,7 +133,7 @@ public class Jogador{
 	public void mostrarCartaMao(){//TODO: usado só pra teste
 		System.out.printf("Cartas do jogador %s:\n",getNome());
 		for (int i=0;i<NUMERO_MAX_CARTAS_MAO;i++){
-			if (cartas[i]==null) {
+			if (cartas[i]==null){
 				continue;
 			}
 			System.out.println("iteracao: "+i);

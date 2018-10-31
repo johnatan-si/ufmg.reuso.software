@@ -41,7 +41,7 @@ import javax.swing.SwingConstants;
  * Ou instanciando a classe ScreenGamers como uma janela de diálogo.
  * 
  */
-public class ScreenGamers extends JDialog implements ActionListener {
+public class ScreenGamers extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -57,7 +57,7 @@ public class ScreenGamers extends JDialog implements ActionListener {
 	 * Construtor da janela inserção dos nomes dos jogadores
 	 * @param tabuleiro - tabueleiro do jogo atual 
 	 */
-	public ScreenGamers(ScreenTabuleiro tabuleiro) {
+	public ScreenGamers(ScreenTabuleiro tabuleiro){
 		super(tabuleiro);
 
 		this.setLocationRelativeTo(tabuleiro);
@@ -76,7 +76,7 @@ public class ScreenGamers extends JDialog implements ActionListener {
 		JLabel label;
 		JTextField text;
 
-		for (int i = 0; i < jogadores.size(); i++) {
+		for (int i = 0; i < jogadores.size(); i++){
 
 			label = new JLabel(jogadores.elementAt(i));
 			label.setBounds(10, i * dim.height + 10, dim.width, dim.height);
@@ -112,9 +112,9 @@ public class ScreenGamers extends JDialog implements ActionListener {
 	 * coloca-os no vetor de saída,
 	 * */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 
-		if (e.getActionCommand() == "OK") {
+		if (e.getActionCommand() == "OK"){
 			getReturn();
 			ScreenGamers.this.dispose();
 		}
@@ -126,16 +126,16 @@ public class ScreenGamers extends JDialog implements ActionListener {
 	 * coloca-os no vetor de saída, caso contrário insere dois jogadores com
 	 * nomes padrão Jogador1 e Jogador2.
 	 */
-	public String [] getReturn() {
+	public String [] getReturn(){
 
 		jogadores.clear();
-		for (int i = 0; i < textJogadores.size(); i++) {
-			if (textJogadores.get(i).getText().compareTo("") != 0) {
+		for (int i = 0; i < textJogadores.size(); i++){
+			if (textJogadores.get(i).getText().compareTo("") != 0){
 				jogadores.add(textJogadores.get(i).getText());
 			}
 		}
 
-		if (jogadores.size() == 0) {
+		if (jogadores.size() == 0){
 			jogadores.add("Jogador1");
 			jogadores.add("Jogador2");
 		}else if(jogadores.size() == 1){
@@ -160,7 +160,7 @@ public class ScreenGamers extends JDialog implements ActionListener {
 	 * para construção da GUI
 	 * @param tabuleiro - tabueliro do jogo atual
 	 */
-	public static ScreenGamers createAndShowGetGamers(ScreenTabuleiro tabuleiro) {
+	public static ScreenGamers createAndShowGetGamers(ScreenTabuleiro tabuleiro){
 
 		// Cria e configura a tela.
 		ScreenGamers scr = new ScreenGamers(tabuleiro);
@@ -180,15 +180,15 @@ public class ScreenGamers extends JDialog implements ActionListener {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
 		final ScreenTabuleiro tabuleiro = ScreenTabuleiro.createAndShowTabuleiro(null, null);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {			
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){			
 			@Override
-			public void run() {
+			public void run(){
 				String[] retorno = (createAndShowGetGamers(tabuleiro).getReturn());
 				System.out.println("Nummero de jogadores: " + retorno.length);
 			}

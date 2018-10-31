@@ -11,7 +11,7 @@ import junit.framework.TestCase;
  * @author alcemir
  *
  */
-public class InteracaoJogoCartaConceitoTest extends TestCase {
+public class InteracaoJogoCartaConceitoTest extends TestCase{
 
 	@Test
 	public void testUsarConceito(){}

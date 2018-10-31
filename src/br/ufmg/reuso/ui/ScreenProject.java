@@ -47,7 +47,7 @@ import br.ufmg.reuso.negocio.jogo.Jogo;
  *         Não retorna nada.
  * 
  */
-public class ScreenProject extends JDialog implements ActionListener {
+public class ScreenProject extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -88,16 +88,16 @@ public class ScreenProject extends JDialog implements ActionListener {
 	 *            e não retorna nada
 	 * 
 	 */
-	public ScreenProject(ScreenTabuleiro tabuleiro, CartaoProjeto projeto) {
+	public ScreenProject(ScreenTabuleiro tabuleiro, CartaoProjeto projeto){
 
-		try {
-			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
+		try{
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
+				if ("Nimbus".equals(info.getName())){
 					UIManager.setLookAndFeel(info.getClassName());
 					break;
 				}
 			}
-		} catch (Exception e) {
+		} catch (Exception e){
 			System.out.println(e.getMessage());
 		}
 
@@ -115,7 +115,7 @@ public class ScreenProject extends JDialog implements ActionListener {
 	 * @return JPanel com o projeto pintado.
 	 * 
 	 */
-	private JPanel getPanelProject() {
+	private JPanel getPanelProject(){
 
 		JPanel panel = new JPanel();
 
@@ -179,12 +179,12 @@ public class ScreenProject extends JDialog implements ActionListener {
 		listModules.setFont(font16);
 		panel.add(listModules);
 
-		String nomes[] = new String[] { "Complexidade", "Tamanho", "Qualidade",
+		String nomes[] = new String[]{ "Complexidade", "Tamanho", "Qualidade",
 				"Orcamento" };
 		JLabel lblData;
 
 		int i;
-		for (i = 0; i < nomes.length; i++) {
+		for (i = 0; i < nomes.length; i++){
 			lblData = new JLabel(nomes[i], JLabel.RIGHT);
 			lblData.setBounds(10, y + i * 30, 280, 30);
 			lblData.setFont(font);
@@ -218,20 +218,20 @@ public class ScreenProject extends JDialog implements ActionListener {
 	 * Função inicializa as variáveis do projeto para serem inicializadas.
 	 * 
 	 */
-	void initiVars() {
+	void initiVars(){
 
-		if (projeto == null) {
+		if (projeto == null){
 
 			code = "";
 			title = "";
 			text = "";
 
 			reference = "[]";
-			modules = new String[] { "", "", "", "", "", "" };
+			modules = new String[]{ "", "", "", "", "", "" };
 
-			data = new String[] { "2", "4", "2", "200K" };
+			data = new String[]{ "2", "4", "2", "200K" };
 
-		} else {
+		} else{
 			code = projeto.getCodigo();
 			title = projeto.getTitulo();
 			text = projeto.getTexto();
@@ -240,29 +240,29 @@ public class ScreenProject extends JDialog implements ActionListener {
 
 			modules = new String[projeto.getModulos().length];
 
-			for (int i = 0; i < projeto.getModulos().length; i++) {
+			for (int i = 0; i < projeto.getModulos().length; i++){
 				modules[i] = new String(Integer.toString(i + 1) + "é -   ");
 
-				if (projeto.getModulos()[i].getRequisitos() > 0) {
+				if (projeto.getModulos()[i].getRequisitos() > 0){
 					modules[i] += (Integer.toString(projeto.getModulos()[i]
 							.getRequisitos()) + " RQ");
 				}
-				if (projeto.getModulos()[i].getDesenhos() > 0) {
+				if (projeto.getModulos()[i].getDesenhos() > 0){
 					modules[i] += (" + "
 							+ Integer.toString(projeto.getModulos()[i]
 									.getDesenhos()) + "DS");
 				}
-				if (projeto.getModulos()[i].getCodigos() > 0) {
+				if (projeto.getModulos()[i].getCodigos() > 0){
 					modules[i] += (" + "
 							+ Integer.toString(projeto.getModulos()[i]
 									.getCodigos()) + "CD");
 				}
-				if (projeto.getModulos()[i].getRastros() > 0) {
+				if (projeto.getModulos()[i].getRastros() > 0){
 					modules[i] += (" + "
 							+ Integer.toString(projeto.getModulos()[i]
 									.getRastros()) + "RS");
 				}
-				if (projeto.getModulos()[i].getAjudas() > 0) {
+				if (projeto.getModulos()[i].getAjudas() > 0){
 					modules[i] += (" + "
 							+ Integer.toString(projeto.getModulos()[i]
 									.getAjudas()) + "AJ");
@@ -270,7 +270,7 @@ public class ScreenProject extends JDialog implements ActionListener {
 
 			}
 
-			data = new String[] { Integer.toString(projeto.getComplexidade()),
+			data = new String[]{ Integer.toString(projeto.getComplexidade()),
 					Integer.toString(projeto.getTamanho()),
 					Integer.toString(projeto.getQualidade()),
 					Integer.toString(projeto.getOrcamento()) + "K" };
@@ -286,7 +286,7 @@ public class ScreenProject extends JDialog implements ActionListener {
 	 *            da tela e disponibiliza a informação para construção dos
 	 *            componentes.
 	 */
-	public void setDim(Dimension dim) {
+	public void setDim(Dimension dim){
 		this.dim = dim;
 		setSize(dim.width, dim.height);
 		setPreferredSize(dim);
@@ -298,7 +298,7 @@ public class ScreenProject extends JDialog implements ActionListener {
 	 * Controla a ação do botão ok.
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 
 		ScreenProject.this.dispose();
 	}
@@ -310,7 +310,7 @@ public class ScreenProject extends JDialog implements ActionListener {
 	 * @param tabuleiro
 	 */
 	public static ScreenProject createAndShowProject(ScreenTabuleiro tabuleiro,
-			CartaoProjeto projeto) {
+			CartaoProjeto projeto){
 		// Cria e configura a tela.
 
 		ScreenProject scr = new ScreenProject(tabuleiro, projeto);
@@ -330,15 +330,15 @@ public class ScreenProject extends JDialog implements ActionListener {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
 		final ScreenTabuleiro tabuleiro = ScreenTabuleiro
 				.createAndShowTabuleiro(null, null);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
+			public void run(){
 				createAndShowProject(tabuleiro, new CartaoProjeto(Jogo.DIFICIL));
 			}
 		});

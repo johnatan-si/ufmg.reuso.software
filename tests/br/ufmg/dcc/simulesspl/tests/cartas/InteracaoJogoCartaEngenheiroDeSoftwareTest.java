@@ -21,7 +21,7 @@ import junit.framework.TestCase;
  * @author alcemir
  *
  */
-public class InteracaoJogoCartaEngenheiroDeSoftwareTest extends TestCase {
+public class InteracaoJogoCartaEngenheiroDeSoftwareTest extends TestCase{
 
 	public static final int BARALHO_PRINCIPAL = 0;
 	public static final int BARALHO_AUXILIAR = 1;
@@ -34,7 +34,7 @@ public class InteracaoJogoCartaEngenheiroDeSoftwareTest extends TestCase {
 	private int[] cartasConceito, cartasProblema;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 		
 		baralhoCartas = new BaralhoCartas[2]; 
 		cartasConceito = cartasProblema = new int[1];
@@ -99,7 +99,7 @@ public class InteracaoJogoCartaEngenheiroDeSoftwareTest extends TestCase {
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 		
 	}
 

@@ -207,7 +207,7 @@ public class Mesa
 
 	public void setEfeitoAumentarHabilidadeEngenheiro
 	(
-		int efeitoAumentarHabilidadeEngenheiro) {this.efeitoAumentarHabilidadeEngenheiro = efeitoAumentarHabilidadeEngenheiro;
+		int efeitoAumentarHabilidadeEngenheiro){this.efeitoAumentarHabilidadeEngenheiro = efeitoAumentarHabilidadeEngenheiro;
 	}
 
 	public boolean isEfeitoModuloIntegradoNeutralizado() 

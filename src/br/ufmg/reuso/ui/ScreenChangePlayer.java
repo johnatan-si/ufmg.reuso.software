@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 import br.ufmg.reuso.negocio.jogador.Jogador;
 //import serializacao.AppSerializacao;
 
-public class ScreenChangePlayer extends JDialog {
+public class ScreenChangePlayer extends JDialog{
 
 
 	private static final long serialVersionUID = 1L;
@@ -29,12 +29,12 @@ public class ScreenChangePlayer extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args){
+		try{
 			ScreenChangePlayer dialog = new ScreenChangePlayer(null);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-		} catch (Exception e) {
+		} catch (Exception e){
 			e.printStackTrace();
 		}
 	}
@@ -42,7 +42,7 @@ public class ScreenChangePlayer extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ScreenChangePlayer(Jogador jogador) {
+	public ScreenChangePlayer(Jogador jogador){
 		if(jogador == null){
 			jogador = new Jogador("Nulo", 0);			
 		}
@@ -70,8 +70,8 @@ public class ScreenChangePlayer extends JDialog {
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
 				JButton btnSalvar = new JButton("Salvar");
-				btnSalvar.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+				btnSalvar.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
 //						AppSerializacao.serializaJogo(Jogo.getJogo(), "D:\\jogo.ser");
 					}
 				});
@@ -79,8 +79,8 @@ public class ScreenChangePlayer extends JDialog {
 			}
 			{
 				JButton okButton = new JButton("OK");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
+				okButton.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0){
 						ScreenChangePlayer.this.dispose();						
 					}
 				});

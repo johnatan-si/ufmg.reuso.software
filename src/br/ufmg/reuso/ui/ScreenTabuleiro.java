@@ -59,7 +59,7 @@ import br.ufmg.reuso.negocio.mesa.Mesa;
 // =====================================================================================//
 // Inicio da classe ScreenTabuleiro
 // =====================================================================================//
-public class ScreenTabuleiro extends JDialog {
+public class ScreenTabuleiro extends JDialog{
 
 	// Variáveis globais
 	private static final long serialVersionUID = 2797977843067840264L;
@@ -97,17 +97,17 @@ public class ScreenTabuleiro extends JDialog {
 	 * 
 	 *            Se os parâmetros forem nulos um tabuleiro vazio será pintado.
 	 */
-	public ScreenTabuleiro(Jogador jogador, Jogo jogo) {
+	public ScreenTabuleiro(Jogador jogador, Jogo jogo){
 		super();
 
-		try {
-			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
+		try{
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()){
+				if ("Nimbus".equals(info.getName())){
 					UIManager.setLookAndFeel(info.getClassName());
 					break;
 				}
 			}
-		} catch (Exception e) {
+		} catch (Exception e){
 			System.out.println(e.getMessage());
 		}
 
@@ -129,7 +129,7 @@ public class ScreenTabuleiro extends JDialog {
 	 * Define as dimensoes do painel iguais as dimensões da tela
 	 * 
 	 */
-	private void initialize() {
+	private void initialize(){
 
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension screenSize = tk.getScreenSize();
@@ -145,7 +145,7 @@ public class ScreenTabuleiro extends JDialog {
 	 * @return JPanel contendo o container base do tabuleiro
 	 * 
 	 */
-	private JPanel getPanelBase() {
+	private JPanel getPanelBase(){
 
 		JPanel jpanel = new JPanel();
 
@@ -163,7 +163,7 @@ public class ScreenTabuleiro extends JDialog {
 		jpanel.add(panelButtonsRight = getPanelButtonsRight(),
 				BorderLayout.EAST);
 
-		if (jogador != null) {
+		if (jogador != null){
 			panelMesas = getPanelMesas();
 			panelMesas.setEnabled(oponent == null);
 			jpanel.add(panelMesas, BorderLayout.CENTER);
@@ -186,7 +186,7 @@ public class ScreenTabuleiro extends JDialog {
 	 * @return JPanel contendo o container base do tabuleiro
 	 * 
 	 */
-	private JPanel getPanelButtonsLeft() {
+	private JPanel getPanelButtonsLeft(){
 		
 		Dimension myDim = new Dimension(mySise.width * 10 / 100,
 				mySise.height * 60 / 100);
@@ -210,9 +210,9 @@ public class ScreenTabuleiro extends JDialog {
 
 		JButton buttonDados = new JButton("<html><Center>Jogar Dados");
 		boolean jogadados;
-		if ((jogador == null) || (oponent != null)) {
+		if ((jogador == null) || (oponent != null)){
 			jogadados = false;
-		} else {
+		} else{
 			jogadados = !jogador.isDadoJogado();
 		}
 		buttonDados.setEnabled(jogadados);
@@ -262,7 +262,7 @@ public class ScreenTabuleiro extends JDialog {
 	 * 
 	 */
 	// TODO [ARS] Este painel pode apresentar problemas e conceitos ativos
-	private JPanel getPanelButtonsRight() {
+	private JPanel getPanelButtonsRight(){
 
 		Dimension myDim = new Dimension(mySise.width * 19 / 100,
 				mySise.height * 60 / 100);
@@ -315,7 +315,7 @@ public class ScreenTabuleiro extends JDialog {
 	 * 
 	 * @return JPanel contendo as mesas com engenheiros e artefatos
 	 */
-	private JPanel getPanelMesas() {
+	private JPanel getPanelMesas(){
 
 		JPanel jpanel = new JPanel();
 		jpanel.setLayout(null);
@@ -348,7 +348,7 @@ public class ScreenTabuleiro extends JDialog {
 			
 			
 
-			for (int i = 0; i < jogadorAtual.getTabuleiro().getMesas().length; i++) {
+			for (int i = 0; i < jogadorAtual.getTabuleiro().getMesas().length; i++){
 
 				board = jogadorAtual.getTabuleiro().getMesas()[i];
 
@@ -379,7 +379,7 @@ public class ScreenTabuleiro extends JDialog {
 					modulo.add(board.getAjudas());
 
 					Vector<String> names = new Vector<String>(
-							Arrays.asList(new String[] { "Requisitos",
+							Arrays.asList(new String[]{ "Requisitos",
 									"Desenhos", "Códigos", "Rastros", "Ajudas" }));
 					int j = 0;
 
@@ -387,18 +387,18 @@ public class ScreenTabuleiro extends JDialog {
 
 					// Para cada tipo de artefato
 					Iterator<ArrayList<Artefato>> itModulo = modulo.iterator();
-					while (itModulo.hasNext()) {
+					while (itModulo.hasNext()){
 
 						ArrayList<Artefato> artefatos = itModulo.next();
 						x = 0;
 
-						if (artefatos.size() > 0) {
+						if (artefatos.size() > 0){
 							Iterator<Artefato> it = artefatos.iterator();
 							Artefato art = null;
 							ImageIcon img = null;
 							y += height;
 							height = yInc / 2;
-							while (it.hasNext()) {
+							while (it.hasNext()){
 
 								art = it.next();
 
@@ -411,7 +411,7 @@ public class ScreenTabuleiro extends JDialog {
 								label.setBounds(x + 2, y + (height / 2),
 										img.getIconWidth(), img.getIconHeight());
 
-								if (it.hasNext() == true) {
+								if (it.hasNext() == true){
 									x += img.getIconWidth();
 									maxBoardSize = (x > maxBoardSize ? x
 											: maxBoardSize);
@@ -425,7 +425,7 @@ public class ScreenTabuleiro extends JDialog {
 							// y += height/2;
 							height = yInc;
 
-						} else { // Se não há artefatos do tipo atual
+						} else{ // Se não há artefatos do tipo atual
 							label = new JLabel(names.elementAt(j) + " mesa "
 									+ Integer.toString(mesa + 1));
 							label.setOpaque(false);
@@ -485,17 +485,17 @@ public class ScreenTabuleiro extends JDialog {
 	 *            representa o painel vertical em que será pintada a mesa
 	 * @return retorna o painel com o engenheiro pintado
 	 */
-	private JPanel getEnginerLabel(int mesa, JPanel panelBoard) {
+	private JPanel getEnginerLabel(int mesa, JPanel panelBoard){
 
 		JLabel label = null;		
-		if (board.getCartaMesa() != null) {
+		if (board.getCartaMesa() != null){
 			label = new JLabel();
 			height = yInc;
 			ImageIcon img = ComponentCard.getImageScalable(
 					ScreenInteraction.imagePath
 							+ board.getCartaMesa().getCodigoCarta() + ".png",
 					width, 0);
-			if (img == null) {
+			if (img == null){
 				img = ComponentCard.getImageScalable(
 						ScreenInteraction.imagePath + "smile.png", 0, height);
 			}
@@ -522,7 +522,7 @@ public class ScreenTabuleiro extends JDialog {
 			// btnEng.setBorder(borderW);
 			panelBoard.add(btnEng);
 
-		} else {
+		} else{
 			label = new JLabel("<html><center>Mesa do<br> Eng. "
 					+ Integer.toString(mesa + 1), JLabel.CENTER);
 			height = 2 * yInc;
@@ -539,7 +539,7 @@ public class ScreenTabuleiro extends JDialog {
 	 * @return JPanel com o painel com as mesas dos engenheiros.
 	 * 
 	 */
-	private JPanel getPanelTitleBoards() {
+	private JPanel getPanelTitleBoards(){
 
 		JPanel panelTitle = new JPanel();
 		panelTitle.setLayout(null);
@@ -607,7 +607,7 @@ public class ScreenTabuleiro extends JDialog {
 	 * 
 	 * @return JPanel que pinta as cartas no tabuleiro.
 	 */
-	private JPanel getPanelCards() {
+	private JPanel getPanelCards(){
 
 		Dimension Mydim = new Dimension(mySise.width, mySise.height * 37/100);
 
@@ -630,7 +630,7 @@ public class ScreenTabuleiro extends JDialog {
 		x = xgap;
 
 		JPanel component = null;
-		for (int i = 0; i < carta.length; i++) {
+		for (int i = 0; i < carta.length; i++){
 
 			height = Mydim.height * 80 / 100;
 			width = (Mydim.width / carta.length) * 70 / 100;
@@ -638,7 +638,7 @@ public class ScreenTabuleiro extends JDialog {
 			x = (x == xgap ? x : x + xgap);
 			y = Mydim.height * 5 / 100;
 
-			if (carta[i] != null) {
+			if (carta[i] != null){
 				component = new ComponentCard(carta[i], ScreenTabuleiro.this);
 				component.setBorder(border);
 				component.setBounds(x, y, width, height);
@@ -654,17 +654,17 @@ public class ScreenTabuleiro extends JDialog {
 				btnUse.setActionCommand(Integer.toString(i));
 				btnUse.addActionListener(getActionButtonCard());
 
-				if (oponent == null) {
-					if (carta[i] instanceof CartaPenalizacao) {
+				if (oponent == null){
+					if (carta[i] instanceof CartaPenalizacao){
 						btnUse.setEnabled(false);
 					}
 				} 
-				else {
+				else{
 					if (
 							//#ifdef ConceptCard
 							(carta[i] instanceof CartaBonificacao) || 
 							//#endif
-							(carta[i] instanceof CartaEngenheiro)) {
+							(carta[i] instanceof CartaEngenheiro)){
 						btnUse.setEnabled(false);
 					}
 				}
@@ -682,7 +682,7 @@ public class ScreenTabuleiro extends JDialog {
 				x += width;
 
 			}// Fim da carta[i]
-			else {
+			else{
 				JLabel label = new JLabel("Vazio", JLabel.CENTER);
 				label.setBorder(border);
 				label.setBounds(x, y, width, height);
@@ -705,44 +705,44 @@ public class ScreenTabuleiro extends JDialog {
 	 * 
 	 * @return a imagem no formato ImagIcon a ser pintada em um Label
 	 */
-	private ImageIcon getImageArtefact(Artefato art) {
+	private ImageIcon getImageArtefact(Artefato art){
 		ImageIcon img = null;
-		if (art.isPoorQuality() == true) { // Artifact
+		if (art.isPoorQuality() == true){ // Artifact
 			// Bad
 
-			if (art.inspected() == true) {
+			if (art.inspected() == true){
 
-				if (art.isBug() == true) {
+				if (art.isBug() == true){
 					img = ComponentCard.getImageScalable(
 							ScreenInteraction.imagePath
 									+ "artefactBadBugged.png", 0, height);
-				} else {
+				} else{
 					img = ComponentCard.getImageScalable(
 							ScreenInteraction.imagePath + "artefactBadOk.png",
 							0, height);
 				}
 
-			} else { // Artifact Bad not inspectioned
+			} else{ // Artifact Bad not inspectioned
 				img = ComponentCard.getImageScalable(
 						ScreenInteraction.imagePath + "artefactBad.png", 0,
 						height);
 			}
 
-		} else { // Artifact God
+		} else{ // Artifact God
 
-			if (art.inspected() == true) {
+			if (art.inspected() == true){
 
-				if (art.isBug() == true) {
+				if (art.isBug() == true){
 					img = ComponentCard.getImageScalable(
 							ScreenInteraction.imagePath
 									+ "artefactGoodBugged.png", 0, height);
-				} else {
+				} else{
 					img = ComponentCard.getImageScalable(
 							ScreenInteraction.imagePath + "artefactGoodOk.png",
 							0, height);
 				}
 
-			} else { // Artifact Bad not inspectioned
+			} else{ // Artifact Bad not inspectioned
 				img = ComponentCard.getImageScalable(
 						ScreenInteraction.imagePath + "artefactGood.png", 0,
 						height);
@@ -759,11 +759,11 @@ public class ScreenTabuleiro extends JDialog {
 	 * 
 	 *         Controla a ação dos engenheiros
 	 */
-	private ActionListener getActionEnginer() {
+	private ActionListener getActionEnginer(){
 
-		ActionListener actionListener = new ActionListener() {
+		ActionListener actionListener = new ActionListener(){
 			@Override
-			public void actionPerformed(ActionEvent event) {
+			public void actionPerformed(ActionEvent event){
 
 				int mesa = Integer.parseInt(event.getActionCommand());
 
@@ -773,9 +773,9 @@ public class ScreenTabuleiro extends JDialog {
 				int back = ScreenCard.createAndShowCard(cartaAtiva,
 						ScreenTabuleiro.this).getReturn();
 
-				switch (back) {
+				switch (back){
 				case ScreenCard.USE:
-					Object[] possibilities = { "Produzir Artefato",
+					Object[] possibilities ={ "Produzir Artefato",
 							"Inspecionar Artefato", "Corrigir Artefato" };
 					String s = (String) JOptionPane.showInputDialog(
 							ScreenTabuleiro.this,
@@ -784,18 +784,18 @@ public class ScreenTabuleiro extends JDialog {
 							"Produzir Artefato");
 
 					// If a string was returned, say so.
-					if ((s != null) && (s.length() > 0)) {
+					if ((s != null) && (s.length() > 0)){
 
-						if (s.compareToIgnoreCase("Produzir Artefato") == 0) {
+						if (s.compareToIgnoreCase("Produzir Artefato") == 0){
 							jogador = GameController.getGameController()
 									.produzirArtefatoI(jogo, jogador,
 											(CartaEngenheiro) cartaAtiva);
 						} else if (s
-								.compareToIgnoreCase("Inspecionar Artefato") == 0) {
+								.compareToIgnoreCase("Inspecionar Artefato") == 0){
 							jogador = GameController.getGameController()
 									.inspecionarArtefatoI(jogo, jogador,
 											(CartaEngenheiro) cartaAtiva);
-						} else if (s.compareToIgnoreCase("Corrigir Artefato") == 0) {
+						} else if (s.compareToIgnoreCase("Corrigir Artefato") == 0){
 							jogador = GameController.getGameController()
 									.corrigirArtefatoI(jogo, jogador,
 											(CartaEngenheiro) cartaAtiva);
@@ -814,10 +814,10 @@ public class ScreenTabuleiro extends JDialog {
 					break;
 				}
 
-				if (ScreenCard.BACK != back) {
+				if (ScreenCard.BACK != back){
 					panelBase.remove(panelMesas);
 					panelMesas = getPanelMesas();
-					if (panelMesas != null) {
+					if (panelMesas != null){
 						panelBase.add(panelMesas, BorderLayout.CENTER);
 						refresh(); // Todo [ARS] alterado para refresh ver
 									// atualização
@@ -836,14 +836,14 @@ public class ScreenTabuleiro extends JDialog {
 	 * @return ActionListener responsável por controlar a ação dos botões abaixo
 	 *         das cartas no painel de cartas na posição inferior do tabuleiro.
 	 */
-	private ActionListener getActionButtonCard() {
+	private ActionListener getActionButtonCard(){
 
-		ActionListener action = new ActionListener() {
+		ActionListener action = new ActionListener(){
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e){
 
 				if (((JButton) e.getSource()).getName().compareToIgnoreCase(
-						"Descartar") == 0) {
+						"Descartar") == 0){
 
 					System.out.println(((JButton) e.getSource()).getName()
 							+ " " + e.getActionCommand());
@@ -855,23 +855,23 @@ public class ScreenTabuleiro extends JDialog {
 							.descartarCartas(jogo, jogador, cartas);
 
 				} else if (((JButton) e.getSource()).getName()
-						.compareToIgnoreCase("Usar") == 0) {
+						.compareToIgnoreCase("Usar") == 0){
 					System.out.println(((JButton) e.getSource()).getName()
 							+ " " + e.getActionCommand());
 					int numCard = Integer.parseInt(e.getActionCommand());
 					Carta carta = ScreenTabuleiro.this.jogador.getCartas()[numCard];
-					if (carta instanceof CartaEngenheiro) {
+					if (carta instanceof CartaEngenheiro){
 						jogador = GameController.getGameController()
 								.contratarEngenheiroI(jogo, jogador,
 										(CartaEngenheiro) carta);
 					} 
 					//#ifdef ConceptCard
-					else if (carta instanceof CartaBonificacao) {
+					else if (carta instanceof CartaBonificacao){
 						jogador = GameController.getGameController()
 								.inserirBeneficio(jogo, jogador, (CartaBonificacao) carta);
 					}
 					//#endif
-				} else {
+				} else{
 					System.out.println(((JButton) e.getSource()).getName()
 							+ " " + e.getActionCommand() + " Não bateu");
 				}
@@ -887,44 +887,44 @@ public class ScreenTabuleiro extends JDialog {
 	 * @return ActionListener responsável por controlar os eventos dos botões do
 	 *         painel esquerdo do tabuleiro
 	 */
-	private ActionListener getActionButtonPanel() {
+	private ActionListener getActionButtonPanel(){
 
-		ActionListener action = new ActionListener() {
+		ActionListener action = new ActionListener(){
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e){
 
-				if (e.getActionCommand().compareToIgnoreCase("Terminar Jogada") == 0) {
+				if (e.getActionCommand().compareToIgnoreCase("Terminar Jogada") == 0){
 
 					ScreenTabuleiro.this.setVisible(false);
 
 				} else if (e.getActionCommand().compareToIgnoreCase(
-						"Jogar Dados") == 0) {
+						"Jogar Dados") == 0){
 
 					jogador = GameController.getGameController().jogarDados(
 							jogo, jogador);
 
-					if (jogador.getCartas().length > 0) {
+					if (jogador.getCartas().length > 0){
 						panelBase.remove(panelCartas);
 						panelCartas = getPanelCards();
-						if (panelCartas != null) {
+						if (panelCartas != null){
 							ScreenTabuleiro.this.refresh();
 						}
 					}
 
 				} else if (e.getActionCommand().compareToIgnoreCase(
-						"Ver Projeto") == 0) {
+						"Ver Projeto") == 0){
 
 					GameController.getGameController().verProjeto(jogo);
 
 				} else if (e.getActionCommand().compareToIgnoreCase(
-						"Ver Tabuleiro do Oponente") == 0) {
+						"Ver Tabuleiro do Oponente") == 0){
 
 					{
-						if (oponent == null) {
+						if (oponent == null){
 
 							Jogador[] jogadores = jogo.getJogadores();
 							String[] nomes = new String[jogadores.length];
-							for (int i = 0; i < jogadores.length; i++) {
+							for (int i = 0; i < jogadores.length; i++){
 								nomes[i] = jogadores[i].getNome();
 							}
 
@@ -932,14 +932,14 @@ public class ScreenTabuleiro extends JDialog {
 									.createAndShowGetGamers(nomes,
 											jogador.getNome()).getReturn();
 
-							for (int i = 0; i < jogadores.length; i++) {
+							for (int i = 0; i < jogadores.length; i++){
 								if (nome.compareToIgnoreCase(jogadores[i]
-										.getNome()) == 0) {
+										.getNome()) == 0){
 									oponent = jogadores[i];
 								}
 							}
 
-						} else {
+						} else{
 							oponent = null;
 						}
 						ScreenTabuleiro.this.refresh();
@@ -959,12 +959,12 @@ public class ScreenTabuleiro extends JDialog {
 	 * @return ActionListener responsável por controlar a chamada de integração
 	 *         de módulos.
 	 */
-	private ActionListener getActionIntegrate() {
-		ActionListener action = (new ActionListener() {
+	private ActionListener getActionIntegrate(){
+		ActionListener action = (new ActionListener(){
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (jogador != null) {
+			public void actionPerformed(ActionEvent e){
+				if (jogador != null){
 					int numMesa = Integer.parseInt(e.getActionCommand());
 					CartaEngenheiro carta = jogador.getTabuleiro().getMesas()[numMesa]
 							.getCartaMesa();
@@ -989,9 +989,9 @@ public class ScreenTabuleiro extends JDialog {
 	 * muda-se o jogador.
 	 * 
 	 */
-	protected void refresh() {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
+	protected void refresh(){
+		SwingUtilities.invokeLater(new Runnable(){
+			public void run(){
 				panelTabuleiro = getPanelBase();
 				panelCartas.revalidate();
 				panelCartas.repaint();
@@ -1005,7 +1005,7 @@ public class ScreenTabuleiro extends JDialog {
 	/**
 	 * @return the jogador
 	 */
-	public Jogador getJogador() {
+	public Jogador getJogador(){
 		return jogador;
 	}
 
@@ -1013,12 +1013,12 @@ public class ScreenTabuleiro extends JDialog {
 	 * @param jogador
 	 *            the jogador to set
 	 */
-	public void setJogador(Jogador jogador) {
+	public void setJogador(Jogador jogador){
 		this.jogador = jogador;
 		this.refresh();
 	}
 
-	public void setJogo(Jogo jogoAtual) {
+	public void setJogo(Jogo jogoAtual){
 		this.jogo = jogoAtual;
 	}
 
@@ -1047,7 +1047,7 @@ public class ScreenTabuleiro extends JDialog {
 	 * 
 	 */
 	public static ScreenTabuleiro createAndShowTabuleiro(Jogador jogador,
-			Jogo jogo) {
+			Jogo jogo){
 		// Cria e configura a tela.
 		ScreenTabuleiro scr = new ScreenTabuleiro(jogador, jogo);
 		scr.rootPane.setOpaque(true);
@@ -1062,14 +1062,14 @@ public class ScreenTabuleiro extends JDialog {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
 		final Jogador jogador = new Jogador("Jose", 300);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
+			public void run(){
 				ScreenTabuleiro tab = createAndShowTabuleiro(jogador, null);
 				tab.setVisible(true);
 			}

@@ -21,7 +21,7 @@ import junit.framework.TestCase;
  * @author alcemir
  *
  */
-public class InteracaoTabuleiroCartaEngenheiroTest extends TestCase {
+public class InteracaoTabuleiroCartaEngenheiroTest extends TestCase{
 	private Jogo jogo;
 	private Tabuleiro tabuleiro;
 	CartaEngenheiro novato;

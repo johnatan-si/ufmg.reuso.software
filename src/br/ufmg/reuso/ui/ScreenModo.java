@@ -39,7 +39,7 @@ import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
  * Ou instanciando a classe ScreenModo como uma janela de diálogo.  
  *  
  */
-public class ScreenModo extends JDialog implements ActionListener {
+public class ScreenModo extends JDialog implements ActionListener{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -58,7 +58,7 @@ public class ScreenModo extends JDialog implements ActionListener {
 	/**
 	 * @param tabuleiro - tabuleiro do jogo atual
 	 */
-	public ScreenModo(ScreenTabuleiro tabuleiro) {
+	public ScreenModo(ScreenTabuleiro tabuleiro){
 		super(tabuleiro);		
 		this.setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(300,200));
@@ -126,13 +126,13 @@ public class ScreenModo extends JDialog implements ActionListener {
 	//=====================================================================================//
 	/** Controlador de eventos dos botões. */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 
 		
 		if (e.getActionCommand()== "OK" ){
 			ScreenModo.this.dispose();
 		}
-		else {		
+		else{		
 		
 		picture.setIcon(createImageIcon("DepositScreen/"
 				+ e.getActionCommand()
@@ -173,11 +173,11 @@ public class ScreenModo extends JDialog implements ActionListener {
 	 * @return - ImageIcon para ser inserida em um JLabel.
 	 * 
 	 */
-	protected static ImageIcon createImageIcon(String path) {
+	protected static ImageIcon createImageIcon(String path){
 		File fl = new File(path);
-		if (fl.isFile()) {
+		if (fl.isFile()){
 			return new ImageIcon(path);
-		} else {
+		} else{
 			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
@@ -190,7 +190,7 @@ public class ScreenModo extends JDialog implements ActionListener {
 	 * 
 	 * @param tabuleiro  - Tabeuleiro atual do jogo
 	 */
-	public static ScreenModo createAndShowGetModo(ScreenTabuleiro tabuleiro) {
+	public static ScreenModo createAndShowGetModo(ScreenTabuleiro tabuleiro){
 		//Cria e configura a tela.		
 		ScreenModo scr = new ScreenModo(tabuleiro);		
 		scr.rootPane.setOpaque(true);
@@ -205,14 +205,14 @@ public class ScreenModo extends JDialog implements ActionListener {
 		return scr;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		//O uso da Thread com a utilização de invokeLater tem a 
 		//função da construção total da GUI para somente então
 		//apresentá-la na tela.		
 		final ScreenTabuleiro tabuleiro = ScreenTabuleiro.createAndShowTabuleiro(null, null);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
+			public void run(){
 				System.out.println (createAndShowGetModo(tabuleiro).getModeGame());
 			}
 		});		

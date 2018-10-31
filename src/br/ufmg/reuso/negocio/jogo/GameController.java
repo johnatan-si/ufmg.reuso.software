@@ -31,12 +31,12 @@ public class GameController implements GameInteraction{
 	public static final int ARTEFATOS_SELECIONADO = 0;
 	public static final int ARTEFATOS_NAO_SELECIONADO = -1;
 
-	private GameController() {
+	private GameController(){
 		
 	}
 	
 	public static GameController getGameController(){
-		if(GameController==null) {
+		if(GameController==null){
 			GameController = new GameController();
 		}
 		return GameController;
@@ -57,7 +57,7 @@ public class GameController implements GameInteraction{
 			if(jogadorAtual.getTabuleiro().getMesas()[i].getCartaMesa()==null){// Se mesa vazia, pula iteração
 				continue;			
 			}
-			else {
+			else{
 				//Restaura pontos de habilidade das cartas de engenheiro na mesas do tabuleiro do jogador*/
 				jogadorAtual.getTabuleiro().getMesas()[i].getCartaMesa().setHabilidadeEngenheiroAtual(jogadorAtual.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro());
 			
@@ -154,7 +154,7 @@ public class GameController implements GameInteraction{
 	* Engenheiro corrige artefato com bug
 	*/
 	@Override
-	public Jogador corrigirArtefatoI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroCorrigindo) {
+	public Jogador corrigirArtefatoI(Jogo jogoAtual, Jogador jogadorAtual, CartaEngenheiro engenheiroCorrigindo){
 		Jogador auxiliar;
 		int mesaTrabalho = jogoAtual.setupController.escolherMesadeTrabalho();
 		if (mesaTrabalho ==-1){
@@ -178,7 +178,7 @@ public class GameController implements GameInteraction{
 		
 		 Jogador auxiliar;
 		
-		if (mesa ==-1) {
+		if (mesa ==-1){
 			ScreenInteraction.getScreenInteraction().exibirMensagem("Operação de integrar modulo cancelada pelo jogador.","");
 			return jogadorAtual;												
 		}		
@@ -212,7 +212,7 @@ public class GameController implements GameInteraction{
 			jogoAtual.setupController.exibirMesaModulo();
 			return jogadorAtual;
 		}
-		else {
+		else{
 			return jogoAtual.trocarModuloMesa(jogadorAtual,engenheiroTransferindo, mesaEscolhida);
 		}
 	}

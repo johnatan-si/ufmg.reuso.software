@@ -6,7 +6,7 @@ import br.ufmg.reuso.negocio.carta.CartaBonificacao;
 import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.carta.CartaPenalizacao;
 
-public interface IRepositorioCarta {
+public interface IRepositorioCarta{
 	
 	//#ifdef ConceptCard
 	CartaBonificacao obterCartaConceito(String nome);

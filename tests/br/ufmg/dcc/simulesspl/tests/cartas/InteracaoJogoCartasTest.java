@@ -13,10 +13,10 @@ import junit.framework.TestCase;
  * @author alcemir
  *
  */
-public class InteracaoJogoCartasTest extends TestCase {
+public class InteracaoJogoCartasTest extends TestCase{
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 	}
 	
 	@Test
@@ -29,7 +29,7 @@ public class InteracaoJogoCartasTest extends TestCase {
 	public void testRetirarCartas(){}
 	
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 		
 	}
 }

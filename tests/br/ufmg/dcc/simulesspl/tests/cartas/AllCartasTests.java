@@ -15,6 +15,6 @@ import org.junit.runners.Suite.SuiteClasses;
 		InteracaoJogoCartasTest.class,
 		InteracaoTabuleiroCartaEngenheiroTest.class,
 		InteracaoMesaCartaArtefato.class})
-public class AllCartasTests {
+public class AllCartasTests{
 
 }

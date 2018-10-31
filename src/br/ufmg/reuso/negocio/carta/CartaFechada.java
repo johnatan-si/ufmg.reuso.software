@@ -14,19 +14,19 @@ package br.ufmg.reuso.negocio.carta;
  * - Inspecionado: FALSE
  */
 
-public class CartaFechada implements EstadoCarta {
+public class CartaFechada implements EstadoCarta{
 	
 	@Override
-	public boolean getEstado(Artefato carta) {
+	public boolean getEstado(Artefato carta){
 		return carta.inspected();
 	}
 	
 	@Override
-	public void setEstado(Artefato carta) {
+	public void setEstado(Artefato carta){
 		carta.setArtefatoInspecionado(false);//define que o artefato ainda nao foi inspecionado
 	}
 	
-	public void virarCarta(Artefato carta) {
+	public void virarCarta(Artefato carta){
 		carta.setArtefatoInspecionado(true);//opcao para inspecionar o artefato
 	}
 }

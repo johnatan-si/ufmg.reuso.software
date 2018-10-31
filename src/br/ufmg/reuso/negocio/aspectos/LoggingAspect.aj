@@ -19,13 +19,13 @@ import br.ufmg.reuso.negocio.carta.Artefato;
 import br.ufmg.reuso.negocio.dado.Dado;
 import br.ufmg.reuso.negocio.jogo.Jogo;
 
-public aspect LoggingAspect {
+public aspect LoggingAspect{
 		
 	// ***** pointcut iniciouJogo ****************************************************** //
 	
 	pointcut iniciouJogo() : call(void Jogo.start(..) );
 	
-	before() : iniciouJogo() {
+	before() : iniciouJogo(){
 		JOptionPane.showMessageDialog( null,					// posicao default, no centro da tela
 				"Início do Jogo - SimulES\n >> Grupo G3 <<",	// mensagem a ser exibida
 				"[AS] - SimulES - G3",					// titulo da janela
@@ -36,7 +36,7 @@ public aspect LoggingAspect {
 	
 	pointcut criouJogador() : call(void Jogo.cadastrarJogadores(..) );
 	
-	after() : criouJogador() {
+	after() : criouJogador(){
 		JOptionPane.showMessageDialog( null,
 				"Jogadores criados com sucesso!",
 				"[AS] - Jogadores Criados!",
@@ -47,14 +47,14 @@ public aspect LoggingAspect {
 	
 	pointcut jogouDado(Dado d) : call (* Dado.sortearValor() ) && target(d);
 	
-	after(Dado d) returning : jogouDado(d) {
+	after(Dado d) returning : jogouDado(d){
 		JOptionPane.showMessageDialog( null,
 				"Resultado obtido no dado: " + d.sortearValor(),
 				"[AS] - Dado Jogado",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	after(Dado d) throwing : jogouDado(d) {
+	after(Dado d) throwing : jogouDado(d){
 		JOptionPane.showMessageDialog( null,
 				"ERRO: Nenhum resultado obtido no dado!",
 				"[AS] - ERRO ao Jogar o Dado",
@@ -66,9 +66,9 @@ public aspect LoggingAspect {
 	pointcut sorteouArtefato(Artefato cArt) : call (void Artefato.mostrarArtefato() ) 
 						  && target(cArt);
 	
-	after(Artefato cArt) : sorteouArtefato(cArt) {
+	after(Artefato cArt) : sorteouArtefato(cArt){
 		
-		if (cArt.inspected() == true) {
+		if (cArt.inspected() == true){
 			JOptionPane.showMessageDialog( null,
 				".Artefato ruim? " + cArt.isPoorQuality() + "\n.Possui bug? " + cArt.isBug(),
 				"[AS] - Artefato sorteado!",

@@ -20,7 +20,7 @@ import junit.framework.TestCase;
  * @author alcemir
  *
  */
-public class InteracaoMesaCartaArtefato extends TestCase {
+public class InteracaoMesaCartaArtefato extends TestCase{
 	
 	private Jogo jogo;
 	private Mesa mesa;
@@ -37,7 +37,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testReceberArtefatoAjudaBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setAjudas(1);
 		
 		assertEquals("Existe mais de uma ajuda na mesa!", 0, mesa.getAjudas().size());
@@ -49,7 +49,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testReceberArtefatoAjudaRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setAjudas(1);
 		
 		assertEquals("Existe mais de uma ajuda na mesa!", 0, mesa.getAjudas().size());
@@ -61,7 +61,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testReceberArtefatoCodigoBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setCodigos(1);
 		
 		assertEquals("Existe mais de um código na mesa!", 0, mesa.getCodigos().size());
@@ -73,7 +73,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testReceberArtefatoCodigoRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setCodigos(1);
 		
 		assertEquals("Existe mais de um código na mesa!", 0, mesa.getCodigos().size());
@@ -85,7 +85,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testReceberArtefatoDesenhoBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setDesenhos(1);
 		
 		assertEquals("Existe mais de um desenho na mesa!", 0, mesa.getDesenhos().size());
@@ -98,7 +98,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testReceberArtefatoDesenhoRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setDesenhos(1);
 		
 		assertEquals("Existe mais de um desenho na mesa!", 0, mesa.getDesenhos().size());
@@ -110,7 +110,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testReceberArtefatoRastroBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setRastros(1);
 		
 		assertEquals("Existe mais de um rastro na mesa!", 0, mesa.getRastros().size());
@@ -121,7 +121,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	}
 	@Test
 	public void testReceberArtefatoRastroRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setRastros(1);
 		
 		assertEquals("Existe mais de um rastro na mesa!", 0, mesa.getRastros().size());
@@ -133,7 +133,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testReceberArtefatoRequisitoBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setRequisitos(1);
 		
 		assertEquals("Existe mais de um requisito na mesa!", 0, mesa.getRequisitos().size());
@@ -145,7 +145,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testReceberArtefatoRequisitoRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setRequisitos(1);
 		
 		assertEquals("Existe mais de um requisito na mesa!", 0, mesa.getRequisitos().size());
@@ -159,7 +159,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 		
 	@Test
 	public void testVirarArtefatoAjudaBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setAjudas(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -172,7 +172,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testVirarArtefatoAjudaRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setAjudas(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -185,7 +185,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 
 	@Test
 	public void testVirarArtefatoCodigoBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setCodigos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -196,7 +196,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testVirarArtefatoCodigoRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setCodigos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -207,7 +207,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testVirarArtefatoDesenhoBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setDesenhos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -220,7 +220,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testVirarArtefatoDesenhoRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setDesenhos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -233,7 +233,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testVirarArtefatoRastroBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setRastros(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -246,7 +246,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testVirarArtefatoRastroRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setRastros(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -259,7 +259,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testVirarArtefatoRequisitoBom(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setRequisitos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -272,7 +272,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testVirarArtefatoRequisitoRuim(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setRequisitos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -286,7 +286,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 //	public void testTrocarArtefatos(){
 	@Test
 	public void testTrocarArtefatoAjudaBOM(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setAjudas(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -305,7 +305,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testTrocarArtefatosAjudasRUINS(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setAjudas(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -324,7 +324,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testTrocarArtefatosCodigosBONS(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setCodigos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -343,7 +343,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testTrocarArtefatosCodigosRUINS(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setCodigos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -362,7 +362,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testTrocarArtefatosDesenhosBONS(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setDesenhos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -381,7 +381,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testTrocarArtefatosDesenhosRUINS(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setDesenhos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -400,7 +400,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 
 	@Test
 	public void testTrocarArtefatosRastrosBONS(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setRastros(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -419,7 +419,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testTrocarArtefatosRastrosRUINS(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setRastros(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -437,7 +437,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	}
 	@Test
 	public void testTrocarArtefatosRequisitosBONS(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setRequisitos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -456,7 +456,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 	
 	@Test
 	public void testTrocarArtefatosRequisitosRUINS(){
-		Modulo[] pedido = {new Modulo(), new Modulo()};		
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[1].setRequisitos(1);
 		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
 		
@@ -503,7 +503,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 		ArrayList<Artefato> artefatos = new ArrayList<Artefato>();
 		
 		int numArtefatosNaoInspecionados = 5;
-		for (int i = 0; i < numArtefatosNaoInspecionados; i++) {
+		for (int i = 0; i < numArtefatosNaoInspecionados; i++){
 			artefatos.add(new Artefato(false, false));
 		}
 		
@@ -520,7 +520,7 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 		ArrayList<Artefato> artefatos = new ArrayList<Artefato>();
 		
 		int numArtefatosBugInspecionados = 5;
-		for (int i = 0; i < numArtefatosBugInspecionados; i++) {
+		for (int i = 0; i < numArtefatosBugInspecionados; i++){
 			artefatos.add(new Artefato(true, false));
 			artefatos.get(i).setArtefatoInspecionado(true);
 		}
@@ -538,10 +538,10 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 		
 		int numArtefatosBonsNaoInspecionados = 5;
 		int numArtefatosRuinsNaoInspecionados = 5;
-		for (int i = 0; i < numArtefatosBonsNaoInspecionados; i++) {
+		for (int i = 0; i < numArtefatosBonsNaoInspecionados; i++){
 			artefatos.add(new Artefato(false, true));
 		}
-		for (int i = 0; i < numArtefatosRuinsNaoInspecionados; i++) {
+		for (int i = 0; i < numArtefatosRuinsNaoInspecionados; i++){
 			artefatos.add(new Artefato(false, false));
 		}
 		
@@ -557,11 +557,11 @@ public class InteracaoMesaCartaArtefato extends TestCase {
 		
 		int numArtefatosBonsNaoInspecionados = 5;
 		int numArtefatosRuinsNaoInspecionados = 5;
-		for (int i = 0; i < numArtefatosBonsNaoInspecionados; i++) {
+		for (int i = 0; i < numArtefatosBonsNaoInspecionados; i++){
 			artefatos.add(new Artefato(true, false));
 			artefatos.get(i).setArtefatoInspecionado(true);
 		}
-		for (int i = 0; i < numArtefatosRuinsNaoInspecionados; i++) {
+		for (int i = 0; i < numArtefatosRuinsNaoInspecionados; i++){
 			artefatos.add(new Artefato(true, true));
 			artefatos.get(i+numArtefatosBonsNaoInspecionados).setArtefatoInspecionado(true);
 		}

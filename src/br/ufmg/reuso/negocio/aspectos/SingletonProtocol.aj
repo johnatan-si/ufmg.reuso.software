@@ -48,7 +48,7 @@ import java.util.Hashtable;
  * @version 1.1, 02/18/04
  */
   
-public abstract aspect SingletonProtocol {
+public abstract aspect SingletonProtocol{
 	
 	/**
 	 * stores the <i>Singleton</i> instances
@@ -63,7 +63,7 @@ public abstract aspect SingletonProtocol {
      * aquire the <i>Singleton</i> property.
      */
 
-    public interface Singleton {}
+    public interface Singleton{}
     
     /**
      * Placeholder for exceptions to the <i>Singleton</i>'s constructor
@@ -83,9 +83,9 @@ public abstract aspect SingletonProtocol {
 	 * @return the singleton instance 
 	 */
                                                                                                                             
-	Object around(): call((Singleton+).new(..)) && !protectionExclusions() {                    
+	Object around(): call((Singleton+).new(..)) && !protectionExclusions(){                    
 	    Class singleton = thisJoinPoint.getSignature().getDeclaringType(); 
-		if (singletons.get(singleton) == null) {                         // How to access the static instance variable here?
+		if (singletons.get(singleton) == null){                         // How to access the static instance variable here?
 		    singletons.put(singleton, proceed()); 
 		}
 		return singletons.get(singleton);

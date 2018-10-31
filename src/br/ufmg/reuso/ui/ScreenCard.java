@@ -28,7 +28,7 @@ import br.ufmg.reuso.negocio.carta.CartaPenalizacao;
  *         Classe que mostra em uma janela separada uma determinada carta.
  * 
  */
-public class ScreenCard extends JDialog {
+public class ScreenCard extends JDialog{
 
 	private static final long serialVersionUID = 1L;
 
@@ -54,7 +54,7 @@ public class ScreenCard extends JDialog {
 	 *            ScreenInteraction.getTabuleiro()
 	 * 
 	 */
-	public ScreenCard(Carta carta, ScreenTabuleiro tabuleiro) {
+	public ScreenCard(Carta carta, ScreenTabuleiro tabuleiro){
 
 		actionReturn = BACK;
 
@@ -74,7 +74,7 @@ public class ScreenCard extends JDialog {
 	/**
 	 * @return JPanel com os botões abaixo da carta
 	 */
-	private JPanel getButtonPane() {
+	private JPanel getButtonPane(){
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new GridLayout(0, 3, 0, 0));
 		Font font = new Font("Default", Font.PLAIN, 9);
@@ -109,17 +109,17 @@ public class ScreenCard extends JDialog {
 	/**
 	 * @return ActionListener responsável pelo controle dos botões
 	 */
-	private ActionListener getActionListener() {
-		ActionListener action = new ActionListener() {
+	private ActionListener getActionListener(){
+		ActionListener action = new ActionListener(){
 
-			public void actionPerformed(ActionEvent e) {
-				if (e.getActionCommand() == "Usar") {
+			public void actionPerformed(ActionEvent e){
+				if (e.getActionCommand() == "Usar"){
 					System.out.println("Usar");
 					actionReturn = USE;
-				} else if (e.getActionCommand() == "Descartar") {
+				} else if (e.getActionCommand() == "Descartar"){
 					System.out.println("Descartar");
 					actionReturn = DISCARD;
-				} else if (e.getActionCommand() == "Voltar") {
+				} else if (e.getActionCommand() == "Voltar"){
 					System.out.println("Voltar");
 					actionReturn = BACK;
 				}
@@ -138,12 +138,12 @@ public class ScreenCard extends JDialog {
 	 *         USE = 0; DISCARD = 1; BACK = 2;
 	 * 
 	 */
-	protected int getReturn() {
+	protected int getReturn(){
 		return actionReturn;
 	}
 
 	public static ScreenCard createAndShowCard(Carta carta,
-			ScreenTabuleiro tabuleiro) {
+			ScreenTabuleiro tabuleiro){
 
 		// Cria e configura a tela.
 		ScreenCard scr = new ScreenCard(carta, tabuleiro);
@@ -163,16 +163,16 @@ public class ScreenCard extends JDialog {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
 
 		final ScreenTabuleiro tabuleiro = ScreenTabuleiro
 				.createAndShowTabuleiro(null, null);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
+			public void run(){
 
 				System.out
 						.println(createAndShowCard(

@@ -13,45 +13,45 @@ import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.mesa.Mesa;
 import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
 
-public class TabuleiroTest {
+public class TabuleiroTest{
 
 	private Tabuleiro tabuleiro = null;
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 		tabuleiro = new Tabuleiro();
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 		tabuleiro = null;
 	}
 
 	@Test
-	public void testTabuleiro() {
+	public void testTabuleiro(){
 		assertNotNull(tabuleiro);
 	}
 
 	@Test
-	public void testAlocarMesa() {
+	public void testAlocarMesa(){
 		CartaEngenheiro novato = new CartaEngenheiro("2n1", "", "", 0, 2, 2);
 		tabuleiro.alocarMesa(novato, 0);		
 		assertNotNull(tabuleiro.getMesas()[0].getCartaMesa());		
 	}
 
 	@Test
-	public void testDespedirEngenheiro() {
+	public void testDespedirEngenheiro(){
 		CartaEngenheiro carta = new CartaEngenheiro("2n1", "", "", 0, 2, 2);
 		tabuleiro.despedirEngenheiro(carta);			
 		assertNull(tabuleiro.getMesas()[0].getCartaMesa());
 	}
 
 	@Test
-	public void testGetMesas() {
+	public void testGetMesas(){
 		assertNotNull(tabuleiro.getMesas());
 	}
 
 	@Test
-	public void testSetMesas() {
+	public void testSetMesas(){
 		
 		Mesa[] mesas = new Mesa[8];
 		for (int i = 0; i < 8; i++)
@@ -64,160 +64,160 @@ public class TabuleiroTest {
 	}
 
 	@Test
-	public void testGetEfeitoPositivoOrcamento() {				
+	public void testGetEfeitoPositivoOrcamento(){				
 		tabuleiro.setEfeitoPositivoOrcamento(100);
 		int valor = tabuleiro.getEfeitoPositivoOrcamento();
 		assertEquals(100, valor);
 	}
 
 	@Test
-	public void testSetEfeitoPositivoOrcamento() {
+	public void testSetEfeitoPositivoOrcamento(){
 		tabuleiro.setEfeitoPositivoOrcamento(100);
 		int valor = tabuleiro.getEfeitoPositivoOrcamento();
 		assertEquals(100, valor);
 	}
 
 	@Test
-	public void testGetEfeitoAumentarHabilidadeEngenheiroLater() {
+	public void testGetEfeitoAumentarHabilidadeEngenheiroLater(){
 		tabuleiro.setEfeitoAumentarHabilidadeEngenheiroLater(null);
 		assertEquals(null, tabuleiro.getEfeitoAumentarHabilidadeEngenheiroLater());
 		
 	}
 
 	@Test
-	public void testSetEfeitoAumentarHabilidadeEngenheiroLater() {
+	public void testSetEfeitoAumentarHabilidadeEngenheiroLater(){
 		tabuleiro.setEfeitoAumentarHabilidadeEngenheiroLater(null);
 		assertEquals(null, tabuleiro.getEfeitoAumentarHabilidadeEngenheiroLater());
 	}
 
 	@Test
-	public void testIsEfeitoModuloIntegradoNeutralizadoValidacao() {
+	public void testIsEfeitoModuloIntegradoNeutralizadoValidacao(){
 		tabuleiro.setEfeitoModuloIntegradoNeutralizadoValidacao(true);
 		assertTrue(tabuleiro.isEfeitoModuloIntegradoNeutralizadoValidacao());
 	}
 
 	@Test
-	public void testSetEfeitoModuloIntegradoNeutralizadoValidacao() {
+	public void testSetEfeitoModuloIntegradoNeutralizadoValidacao(){
 		tabuleiro.setEfeitoModuloIntegradoNeutralizadoValidacao(true);
 		assertTrue(tabuleiro.isEfeitoModuloIntegradoNeutralizadoValidacao());
 	}
 
 	@Test
-	public void testIsEfeitoHelpArtifactsNeutralizadoValidacao() {
+	public void testIsEfeitoHelpArtifactsNeutralizadoValidacao(){
 		tabuleiro.setEfeitoHelpArtifactsNeutralizadoValidacao(true);
 		assertTrue(tabuleiro.isEfeitoHelpArtifactsNeutralizadoValidacao());
 	}
 
 	@Test
-	public void testSetEfeitoHelpArtifactsNeutralizadoValidacao() {
+	public void testSetEfeitoHelpArtifactsNeutralizadoValidacao(){
 		tabuleiro.setEfeitoHelpArtifactsNeutralizadoValidacao(true);
 		assertTrue(tabuleiro.isEfeitoHelpArtifactsNeutralizadoValidacao());
 	}
 
 	@Test
-	public void testIsEfeitoProblemaArtefatoCodigoNeutralizado() {
+	public void testIsEfeitoProblemaArtefatoCodigoNeutralizado(){
 		tabuleiro.setEfeitoProblemaArtefatoCodigoNeutralizado(true);
 		assertTrue(tabuleiro.isEfeitoProblemaArtefatoCodigoNeutralizado());
 	}
 
 	@Test
-	public void testSetEfeitoProblemaArtefatoCodigoNeutralizado() {
+	public void testSetEfeitoProblemaArtefatoCodigoNeutralizado(){
 		tabuleiro.setEfeitoProblemaArtefatoCodigoNeutralizado(true);
 		assertTrue(tabuleiro.isEfeitoProblemaArtefatoCodigoNeutralizado());
 	}
 
 	@Test
-	public void testIsEfeitoProblemaArtefatoRastroNeutralizado() {
+	public void testIsEfeitoProblemaArtefatoRastroNeutralizado(){
 		tabuleiro.setEfeitoProblemaArtefatoRastroNeutralizado(true);
 		assertTrue(tabuleiro.isEfeitoProblemaArtefatoRastroNeutralizado());
 	}
 
 	@Test
-	public void testSetEfeitoProblemaArtefatoRastroNeutralizado() {
+	public void testSetEfeitoProblemaArtefatoRastroNeutralizado(){
 		tabuleiro.setEfeitoProblemaArtefatoRastroNeutralizado(true);
 		assertTrue(tabuleiro.isEfeitoProblemaArtefatoRastroNeutralizado());
 	}
 
 	@Test
-	public void testIsEfeitoProblemaArtefatoRequisitosNeutralizado() {
+	public void testIsEfeitoProblemaArtefatoRequisitosNeutralizado(){
 		tabuleiro.setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
 		assertTrue(tabuleiro.isEfeitoProblemaArtefatoRequisitosNeutralizado());
 	}
 
 	@Test
-	public void testSetEfeitoProblemaArtefatoRequisitosNeutralizado() {
+	public void testSetEfeitoProblemaArtefatoRequisitosNeutralizado(){
 		tabuleiro.setEfeitoProblemaArtefatoRequisitosNeutralizado(true);
 		assertTrue(tabuleiro.isEfeitoProblemaArtefatoRequisitosNeutralizado());
 	}
 
 	@Test
-	public void testGetEfeitoAdicionaDificuldadeInspecionarArtefatos() {
+	public void testGetEfeitoAdicionaDificuldadeInspecionarArtefatos(){
 		tabuleiro.setEfeitoAdicionaDificuldadeInspecionarArtefatos(2);
 		assertEquals(2, tabuleiro.getEfeitoAdicionaDificuldadeInspecionarArtefatos());
 	}
 
 	@Test
-	public void testSetEfeitoAdicionaDificuldadeInspecionarArtefatos() {
+	public void testSetEfeitoAdicionaDificuldadeInspecionarArtefatos(){
 		tabuleiro.setEfeitoAdicionaDificuldadeInspecionarArtefatos(2);
 		assertEquals(2, tabuleiro.getEfeitoAdicionaDificuldadeInspecionarArtefatos());
 	}
 
 	@Test
-	public void testGetEfeitoAdicionaDificuldadeCorrigirArtefatos() {
+	public void testGetEfeitoAdicionaDificuldadeCorrigirArtefatos(){
 		tabuleiro.setEfeitoAdicionaDificuldadeCorrigirArtefatos(2);
 		assertEquals(2, tabuleiro.getEfeitoAdicionaDificuldadeCorrigirArtefatos());
 	}
 
 	@Test
-	public void testSetEfeitoAdicionaDificuldadeCorrigirArtefatos() {
+	public void testSetEfeitoAdicionaDificuldadeCorrigirArtefatos(){
 		tabuleiro.setEfeitoAdicionaDificuldadeCorrigirArtefatos(2);
 		assertEquals(2, tabuleiro.getEfeitoAdicionaDificuldadeCorrigirArtefatos());
 	}
 
 	@Test
-	public void testGetEfeitoAdicionaComplexidadeProjeto() {
+	public void testGetEfeitoAdicionaComplexidadeProjeto(){
 		tabuleiro.setEfeitoAdicionaComplexidadeProjeto(2);
 		assertEquals(2, tabuleiro.getEfeitoAdicionaComplexidadeProjeto());
 	}
 
 	@Test
-	public void testSetEfeitoAdicionaComplexidadeProjeto() {
+	public void testSetEfeitoAdicionaComplexidadeProjeto(){
 		tabuleiro.setEfeitoAdicionaComplexidadeProjeto(2);
 		assertEquals(2, tabuleiro.getEfeitoAdicionaComplexidadeProjeto());
 	}
 
 	@Test
-	public void testGetEfeitoAdicionaQualidadeProjeto() {
+	public void testGetEfeitoAdicionaQualidadeProjeto(){
 		tabuleiro.setEfeitoAdicionaQualidadeProjeto(2);
 		assertEquals(2, tabuleiro.getEfeitoAdicionaQualidadeProjeto());
 	}
 
 	@Test
-	public void testSetEfeitoAdicionaQualidadeProjeto() {
+	public void testSetEfeitoAdicionaQualidadeProjeto(){
 		tabuleiro.setEfeitoAdicionaQualidadeProjeto(2);
 		assertEquals(2, tabuleiro.getEfeitoAdicionaQualidadeProjeto());
 	}
 
 	@Test
-	public void testGetEfeitoDemitirEngenheiroLater() {
+	public void testGetEfeitoDemitirEngenheiroLater(){
 		tabuleiro.setEfeitoDemitirEngenheiroLater(null);
 		assertNull(tabuleiro.getEfeitoDemitirEngenheiroLater());
 	}
 
 	@Test
-	public void testSetEfeitoDemitirEngenheiroLater() {
+	public void testSetEfeitoDemitirEngenheiroLater(){
 		tabuleiro.setEfeitoDemitirEngenheiroLater(null);
 		assertNull(tabuleiro.getEfeitoDemitirEngenheiroLater());
 	}
 
 	@Test
-	public void testGetEfeitoNegativoOrcamento() {
+	public void testGetEfeitoNegativoOrcamento(){
 		tabuleiro.setEfeitoNegativoOrcamento(200);
 		assertEquals(200, tabuleiro.getEfeitoNegativoOrcamento());
 	}
 
 	@Test
-	public void testSetEfeitoNegativoOrcamento() {
+	public void testSetEfeitoNegativoOrcamento(){
 		tabuleiro.setEfeitoNegativoOrcamento(200);
 		assertEquals(200, tabuleiro.getEfeitoNegativoOrcamento());
 	}

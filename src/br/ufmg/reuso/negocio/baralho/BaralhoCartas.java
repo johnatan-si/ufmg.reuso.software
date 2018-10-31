@@ -49,7 +49,7 @@ public class BaralhoCartas{
 		//#ifdef ConceptCard
 		int[] cartasConceito,
 		//#endif
-		int [] cartasProblema) {
+		int [] cartasProblema){
 
 		if(facilidade==Jogo.FACIL){
 
@@ -82,13 +82,13 @@ public class BaralhoCartas{
 			baralho = new Carta[getNumeroTotalCartas()]; //contruindo baralho com número de cartas na pasta correspondente ao tipo de jogo
 			setNumeroCartasBaralhoAtual(getNumeroTotalCartas()); //numero de cartas no baralho inicialmente é igual ao total de cartas no jogo
 
-			for (int i=0,j=0,k=0;i<baralho.length;i++) {//POLIMORFISMO DE CARTAS NUM VETOR
+			for (int i=0,j=0,k=0;i<baralho.length;i++){//POLIMORFISMO DE CARTAS NUM VETOR
 
-				if (i<getNumeroTotalEngenheiro()) {
+				if (i<getNumeroTotalEngenheiro()){
 					baralho[i]=cartaengenheiro[i];	//preenchendo as primeiras posições com cartas de engenheiro de software 
 				}
 																			 
-				else {
+				else{
 					//#ifdef ConceptCard
 					if(j<getNumeroTotalConceito()){
 						baralho[i]=cartaconceito[j]; //preenchendo a parte do meio do baralho com cartas conceito													
@@ -122,7 +122,7 @@ public class BaralhoCartas{
 		setNumeroCartasBaralhoAtual(0);	// o baralho não contém nenhuma carta quando construído
 		this.currentCard = 0;
 		this.baralho = new Carta [getNumeroTotalCartas()];
-		for (int i=0; i<baralho.length; i++) {
+		for (int i=0; i<baralho.length; i++){
 			baralho[i]=null; // logo, não existe cartas no baralho
 		}
 	}
@@ -131,8 +131,8 @@ public class BaralhoCartas{
 	public CartaBonificacao[] inicializarCartasConceito(String dificuldade, int[] cartasConceitoSelecionadas){
 		String[] arquivosDiretorio = repositorio.getNomeArquivosPasta(dificuldade);	
 		ArrayList <String> somenteArquivosProperties = new ArrayList <String>(); //preenhendo um vetor de string com nome dos arquivos do diretorio
-		for (int i=0;i<arquivosDiretorio.length;i++) {
-			if((arquivosDiretorio[i].endsWith(".properties"))&&(selecionarCartaConceito(cartasConceitoSelecionadas,arquivosDiretorio[i])==true)) { // testando se arquivo do diretório é .properties e se carta foi selecionada
+		for (int i=0;i<arquivosDiretorio.length;i++){
+			if((arquivosDiretorio[i].endsWith(".properties"))&&(selecionarCartaConceito(cartasConceitoSelecionadas,arquivosDiretorio[i])==true)){ // testando se arquivo do diretório é .properties e se carta foi selecionada
 				somenteArquivosProperties.add(arquivosDiretorio[i]); // adciona arquivo à lista de array de arquivos properties conforme cartas selecionadas para o jogo
 		
 			}
@@ -141,7 +141,7 @@ public class BaralhoCartas{
 		CartaBonificacao [] cartaconceito = new CartaBonificacao[getNumeroTotalConceito()];	// vetor que aloja cartas conceito do jogo
 
 		for(int i=0;i<somenteArquivosProperties.size();i++)	{ // irá abrir todos os arquivos e extrair dados deles
-			try {
+			try{
 				//construindo a carta com dados do arquivo cujo nome está na posicao i do vetor de arquivos do diretorio
 				cartaconceito[i] = repositorio.obterCartaConceito(dificuldade + File.separator + somenteArquivosProperties.get(i));; 	
 			}
@@ -182,7 +182,7 @@ public class BaralhoCartas{
 
 		ArrayList <String> somenteArquivosProperties = new ArrayList <String>();
 		for (int i=0;i<arquivosDiretorio.length;i++){
-			if((arquivosDiretorio[i].endsWith(".properties")) && (selecionarCartaProblema(cartasProblemaSelecionadas,arquivosDiretorio[i])==true)) { // testando se arquivo do diretório é .properties e se carta foi selecionada
+			if((arquivosDiretorio[i].endsWith(".properties")) && (selecionarCartaProblema(cartasProblemaSelecionadas,arquivosDiretorio[i])==true)){ // testando se arquivo do diretório é .properties e se carta foi selecionada
 				somenteArquivosProperties.add(arquivosDiretorio[i]); // adciona arquivo à lista de array de arquivos properties conforme cartas selecionadas para o jogo
 			}
 		}
@@ -192,7 +192,7 @@ public class BaralhoCartas{
 		CartaPenalizacao [] cartaproblema = new CartaPenalizacao[getNumeroTotalProblemas()]; // vetor que aloja cartas problema do jogo
 
 		for(int i=0; i<somenteArquivosProperties.size(); i++){// irá abrir todos os arquivos e extrair dados deles
-			try {
+			try{
 				// construindo a carta com dados do arquivo cujo nome está na posicao i do vetor de arquivos do diretorio	
 				cartaproblema[i] = repositorio.obterCartaPenalizacao(dificuldade + File.separator + somenteArquivosProperties.get(i));
 			}
@@ -284,7 +284,7 @@ public class BaralhoCartas{
 			baralho[posicaoCarta]=null;
 			return temporaria;
 		}
-		else {
+		else{
 			return null;
 		}
 	}

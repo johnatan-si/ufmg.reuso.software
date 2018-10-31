@@ -40,7 +40,7 @@ import javax.swing.SwingConstants;
  * Ou instanciando a classe ScreenCreateProject como uma janela de diálogo.
  * 
  */
-public class ScreenCreateProject extends JDialog implements ActionListener {
+public class ScreenCreateProject extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -56,7 +56,7 @@ public class ScreenCreateProject extends JDialog implements ActionListener {
 	 * Construtor da janela inserção dos nomes dos jogadores
 	 * @param tabuleiro - tabueleiro do jogo atual 
 	 */
-	public ScreenCreateProject(ScreenTabuleiro tabuleiro) {
+	public ScreenCreateProject(ScreenTabuleiro tabuleiro){
 		super(tabuleiro);
 
 		this.setLocationRelativeTo(tabuleiro);
@@ -75,7 +75,7 @@ public class ScreenCreateProject extends JDialog implements ActionListener {
 		JTextField text;
 		
 
-		for (int i = 0; i < jogadores.size(); i++) {
+		for (int i = 0; i < jogadores.size(); i++){
 
 			label = new JLabel(jogadores.elementAt(i));
 			label.setBounds(10, i * dim.height + 10, dim.width, dim.height);
@@ -164,9 +164,9 @@ public class ScreenCreateProject extends JDialog implements ActionListener {
 	 * coloca-os no vetor de saída,
 	 * */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 
-		if (e.getActionCommand() == "OK") {
+		if (e.getActionCommand() == "OK"){
 			getReturn();
 			ScreenCreateProject.this.dispose();
 		}
@@ -179,11 +179,11 @@ public class ScreenCreateProject extends JDialog implements ActionListener {
 	 * nomes padrão Jogador1 e Jogador2.
 	 * @throws IOException 
 	 */
-	public String [] getReturn() {
+	public String [] getReturn(){
 
 		/*jogadores.clear();
-		for (int i = 0; i < textJogadores.size(); i++) {
-			if (textJogadores.get(i).getText().compareTo("") != 0) {
+		for (int i = 0; i < textJogadores.size(); i++){
+			if (textJogadores.get(i).getText().compareTo("") != 0){
 				jogadores.add(textJogadores.get(i).getText());
 			}
 		}*/
@@ -198,7 +198,7 @@ public class ScreenCreateProject extends JDialog implements ActionListener {
 		retorno[1]=nome;
 		retorno[2]=descricao;
 		
-		try {
+		try{
 			String nomeArquivo = "P"+retorno[0]+".properties";
 			ScreenControl.nomeProjeto = nomeArquivo;
 			BufferedWriter br;
@@ -208,7 +208,7 @@ public class ScreenCreateProject extends JDialog implements ActionListener {
 			br.write("texto = "+descricao+"\n"); 
 			br.close(); 
 			
-		} catch (IOException e) {
+		} catch (IOException e){
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
@@ -223,7 +223,7 @@ public class ScreenCreateProject extends JDialog implements ActionListener {
 	 * para construção da GUI
 	 * @param tabuleiro - tabueliro do jogo atual
 	 */
-	public static ScreenCreateProject createAndShowGetCProject(ScreenTabuleiro tabuleiro) {
+	public static ScreenCreateProject createAndShowGetCProject(ScreenTabuleiro tabuleiro){
 
 		// Cria e configura a tela.
 		ScreenCreateProject scr = new ScreenCreateProject(tabuleiro);
@@ -243,15 +243,15 @@ public class ScreenCreateProject extends JDialog implements ActionListener {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
 		final ScreenTabuleiro tabuleiro = ScreenTabuleiro.createAndShowTabuleiro(null, null);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {			
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){			
 			@Override
-			public void run() {
+			public void run(){
 				String[] retorno = (createAndShowGetCProject(tabuleiro).getReturn());
 				  
 				

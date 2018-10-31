@@ -36,7 +36,7 @@ import javax.swing.JPanel;
  *	Ou instanciando a classe ScreenGamers como uma janela de diálogo.
  * 
  */
-public class ScreenOrderGamers extends JDialog implements ActionListener {
+public class ScreenOrderGamers extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,7 @@ public class ScreenOrderGamers extends JDialog implements ActionListener {
 	 * @param tabuleiro - Tabuleiro do jogo atual
 	 * @param nomeJogadores  - String com o nome dos jogadores na ordem das jogadas.
 	 */
-	public ScreenOrderGamers(ScreenTabuleiro tabuleiro, String[] nomeJogadores) {
+	public ScreenOrderGamers(ScreenTabuleiro tabuleiro, String[] nomeJogadores){
 		super(tabuleiro);
 				
 		setLayout(new BorderLayout());
@@ -106,14 +106,14 @@ public class ScreenOrderGamers extends JDialog implements ActionListener {
 	 * 
 	 * */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 		ScreenOrderGamers.this.dispose();
 	}
 	//=====================================================================================//
 	/**
 	 * Retorna sempre true, pois a tela foi mostrada.
 	 */
-	public boolean getReturn() {
+	public boolean getReturn(){
 		return true;
 	}
 
@@ -124,7 +124,7 @@ public class ScreenOrderGamers extends JDialog implements ActionListener {
 	 * @param tabuleiro - tabuleiro atual do jogo. 
 	 */
 	public static ScreenOrderGamers createAndShowGetGamers(
-			ScreenTabuleiro tabuleiro, String[] nomeJogadores) {
+			ScreenTabuleiro tabuleiro, String[] nomeJogadores){
 
 		// Cria e configura a tela.
 		ScreenOrderGamers scr = new ScreenOrderGamers(tabuleiro, nomeJogadores);
@@ -142,16 +142,16 @@ public class ScreenOrderGamers extends JDialog implements ActionListener {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
 		final ScreenTabuleiro tabuleiro = ScreenTabuleiro.createAndShowTabuleiro(null, null);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
-				boolean retorno = (createAndShowGetGamers(tabuleiro, new String[] {
+			public void run(){
+				boolean retorno = (createAndShowGetGamers(tabuleiro, new String[]{
 						"Alisson","Eduardo" , "Rafael","Stephanie"  }).getReturn());
 
 				System.out.println(retorno);

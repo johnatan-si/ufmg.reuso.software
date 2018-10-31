@@ -52,7 +52,7 @@ import br.ufmg.reuso.negocio.carta.CartaPenalizacao;
  *  Não possui nenhum retorno além da representação visual da carta.
  *  
  */
-public class ComponentCard extends JPanel {
+public class ComponentCard extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 
@@ -93,7 +93,7 @@ public class ComponentCard extends JPanel {
 	 * @param tabuleiro - O tabuleiro atual. Pode ser obtido pela chamada de ScreenInteraction.getTabuleiro()
 	 * 
 	 */
-	public ComponentCard(Carta carta, ScreenTabuleiro tabuleiro) {
+	public ComponentCard(Carta carta, ScreenTabuleiro tabuleiro){
 
 		this(carta, tabuleiro, new Dimension(190, 240));
 
@@ -106,7 +106,7 @@ public class ComponentCard extends JPanel {
 	 * @param tabuleiro - O tabuleiro atual. Pode ser obtido pela chamada de ScreenInteraction.getTabuleiro()	 * 
 	 * @param dim - Dimension com as dimensões que a carta deve assimir
 	 */
-	public ComponentCard(Carta carta, ScreenTabuleiro tabuleiro, Dimension dim) {
+	public ComponentCard(Carta carta, ScreenTabuleiro tabuleiro, Dimension dim){
 
 		this.card = carta;
 
@@ -129,7 +129,7 @@ public class ComponentCard extends JPanel {
 	/**
 	 * Chama os construtores dos paineis. 
 	 */
-	private void createPanels() {
+	private void createPanels(){
 
 		panelCenter = getPanelCenter();
 		add(panelCenter, BorderLayout.CENTER);
@@ -140,7 +140,7 @@ public class ComponentCard extends JPanel {
  	/**
 	 * @return JPanel  - painel com a pintura da carta
 	 */
-	JPanel getPanelCenter() {
+	JPanel getPanelCenter(){
 
 		Carta carta = card;
 
@@ -181,7 +181,7 @@ public class ComponentCard extends JPanel {
 			panel.add(sliderPaneDesc);
 		}
 		
-		if (card instanceof CartaEngenheiro) {
+		if (card instanceof CartaEngenheiro){
 			CartaEngenheiro cartaEngenheiro = (CartaEngenheiro) card;
 
 			lblType.setText("Engenheiro");
@@ -201,7 +201,7 @@ public class ComponentCard extends JPanel {
 				ImageIcon img = null;
 				img = (getImageScalable(path, 0, mySize.height * 24 / 100));
 				
-				if (img == null) {
+				if (img == null){
 					img = getImageScalable(ScreenInteraction.imagePath
 							+ "smile.png", 0, mySize.height * 24 / 100);
 				}
@@ -259,7 +259,7 @@ public class ComponentCard extends JPanel {
 
 		}
 		//#ifdef ConceptCard
-		else if (card instanceof CartaBonificacao) {
+		else if (card instanceof CartaBonificacao){
 			{
 				CartaBonificacao cartaConceito = (CartaBonificacao) card;
 
@@ -289,7 +289,7 @@ public class ComponentCard extends JPanel {
 
 		}
 		//#endif
-		else if (card instanceof CartaPenalizacao) {
+		else if (card instanceof CartaPenalizacao){
 
 			{
 				CartaPenalizacao cartaProblema = (CartaPenalizacao) card;
@@ -348,10 +348,10 @@ public class ComponentCard extends JPanel {
 	 * 
 	 * 
 	 */
-	private ComponentAdapter getComponentAdapter() {
+	private ComponentAdapter getComponentAdapter(){
 
-		ComponentAdapter adapter = new ComponentAdapter() {
-			public void componentResized(ComponentEvent e) {
+		ComponentAdapter adapter = new ComponentAdapter(){
+			public void componentResized(ComponentEvent e){
 
 				ComponentCard.this.mySize = ComponentCard.this.getSize();
 				updateBounds();
@@ -369,7 +369,7 @@ public class ComponentCard extends JPanel {
 	/**
 	 * Método responsável por posicionar os objetos na tela com base no tamanho total da tela e no tamanho percentual dos objetos. 
 	 */
-	void updateBounds() {
+	void updateBounds(){
 		int x, y, width, height, xgap, ygap;
 		xgap = x = mySize.width * 5 / 100; // 5% para borda esquerda
 		ygap = y = mySize.height * 3 / 100;
@@ -383,7 +383,7 @@ public class ComponentCard extends JPanel {
 		lblCode.setBounds(x, y, width, height);
 
 		// Verifica o tipo de carta
-		if (card instanceof CartaEngenheiro) {
+		if (card instanceof CartaEngenheiro){
 
 			ygap = mySize.height * 2 / 100;
 			y += height;
@@ -432,7 +432,7 @@ public class ComponentCard extends JPanel {
 
 		}
 		//#ifdef ConceptCard
-		else if (card instanceof CartaBonificacao) {
+		else if (card instanceof CartaBonificacao){
 
 			y += height + ygap;
 			x = xgap;
@@ -448,7 +448,7 @@ public class ComponentCard extends JPanel {
 
 		}
 		//#endif
-		else if (card instanceof CartaPenalizacao) {
+		else if (card instanceof CartaPenalizacao){
 
 			y += height + ygap;
 			x = xgap;
@@ -485,20 +485,20 @@ public class ComponentCard extends JPanel {
 	 * Caso a construção da imagem esteja tornando o sistema lento pode-se mudar a constante Image.SCALE_SMOOTH no fim do método para corresponder uma renderização mais rápida da imagem.
 	 * 
 	 */
-	public static ImageIcon getImageScalable(String path, int x, int y) {
+	public static ImageIcon getImageScalable(String path, int x, int y){
 
 		BufferedImage img = null;
 
-		try {
+		try{
 
 			File fl = new File(path);
-			if (fl.isFile()) {
+			if (fl.isFile()){
 				img = ImageIO.read(fl);
-			} else {
+			} else{
 				System.err.println("Couldn't find file: " + path);
 				return null;
 			}
-		} catch (Exception e) {
+		} catch (Exception e){
 			e.printStackTrace();
 			System.err.println("Couldn't find file: " + path);
 			return null;
@@ -509,12 +509,12 @@ public class ComponentCard extends JPanel {
 
 		Image menor = null;
 		double fator = 0;
-		if (x != 0 || y != 0) {
+		if (x != 0 || y != 0){
 
-			if (x == 0) {
+			if (x == 0){
 				fator = (double) y / img.getHeight(null);
 				//System.out.println("fator y= " + fator);
-			} else {
+			} else{
 				fator = (double) x / img.getWidth(null);
 				//System.out.println("fator x = " + fator);
 			}
@@ -535,7 +535,7 @@ public class ComponentCard extends JPanel {
 	/**
 	 * @return the size
 	 */
-	public Dimension getMySize() {
+	public Dimension getMySize(){
 		return mySize;
 	}
 
@@ -544,7 +544,7 @@ public class ComponentCard extends JPanel {
 	 * @param size
 	 *            the size to set
 	 */
-	public void setMySize(Dimension size) {
+	public void setMySize(Dimension size){
 		this.mySize = size;
 	}
 

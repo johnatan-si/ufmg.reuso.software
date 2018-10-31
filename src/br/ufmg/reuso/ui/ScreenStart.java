@@ -22,7 +22,7 @@ import javax.swing.JPanel;
  *         Ou instanciando a classe ScreenModo como uma janela de diálogo.
  * 
  */
-public class ScreenStart extends JDialog implements ActionListener {
+public class ScreenStart extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,7 +36,7 @@ public class ScreenStart extends JDialog implements ActionListener {
 	/**
 	 * Construtor da janela de seleção início ou configuração
 	 */
-	public ScreenStart(ScreenTabuleiro tabuleiro) {
+	public ScreenStart(ScreenTabuleiro tabuleiro){
 		super(tabuleiro);
 
 		this.setLayout(new BorderLayout());
@@ -104,18 +104,18 @@ public class ScreenStart extends JDialog implements ActionListener {
 	/** Controlador de eventos dos botões. */
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 
-		if (e.getActionCommand() == "config") {			
+		if (e.getActionCommand() == "config"){			
 			stringReturn = e.getActionCommand();
 			ScreenTabuleiro tabuleiro = ScreenTabuleiro.createAndShowTabuleiro(null, null);
 			ScreenModo.createAndShowGetModo(tabuleiro).getModeGame();
 			
-		} else if (e.getActionCommand() == "Start") {
+		} else if (e.getActionCommand() == "Start"){
 			ScreenStart.this.dispose();	
 			stringReturn = e.getActionCommand();
 			
-		} else {
+		} else{
 			ScreenTabuleiro tabuleiro = ScreenTabuleiro.createAndShowTabuleiro(null, null);
 			ScreenCreateProject.createAndShowGetCProject(tabuleiro);
 			ScreenStart.this.dispose();	
@@ -128,7 +128,7 @@ public class ScreenStart extends JDialog implements ActionListener {
 	/**
 	 * Retorna o modo do jogo selecionado na tela
 	 */
-	public String getReturn() {
+	public String getReturn(){
 		return stringReturn;
 	}
 
@@ -141,11 +141,11 @@ public class ScreenStart extends JDialog implements ActionListener {
 	 * @return - ImageIcon para ser inserido em um JLabel
 	 */
 	
-	protected static ImageIcon createImageIcon(String path) {
+	protected static ImageIcon createImageIcon(String path){
 		File fl = new File(path);
-		if (fl.isFile()) {
+		if (fl.isFile()){
 			return new ImageIcon(path);
-		} else {
+		} else{
 			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
@@ -160,7 +160,7 @@ public class ScreenStart extends JDialog implements ActionListener {
 	 * @return - tela com as opções.
 	 */
 	
-	public static ScreenStart createAndShowGetModo(ScreenTabuleiro tabuleiro) {
+	public static ScreenStart createAndShowGetModo(ScreenTabuleiro tabuleiro){
 
 		// Cria e configura a tela.
 		ScreenStart scr = new ScreenStart(tabuleiro);
@@ -174,14 +174,14 @@ public class ScreenStart extends JDialog implements ActionListener {
 		return scr;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		final ScreenTabuleiro tabuleiro = ScreenTabuleiro
 				.createAndShowTabuleiro(null, null);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			
 			@Override
-			public void run() {
+			public void run(){
 				System.out.println(createAndShowGetModo(tabuleiro).getReturn());
 			}
 		});

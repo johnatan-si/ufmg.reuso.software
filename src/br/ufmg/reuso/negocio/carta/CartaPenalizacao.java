@@ -75,7 +75,7 @@ public class CartaPenalizacao extends Carta{
 		this.duracaoEfeito = duracaoEfeito;
 	}
 
-	public String getCondicaoProblema() {
+	public String getCondicaoProblema(){
 		return condicaoProblema;
 	}
 

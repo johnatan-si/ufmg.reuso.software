@@ -39,7 +39,7 @@ import javax.swing.JPanel;
  *         Ou instanciando a classe ScreenGamers como uma janela de diálogo.
  * 
  */
-public class ScreenGenericChoose extends JDialog implements ActionListener {
+public class ScreenGenericChoose extends JDialog implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
@@ -55,7 +55,7 @@ public class ScreenGenericChoose extends JDialog implements ActionListener {
 	 *            - Vetor de string com o nome dos jogadores
 	 * @param jogadorAtual - Será retirado da lista de escolha
 	 */
-	public ScreenGenericChoose(String messenger, String[] options, String defaultOption) {
+	public ScreenGenericChoose(String messenger, String[] options, String defaultOption){
 		super();
 		
 		gamerReturn = "";
@@ -78,7 +78,7 @@ public class ScreenGenericChoose extends JDialog implements ActionListener {
 
 		int i;
 		JButton btnJogador = null;
-		for (i = 0; i < options.length; i++) {
+		for (i = 0; i < options.length; i++){
 			
 				btnJogador = new JButton(options[i]);
 				btnJogador.addActionListener(this);
@@ -114,7 +114,7 @@ public class ScreenGenericChoose extends JDialog implements ActionListener {
 	 * 
 	 * */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 		gamerReturn = e.getActionCommand();
 		ScreenGenericChoose.this.dispose();
 	}
@@ -127,7 +127,7 @@ public class ScreenGenericChoose extends JDialog implements ActionListener {
 	 * @return Sting como nome do jogador selecionado.
 	 * 
 	 */
-	public String getReturn() {
+	public String getReturn(){
 		return gamerReturn;
 	}
 
@@ -138,7 +138,7 @@ public class ScreenGenericChoose extends JDialog implements ActionListener {
 	 * @param jogadorAtual nome do jogador atual - será retirado da lista.
 	 */
 	public static ScreenGenericChoose createAndShowGenericChoose(String messenger,
-			String[] options, String defaultOption) {
+			String[] options, String defaultOption){
 
 		// Cria e configura a tela.
 		ScreenGenericChoose scr = new ScreenGenericChoose(messenger, options, defaultOption);
@@ -156,15 +156,15 @@ public class ScreenGenericChoose extends JDialog implements ActionListener {
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
-				String retorno = (createAndShowGenericChoose("Selecione o jogador", new String[] {
+			public void run(){
+				String retorno = (createAndShowGenericChoose("Selecione o jogador", new String[]{
 						"Alisson", "Rodrigo", "Michel", "Eduardo", "Rafael",
 						"Stephanie" }, "Rodrigo").getReturn());
 

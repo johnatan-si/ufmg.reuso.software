@@ -15,29 +15,29 @@ import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.jogador.Jogador;
 import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
 
-public class JogadorTest {
+public class JogadorTest{
 
 	Jogador jogador;
 	
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 		jogador  = new Jogador(null, 0);
 		
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 		jogador = null;
 	}
 
 	@Test
-	public void testJogador() {
+	public void testJogador(){
 		assertNotNull(jogador);
 	}
 
 	@Test
-	public void testContratarEngenheiro() {
+	public void testContratarEngenheiro(){
 		CartaEngenheiro cartaRecebida = new CartaEngenheiro(null, null, null, 0, 0, 0); 
 		jogador.contratarEngenheiro(cartaRecebida ,1);
 		assertTrue(jogador.removerCarta(cartaRecebida));
@@ -45,7 +45,7 @@ public class JogadorTest {
 
 	@Ignore
 	@Test
-	public void testAnalisarPontuacao() {
+	public void testAnalisarPontuacao(){
 
 		int pontuacao = jogador.analisarPontuacao();		
 		assertTrue(pontuacao <= 5);
@@ -53,7 +53,7 @@ public class JogadorTest {
 	}
 	
 	@Test
-	public void testReceberCarta() {
+	public void testReceberCarta(){
 		Carta carta = new CartaEngenheiro(null, null, null, 0, 0, 0);
 		int num = jogador.getNumeroCartasMaoAtual();
 		jogador.receberCarta(carta);
@@ -64,7 +64,7 @@ public class JogadorTest {
 	}
 	
 	@Test
-	public void testRetirarCarta() {
+	public void testRetirarCarta(){
 		Carta carta = new CartaEngenheiro(null, null, null, 0, 0, 0);
 		int num = jogador.getNumeroCartasMaoAtual();
 		jogador.receberCarta(carta);
@@ -73,30 +73,30 @@ public class JogadorTest {
 	}
 
 	@Test
-	public void testRemoverCarta() {
+	public void testRemoverCarta(){
 		CartaEngenheiro cartaRecebida =new CartaEngenheiro(null, null, null, 0, 0, 0); 
 		jogador.contratarEngenheiro(cartaRecebida , 0);
 		assertTrue(jogador.removerCarta(cartaRecebida));
 	}
 
 	@Test
-	public void testMostrarCartaMao() {
+	public void testMostrarCartaMao(){
 		jogador.mostrarCartaMao();		
 	}
 
 	@Test
-	public void testContarModuloJaIntegrado() {
+	public void testContarModuloJaIntegrado(){
 		jogador.getTabuleiro().getMesas()[0].setModuloJaIntegrado(true)	;
 		assertEquals(1, jogador.contarModuloJaIntegrado());		
 	}
 
 	@Test
-	public void testGetTabuleiro() {
+	public void testGetTabuleiro(){
 		
 	}
 
 	@Test
-	public void testSetTabuleiro() {
+	public void testSetTabuleiro(){
 		
 		jogador.setTabuleiro(null);			
 		assertNull(jogador.getTabuleiro());
@@ -105,7 +105,7 @@ public class JogadorTest {
 	}
 
 	@Test
-	public void testGetNumeroCartasMaoAtual() {
+	public void testGetNumeroCartasMaoAtual(){
 		Carta carta = new CartaEngenheiro(null, null, null, 0, 0, 0);
 		int num = jogador.getNumeroCartasMaoAtual();
 		jogador.receberCarta(carta);		
@@ -113,7 +113,7 @@ public class JogadorTest {
 	}
 
 	@Test
-	public void testSetNumeroCartasMaoAtual() {
+	public void testSetNumeroCartasMaoAtual(){
 		
 		jogador.setNumeroCartasMaoAtual(5);
 		
@@ -122,31 +122,31 @@ public class JogadorTest {
 	}
 
 	@Test
-	public void testGetNome() {
+	public void testGetNome(){
 		jogador.setNome("Teste");
 		assertEquals("Teste", jogador.getNome());
 	}
 
 	@Test
-	public void testSetNome() {
+	public void testSetNome(){
 		jogador.setNome("Teste");
 		assertEquals("Teste", jogador.getNome());	
 	}
 
 	@Test
-	public void testGetSaldo() {
+	public void testGetSaldo(){
 		jogador.setSaldo(10);
 		assertEquals(10, jogador.getSaldo());
 	}
 
 	@Test
-	public void testSetSaldo() {
+	public void testSetSaldo(){
 		jogador.setSaldo(10);
 		assertEquals(10, jogador.getSaldo());
 	}
 
 	@Test
-	public void testGetCartas() {
+	public void testGetCartas(){
 		Carta [] cartas = new Carta[5];
 		cartas[0] = new CartaEngenheiro(null, null, null, 0, 0, 0);		
 		jogador.setCartas(cartas);
@@ -154,7 +154,7 @@ public class JogadorTest {
 	}
 
 	@Test
-	public void testSetCartas() {
+	public void testSetCartas(){
 		Carta [] cartas = new Carta[5];
 		cartas[0] = new CartaEngenheiro(null, null, null, 0, 0, 0);		
 		jogador.setCartas(cartas);
@@ -162,13 +162,13 @@ public class JogadorTest {
 	}
 
 	@Test
-	public void testIsDadoJogado() {
+	public void testIsDadoJogado(){
 		jogador.setDadoJogado(true);
 		assertTrue(jogador.isDadoJogado());
 	}
 
 	@Test
-	public void testSetDadoJogado() {
+	public void testSetDadoJogado(){
 		jogador.setDadoJogado(true);
 		assertTrue(jogador.isDadoJogado());
 	}

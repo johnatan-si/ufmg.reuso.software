@@ -48,7 +48,7 @@ public class ScreenLaunchDice extends JDialog implements ActionListener{
 	 * Construtor da janela de solicitação de lançamento dos dados
 	 * @param tabuleiro 
 	 */
-	public ScreenLaunchDice(ScreenTabuleiro tabuleiro, String NomeDoJogador, String Mensagem) {
+	public ScreenLaunchDice(ScreenTabuleiro tabuleiro, String NomeDoJogador, String Mensagem){
 		super(tabuleiro);
 		
 		this.setLocationRelativeTo(tabuleiro);
@@ -94,7 +94,7 @@ public class ScreenLaunchDice extends JDialog implements ActionListener{
 			}
 			
 		}
-		else {
+		else{
 			Mensagem1 = Mensagem;
 		}
 		// Rótulo com a mensagem
@@ -133,7 +133,7 @@ public class ScreenLaunchDice extends JDialog implements ActionListener{
 	//===========================================================================//
 	/** Controlador de eventos dos botões. */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e){
 
 			ScreenLaunchDice.this.dispose();
 			boolReturn = true;
@@ -145,7 +145,7 @@ public class ScreenLaunchDice extends JDialog implements ActionListener{
 	 * Retorna true se o jogador pressionou jogar dado ou 
 	 * false se o jogador fechou a janela.
 	 */
-	public boolean getReturn() {
+	public boolean getReturn(){
 		return boolReturn;
 	}
 
@@ -156,7 +156,7 @@ public class ScreenLaunchDice extends JDialog implements ActionListener{
 	 * Recebe um string com o nome do jogador e retorna a caixa de dialogo.
 	 * @param tabuleiro 
 	 */
-	public static ScreenLaunchDice createAndShowLaunchDice(ScreenTabuleiro tabuleiro, String NomeDoJogador, String Mensagem) {
+	public static ScreenLaunchDice createAndShowLaunchDice(ScreenTabuleiro tabuleiro, String NomeDoJogador, String Mensagem){
 
 		// Cria e configura a tela.
 		ScreenLaunchDice scr = new ScreenLaunchDice(tabuleiro, NomeDoJogador, Mensagem);
@@ -174,14 +174,14 @@ public class ScreenLaunchDice extends JDialog implements ActionListener{
 	/****************************************************************************/
 	/**************************** TEST FUNCTION *********************************/
 	/****************************************************************************/
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		// O uso da Thread com a utilização de invokeLater tem a
 		// função da construção total da GUI para somente então
 		// apresentá-la na tela.
 		final ScreenTabuleiro tabuleiro = ScreenTabuleiro.createAndShowTabuleiro(null, null);
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
-			public void run() {
+			public void run(){
 				System.out.println(createAndShowLaunchDice(tabuleiro, "Alisson", "Lance os dados para definir a ordem do jogo!").getReturn());
 				System.out.println(createAndShowLaunchDice(tabuleiro, "Alisson","Voc� empatou com outro jogador! Lance os dados novamente!").getReturn());
 

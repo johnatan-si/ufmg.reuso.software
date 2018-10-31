@@ -10,100 +10,100 @@ import org.junit.Test;
 
 import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 
-public class CartaEngenheiroTest {
+public class CartaEngenheiroTest{
 	
 	CartaEngenheiro carta;
 	
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() throws Exception{
 		carta = new CartaEngenheiro("", "", "", 0, 0, 0);
 		
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception{
 		carta = null;
 	}
 
 	@Test
-	public void testMostrarCarta() {
+	public void testMostrarCarta(){
 		carta.mostrarCarta();		
 		
 	}
 
 	@Test
-	public void testCartaEngenheiro() {
+	public void testCartaEngenheiro(){
 		assertNotNull(carta);		
 	}
 
 	@Test
-	public void testGetNomeEngenheiro() {
+	public void testGetNomeEngenheiro(){
 		carta.setNomeEngenheiro("NomeTeste");
 		assertEquals("NomeTeste", carta.getNomeEngenheiro());
 	}
 
 	@Test
-	public void testSetNomeEngenheiro() {
+	public void testSetNomeEngenheiro(){
 		carta.setNomeEngenheiro("NomeTeste");
 		assertEquals("NomeTeste", carta.getNomeEngenheiro());
 	}
 
 	@Test
-	public void testGetSalarioEngenheiro() {
+	public void testGetSalarioEngenheiro(){
 		carta.setSalarioEngenheiro(100);
 		assertEquals(100, carta.getSalarioEngenheiro());
 	}
 
 	@Test
-	public void testSetSalarioEngenheiro() {
+	public void testSetSalarioEngenheiro(){
 		carta.setSalarioEngenheiro(100);
 		assertEquals(100, carta.getSalarioEngenheiro());
 	}
 
 	@Test
-	public void testGetHabilidadeEngenheiro() {
+	public void testGetHabilidadeEngenheiro(){
 		carta.setHabilidadeEngenheiro(5);
 		assertEquals(5, carta.getHabilidadeEngenheiro());
 	}
 
 	@Test
-	public void testSetHabilidadeEngenheiro() {
+	public void testSetHabilidadeEngenheiro(){
 		carta.setHabilidadeEngenheiro(5);
 		assertEquals(5, carta.getHabilidadeEngenheiro());
 	}
 
 	@Test
-	public void testGetMaturidadeEngenheiro() {
+	public void testGetMaturidadeEngenheiro(){
 		carta.setMaturidadeEngenheiro(3);
 		assertEquals(3, carta.getMaturidadeEngenheiro());
 	}
 
 	@Test
-	public void testSetMaturidadeEngenheiro() {
+	public void testSetMaturidadeEngenheiro(){
 		carta.setMaturidadeEngenheiro(3);
 		assertEquals(3, carta.getMaturidadeEngenheiro());
 	}
 
 	@Test
-	public void testIsEngenheiroTrabalhouNestaRodada() {
+	public void testIsEngenheiroTrabalhouNestaRodada(){
 		carta.setEngenheiroTrabalhouNestaRodada(true);
 		assertTrue(carta.isEngenheiroTrabalhouNestaRodada());
 	}
 
 	@Test
-	public void testSetEngenheiroTrabalhouNestaRodada() {
+	public void testSetEngenheiroTrabalhouNestaRodada(){
 		carta.setEngenheiroTrabalhouNestaRodada(true);
 		assertTrue(carta.isEngenheiroTrabalhouNestaRodada());
 	}
 
 	@Test
-	public void testGetHabilidadeEngenheiroAtual() {
+	public void testGetHabilidadeEngenheiroAtual(){
 		carta.setHabilidadeEngenheiroAtual(3);
 		assertEquals(3, carta.getHabilidadeEngenheiroAtual());
 	}
 
 	@Test
-	public void testSetHabilidadeEngenheiroAtual() {
+	public void testSetHabilidadeEngenheiroAtual(){
 		carta.setHabilidadeEngenheiroAtual(3);
 		assertEquals(3, carta.getHabilidadeEngenheiroAtual());
 	}
