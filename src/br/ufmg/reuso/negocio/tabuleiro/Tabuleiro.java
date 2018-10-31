@@ -71,8 +71,7 @@ public class Tabuleiro
 	
 	
 	/*---------------------------------------------------------------------------------------*/
-	public Tabuleiro ()
-	{
+	public Tabuleiro (){
 		this.efeitoPositivoOrcamento=0;								/**não há efeito algum no início do jogo*/
 		
 		efeitoAumentarHabilidadeEngenheiroLater= new ArrayList <String[]>();		
@@ -92,171 +91,138 @@ public class Tabuleiro
 		
 		
 		
-		for (int i=0;i<NUMERO_MAX_MESAS_TABULEIRO;i++)
-		{
+		for (int i=0;i<NUMERO_MAX_MESAS_TABULEIRO;i++){
 			mesas [i]= new Mesa();							//inicializando mesas
 		}
 		
 	}
 	
-	public Mesa[] getMesas() 
-	{
+	public Mesa[] getMesas(){
 		return mesas;
 	}
 
-	public void setMesas(Mesa[] mesas) 
-	{
+	public void setMesas(Mesa[] mesas){
 		this.mesas = mesas;
 	}
 
-	public int getEfeitoPositivoOrcamento() 
-	{
+	public int getEfeitoPositivoOrcamento(){
 		return efeitoPositivoOrcamento;
 	}
 
-	public void setEfeitoPositivoOrcamento(int efeitoOrcamento)
-	{
+	public void setEfeitoPositivoOrcamento(int efeitoOrcamento){
 		this.efeitoPositivoOrcamento = efeitoOrcamento;
 	}
 	
-	public ArrayList<String[]> getEfeitoAumentarHabilidadeEngenheiroLater() 
-	{
+	public ArrayList<String[]> getEfeitoAumentarHabilidadeEngenheiroLater(){
 		return efeitoAumentarHabilidadeEngenheiroLater;
 	}
 
-	public void setEfeitoAumentarHabilidadeEngenheiroLater 	(ArrayList<String[]> efeitoAumentarHabilidadeEngenheiroLater)
-	{
+	public void setEfeitoAumentarHabilidadeEngenheiroLater 	(ArrayList<String[]> efeitoAumentarHabilidadeEngenheiroLater){
 		this.efeitoAumentarHabilidadeEngenheiroLater = efeitoAumentarHabilidadeEngenheiroLater;
 	}
 
-	public boolean isEfeitoModuloIntegradoNeutralizadoValidacao() 
-	{
+	public boolean isEfeitoModuloIntegradoNeutralizadoValidacao(){
 		return efeitoModuloIntegradoNeutralizadoValidacao;
 	}
 
-	public void setEfeitoModuloIntegradoNeutralizadoValidacao(boolean efeitoModuloIntegradoNeutralizadoValidacao) 
-	{
+	public void setEfeitoModuloIntegradoNeutralizadoValidacao(boolean efeitoModuloIntegradoNeutralizadoValidacao){
 		this.efeitoModuloIntegradoNeutralizadoValidacao = efeitoModuloIntegradoNeutralizadoValidacao;
 	}
 
-	public boolean isEfeitoHelpArtifactsNeutralizadoValidacao() 
-	{
+	public boolean isEfeitoHelpArtifactsNeutralizadoValidacao(){
 		return efeitoHelpArtifactsNeutralizadoValidacao;
 	}
 
-	public void setEfeitoHelpArtifactsNeutralizadoValidacao(boolean efeitoHelpArtifactsNeutralizadoValidacao) 
-	{
+	public void setEfeitoHelpArtifactsNeutralizadoValidacao(boolean efeitoHelpArtifactsNeutralizadoValidacao){
 		this.efeitoHelpArtifactsNeutralizadoValidacao = efeitoHelpArtifactsNeutralizadoValidacao;
 	}
 
-	public boolean isEfeitoProblemaArtefatoCodigoNeutralizado() 
-	{
+	public boolean isEfeitoProblemaArtefatoCodigoNeutralizado(){
 		return efeitoProblemaArtefatoCodigoNeutralizado;
 	}
 
-	public void setEfeitoProblemaArtefatoCodigoNeutralizado(boolean efeitoProblemaArtefatoCodigoNeutralizado) 
-	{
+	public void setEfeitoProblemaArtefatoCodigoNeutralizado(boolean efeitoProblemaArtefatoCodigoNeutralizado){
 		this.efeitoProblemaArtefatoCodigoNeutralizado = efeitoProblemaArtefatoCodigoNeutralizado;
 	}
 
-	public boolean isEfeitoProblemaArtefatoRastroNeutralizado() 
-	{
+	public boolean isEfeitoProblemaArtefatoRastroNeutralizado(){
 		return efeitoProblemaArtefatoRastroNeutralizado;
 	}
 
-	public void setEfeitoProblemaArtefatoRastroNeutralizado(boolean efeitoProblemaArtefatoRastroNeutralizado) 
-	{
+	public void setEfeitoProblemaArtefatoRastroNeutralizado(boolean efeitoProblemaArtefatoRastroNeutralizado){
 		this.efeitoProblemaArtefatoRastroNeutralizado = efeitoProblemaArtefatoRastroNeutralizado;
 	}
 
-	public boolean isEfeitoProblemaArtefatoRequisitosNeutralizado()
-	{
+	public boolean isEfeitoProblemaArtefatoRequisitosNeutralizado(){
 		return efeitoProblemaArtefatoRequisitosNeutralizado;
 	}
 
-	public void setEfeitoProblemaArtefatoRequisitosNeutralizado(boolean efeitoProblemaArtefatoRequisitosNeutralizado) 
-	{
+	public void setEfeitoProblemaArtefatoRequisitosNeutralizado(boolean efeitoProblemaArtefatoRequisitosNeutralizado){
 		this.efeitoProblemaArtefatoRequisitosNeutralizado = efeitoProblemaArtefatoRequisitosNeutralizado;
 	}
 
-	public int getEfeitoAdicionaDificuldadeInspecionarArtefatos() 
-	{
+	public int getEfeitoAdicionaDificuldadeInspecionarArtefatos(){
 		return efeitoAdicionaDificuldadeInspecionarArtefatos;
 	}
 
-	public void setEfeitoAdicionaDificuldadeInspecionarArtefatos(int efeitoAdicionaInspecionarArtefatos) 
-	{
+	public void setEfeitoAdicionaDificuldadeInspecionarArtefatos(int efeitoAdicionaInspecionarArtefatos){
 		this.efeitoAdicionaDificuldadeInspecionarArtefatos = efeitoAdicionaInspecionarArtefatos;
 	}
 
-	public int getEfeitoAdicionaDificuldadeCorrigirArtefatos()
-	{
+	public int getEfeitoAdicionaDificuldadeCorrigirArtefatos(){
 		return efeitoAdicionaDificuldadeCorrigirArtefatos;
 	}
 
-	public void setEfeitoAdicionaDificuldadeCorrigirArtefatos(int efeitoAdicionaCorrigirArtefatos) 
-	{
+	public void setEfeitoAdicionaDificuldadeCorrigirArtefatos(int efeitoAdicionaCorrigirArtefatos){
 		this.efeitoAdicionaDificuldadeCorrigirArtefatos = efeitoAdicionaCorrigirArtefatos;
 	}
 
-	public int getEfeitoAdicionaComplexidadeProjeto()
-	{
+	public int getEfeitoAdicionaComplexidadeProjeto(){
 		return efeitoAdicionaComplexidadeProjeto;
 	}
 
-	public void setEfeitoAdicionaComplexidadeProjeto(int efeitoAdicionaComplexidadeProjeto)
-	{
+	public void setEfeitoAdicionaComplexidadeProjeto(int efeitoAdicionaComplexidadeProjeto){
 		this.efeitoAdicionaComplexidadeProjeto = efeitoAdicionaComplexidadeProjeto;
 	}
 
-	public int getEfeitoAdicionaQualidadeProjeto() 
-	{
+	public int getEfeitoAdicionaQualidadeProjeto(){
 		return efeitoAdicionaQualidadeProjeto;
 	}
 
-	public void setEfeitoAdicionaQualidadeProjeto(int efeitoAdicionaQualidadeProjeto) 
-	{	
+	public void setEfeitoAdicionaQualidadeProjeto(int efeitoAdicionaQualidadeProjeto){	
 		this.efeitoAdicionaQualidadeProjeto = efeitoAdicionaQualidadeProjeto;
 	}
 
-	public ArrayList<String> getEfeitoDemitirEngenheiroLater()
-	{
+	public ArrayList<String> getEfeitoDemitirEngenheiroLater(){
 		return efeitoDemitirEngenheiroLater;
 	}
 
-	public void setEfeitoDemitirEngenheiroLater(ArrayList<String> efeitoDemitirEngenheiroLater) 
-	{
+	public void setEfeitoDemitirEngenheiroLater(ArrayList<String> efeitoDemitirEngenheiroLater){
 		this.efeitoDemitirEngenheiroLater = efeitoDemitirEngenheiroLater;
 	}
 
-	public int getEfeitoNegativoOrcamento()
-	{
+	public int getEfeitoNegativoOrcamento(){
 		return efeitoNegativoOrcamento;
 	}
 
-	public void setEfeitoNegativoOrcamento(int efeitoNegativoOrcamento)
-	{
+	public void setEfeitoNegativoOrcamento(int efeitoNegativoOrcamento){
 		this.efeitoNegativoOrcamento = efeitoNegativoOrcamento;
 	}
 
-	public void alocarMesa(CartaEngenheiro novato, int posicaoMesa)
-	{
+	public void alocarMesa(CartaEngenheiro novato, int posicaoMesa){
 		mesas[posicaoMesa].setCartaMesa(novato);				//inserindo engenheiro novato na mesa conforme a posição escolhida
 		
 		System.out.printf("engenheiro alocado:\n");				// TODO teste
 		mesas[posicaoMesa].getCartaMesa().mostrarCarta();		// TODO utilizado para mostrar a carta de engenheiro de software deste jogador -> ok
 	}
 	
-	public boolean despedirEngenheiro(CartaEngenheiro engDemitido)
-	{
+	public boolean despedirEngenheiro(CartaEngenheiro engDemitido){
 		
-		for(int i=0;i<mesas.length;i++)
-		{
+		for(int i=0;i<mesas.length;i++){
 			if (mesas[i].getCartaMesa()==null)
 				continue;
 			/**comparando a variável código das cartas, caso elas sejam iguais, tenta-se retirar a carta de engenheiro do jogador*/
-			if (mesas[i].getCartaMesa().getCodigoCarta().compareTo(engDemitido.getCodigoCarta())==0)
-			{
+			if (mesas[i].getCartaMesa().getCodigoCarta().compareTo(engDemitido.getCodigoCarta())==0){
 				if (mesas[i].getCartaMesa().isEngenheiroTrabalhouNestaRodada()==true)/**se o engenheiro já trabalhou na rodada, ele não pode ser demitido nessa rodada*/
 				{
 					Jogo.getJogo().setupController.exibirNaoDemiteEngenheiro();

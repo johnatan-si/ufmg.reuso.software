@@ -22,8 +22,7 @@ import br.ufmg.reuso.negocio.mesa.Modulo;
  * @author Michael David
  *
  */
-public interface SetupInteraction 
-{
+public interface SetupInteraction{
 	public static final int EASY = 1; 
 	public static final int MODERATE = 2;
 	public static final int HARD = 3;

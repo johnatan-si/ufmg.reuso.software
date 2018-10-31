@@ -1526,7 +1526,7 @@ public final class Jogo{
 			}
 			
 			case (CardsConstants.ALL_ENGINEERS_NOT_PRODUCE_ARTIFACTS):{
-				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++) {
+				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
 					jogadorAlvo.getTabuleiro().getMesas()[i].setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(cartaUtilizada.getDuracaoEfeito());
 				}
 				break;
@@ -1534,7 +1534,7 @@ public final class Jogo{
 			
 			case (CardsConstants.ALL_ENGINEERS_WITH_SKILL_LESS_THAN_2_NOT_INSPECT_ARTIFACTS):{
 				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
-					if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() < 2) {
+					if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() < 2){
 						jogadorAlvo.getTabuleiro().getMesas()[i].setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(cartaUtilizada.getDuracaoEfeito());
 					}
 				}
@@ -1583,7 +1583,7 @@ public final class Jogo{
 							while (demitiu == false){
 								if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa() != null){
 									 // se o engenheiro trabalhou nesta rodada, significa que estamos no jogadorAtual, demitimos assim mesmo
-									if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().isEngenheiroTrabalhouNestaRodada() == true) {
+									if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().isEngenheiroTrabalhouNestaRodada() == true){
 										jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().setEngenheiroTrabalhouNestaRodada(false);
 									}
 									 // atualizacao da variavel para reusar a funcao abaixo
@@ -1591,7 +1591,7 @@ public final class Jogo{
 									despedirEngenheiro(jogadores[i], jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa());
 									demitiu = true;
 								} 
-								else {
+								else{
 									engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
 								}
 							}
@@ -1606,7 +1606,7 @@ public final class Jogo{
 				int contador = 0;
 				for (int i = 0; i < jogadores.length; i++){
 					for (int j = 0; j < jogadores[i].getTabuleiro().getMesas().length; j++){//conto quantos engenheiros  ele tem
-						if (jogadores[i].getTabuleiro().getMesas()[j].getCartaMesa() != null) {
+						if (jogadores[i].getTabuleiro().getMesas()[j].getCartaMesa() != null){
 							contador++;
 						}
 					}
@@ -1618,13 +1618,13 @@ public final class Jogo{
 							while (demitiu == false){
 								if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa() != null){
 									// se o engenheiro trabalhou nesta rodada, significa que estamos no jogadorAtual, demitimos assim mesmo
-									if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().isEngenheiroTrabalhouNestaRodada() == true) {
+									if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().isEngenheiroTrabalhouNestaRodada() == true){
 										jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().setEngenheiroTrabalhouNestaRodada(false);
 									}
 
 									despedirEngenheiro(jogadores[i], jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa());
 									demitiu = true;
-								} else {
+								} else{
 									engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
 								}
 							}
@@ -1852,11 +1852,7 @@ public final class Jogo{
 				break;
 			}
 
-			case (CardsConstants.LOSE_ALL_ARTIFACTS):/**
-														 * todos os engenheiros
-														 * perdem todos os artefatos
-														 */
-			{
+			case (CardsConstants.LOSE_ALL_ARTIFACTS):{//todos os engenheiros perdem todos os artefatos
 				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ANY_ARTIFACTS);
 				break;
 			}
@@ -2159,7 +2155,7 @@ public final class Jogo{
 						if (jogadores[i].getTabuleiro().getMesas()[j].getCartaMesa() != null)
 							contador++;
 					}
-					if (contador > 2) {// se numero de engenheiros > 2
+					if (contador > 2){// se numero de engenheiros > 2
 						for (int k = 0; k < cartaUtilizada.getQuantidadeSegundoEfeito(); k++){ //demiti-se uma quantidade de engenheiros do jogador
 							Random sorteio = new Random();
 							int engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
@@ -4607,11 +4603,11 @@ public final class Jogo{
 		return max;
 	}
 
-	public void allEngineerLoseArtifacts(Jogador jogador, int quantidadeArtefato, int tipoArtefato) {//Todos os engenheiros perdem artefatos
+	public void allEngineerLoseArtifacts(Jogador jogador, int quantidadeArtefato, int tipoArtefato){//Todos os engenheiros perdem artefatos
 		Random sorteio = new Random();
 		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){// percorrendo mesas dos engenheiros
 			
-			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null) {
+			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null){
 				continue;//se mesa nao tem engenheiro, pula iteracao
 			}
 
@@ -4642,7 +4638,7 @@ public final class Jogo{
 				for (int j = 0; j < quantidadeArtefato; j++){//ira retirar a quantidade de artefato de cadaengenheiro
 					if (tipoArtefato == ANY_ARTIFACTS){//se for qualquer tipo de de artefato a ser retirado
 						boolean retirou = false;
-						while (retirou == false) {//enquanto nao se retirar artefato e existir artefato no tabuleiro, repete-se loop
+						while (retirou == false){//enquanto nao se retirar artefato e existir artefato no tabuleiro, repete-se loop
 							int tipoArtefatoSorteado = sorteio.nextInt(5);
 							/**
 							 * sorteando qual tipo de artefato ira ser retirado

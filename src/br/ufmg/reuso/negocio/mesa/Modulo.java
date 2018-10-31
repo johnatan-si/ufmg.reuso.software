@@ -17,8 +17,8 @@ package br.ufmg.reuso.negocio.mesa;
  *
  */
 
-public class Modulo 
-{
+public class Modulo{
+	
 	private int requisitos;
 	private int desenhos;
 	private int codigos;
@@ -29,92 +29,83 @@ public class Modulo
 	/**
 	 * @return o somatório de todas as variáveis inteiras do módulo.
 	 */
-	public int somatorioModulo()
-	{
+	public int somatorioModulo(){
 		return (getRequisitos()+getDesenhos()+getCodigos()+getRastros()+getAjudas());
 	}
 	
 	
-	public int getRequisitos() 
-	{
+	public int getRequisitos(){
 		return requisitos;
 	}
-	public void setRequisitos(int requisitos) 
-	{
+
+	public void setRequisitos(int requisitos){
 		this.requisitos = requisitos;
 	}
-	public int getDesenhos() 
-	{
+
+	public int getDesenhos(){
 		return desenhos;
 	}
-	public void setDesenhos(int desenhos) 
-	{
+
+	public void setDesenhos(int desenhos){
 		this.desenhos = desenhos;
 	}
-	public int getCodigos() 
-	{
+
+	public int getCodigos(){
 		return codigos;
 	}
-	public void setCodigos(int codigos) 
-	{
+
+	public void setCodigos(int codigos){
 		this.codigos = codigos;
 	}
-	public int getRastros() 
-	{
+
+	public int getRastros(){
 		return rastros;
 	}
-	public void setRastros(int rastros) 
-	{
+
+	public void setRastros(int rastros){
 		this.rastros = rastros;
 	}
-	public int getAjudas() 
-	{
+
+	public int getAjudas(){
 		return ajudas;
 	}
-	public void setAjudas(int ajudas) 
-	{
+
+	public void setAjudas(int ajudas){
 		this.ajudas = ajudas;
 	}
 
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString(){
-		// TODO [ARS] Michael-alterei para ficar facil debugar.
 		
 		String modules = "";
-
-			if (this.getRequisitos() > 0){
-				modules += (Integer.toString(this
-						.getRequisitos()) + " RQ");
-			}
-			if (this.getDesenhos() > 0){
-				modules += (" + "
-						+ Integer.toString(this
-								.getDesenhos()) + "DS");
-			}
-			if (this.getCodigos() > 0){
-				modules += (" + "
-						+ Integer.toString(this
-								.getCodigos()) + "CD");
-			}
-			if (this.getRastros() > 0){
-				modules += (" + "
-						+ Integer.toString(this
-								.getRastros()) + "RS");
-			}
-			if (this.getAjudas() > 0){
-				modules += (" + "
-						+ Integer.toString(this
-								.getAjudas()) + "AJ");
-			}
-			
-		//return super.toString();
+		
+		if (this.getRequisitos() > 0){
+			modules += (Integer.toString(this
+					.getRequisitos()) + " RQ");
+		}
+		if (this.getDesenhos() > 0){
+			modules += (" + "
+				+ Integer.toString(this
+						.getDesenhos()) + "DS");
+		}
+		if (this.getCodigos() > 0){
+			modules += (" + "
+				+ Integer.toString(this
+						.getCodigos()) + "CD");
+		}
+		if (this.getRastros() > 0){
+			modules += (" + "
+				+ Integer.toString(this
+						.getRastros()) + "RS");
+		}
+		if (this.getAjudas() > 0){
+			modules += (" + "
+				+ Integer.toString(this
+						.getAjudas()) + "AJ");
+		}
 			
 		return modules;
 	}
-	
 	
 }

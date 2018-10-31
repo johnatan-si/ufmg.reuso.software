@@ -1,7 +1,7 @@
 package br.ufmg.reuso.negocio.jogo;
 
-public class ModeGameConstants 
-{
+public class ModeGameConstants{
+	
 	public static final String PATH_CARTA_CONCEITO_DIFICIL = "CartasConceitoDificil";					//variavel referenciando o diretorio CartaoProjeto no qual ha os cartas de conceitos
 	public static final String PATH_CARTA_PROBLEMA_DIFICIL = "CartasProblemaDificil";					//variavel referenciando o diretorio CartaoProjeto no qual ha os cartas de problemas
 	public static final String PATH_CARTA_ENGENHEIRO_DIFICIL = "CartasEngenheiroDificil";				//variavel referenciando o diretorio CartaoProjeto no qual ha os cartas de engenheiro

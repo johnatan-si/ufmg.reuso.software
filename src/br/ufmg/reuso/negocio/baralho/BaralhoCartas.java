@@ -204,8 +204,7 @@ public class BaralhoCartas{
 	}
 
 	//TODO: Refatorar.
-	public boolean selecionarCartaProblema  (int [] cartasProblemaSelecionadas, String cartaAtual)
-	{
+	public boolean selecionarCartaProblema  (int [] cartasProblemaSelecionadas, String cartaAtual){
 		for (int i=0;i<cartasProblemaSelecionadas.length;i++){
 			if(cartasProblemaSelecionadas[i]==ModeGameConstants.ALL_CARDS_PROBLEMA)
 				return true;
@@ -225,8 +224,7 @@ public class BaralhoCartas{
 		return false;
 	}
 
-	public CartaEngenheiro[] inicializarCartasEngenheiro(String dificuldade)
-	{
+	public CartaEngenheiro[] inicializarCartasEngenheiro(String dificuldade){
 		String[] arquivosDiretorio = repositorio.getNomeArquivosPasta(dificuldade);	
 
 		ArrayList <String> somenteArquivosProperties = new ArrayList <String>();
@@ -268,8 +266,7 @@ public class BaralhoCartas{
 
 	public void embaralhar(){
 		Random sorteio = new Random();
-		for (int primeiro=0;primeiro<getNumeroCartasBaralhoAtual();primeiro++)//embaralha cartas restantes, excluindo as cartas inexistentes						
-		{
+		for (int primeiro=0;primeiro<getNumeroCartasBaralhoAtual();primeiro++){//embaralha cartas restantes, excluindo as cartas inexistentes						{
 			int segundo = sorteio.nextInt(getNumeroCartasBaralhoAtual());
 			Carta temporaria = baralho[primeiro];
 			baralho[primeiro]=baralho[segundo];
@@ -311,75 +308,63 @@ public class BaralhoCartas{
 
 
 
-	public int getNumeroTotalCartas() 
-	{
+	public int getNumeroTotalCartas(){
 		return numeroTotalCartas;
 	}
 
 
-	public void setNumeroTotalCartas(int numeroTotalCartas) 
-	{
+	public void setNumeroTotalCartas(int numeroTotalCartas){
 		this.numeroTotalCartas = numeroTotalCartas;
 	}
 
 
-	public int getNumeroTotalEngenheiro() 
-	{
+	public int getNumeroTotalEngenheiro(){
 		return numeroTotalEngenheiro;
 	}
 
 
-	public void setNumeroTotalEngenheiro(int numeroTotalEngenheiro) 
-	{
+	public void setNumeroTotalEngenheiro(int numeroTotalEngenheiro){
 		this.numeroTotalEngenheiro = numeroTotalEngenheiro;
 	}
 
 
-	public int getNumeroTotalProblemas() 
-	{
+	public int getNumeroTotalProblemas(){
 		return numeroTotalProblemas;
 	}
 
 
-	public void setNumeroTotalProblemas(int numeroTotalProblemas) 
-	{
+	public void setNumeroTotalProblemas(int numeroTotalProblemas){
 		this.numeroTotalProblemas = numeroTotalProblemas;
 	}
 
 
 	//#ifdef ConceptCard
-	public int getNumeroTotalConceito()
-	{
+	public int getNumeroTotalConceito(){
 		return numeroTotalConceito;
 	}
 	//#endif
 
 
 	//#ifdef ConceptCard
-	public void setNumeroTotalConceito(int numeroTotalConceito)
-	{
+	public void setNumeroTotalConceito(int numeroTotalConceito){
 		this.numeroTotalConceito = numeroTotalConceito;
 	}
 	//#endif
 
 
-	public int getNumeroCartasBaralhoAtual() 
-	{
+	public int getNumeroCartasBaralhoAtual(){
 		return numeroCartasBaralhoAtual;
 	}
 
-	public void setNumeroCartasBaralhoAtual(int numeroCartasBaralho) 
-	{
+	public void setNumeroCartasBaralhoAtual(int numeroCartasBaralho){
 		this.numeroCartasBaralhoAtual = numeroCartasBaralho;
 	}
 
-	public int getCurrentCard() 
-	{
+	public int getCurrentCard(){
 		return currentCard;
 	}
 
-	public void setCurrentCard(int currentCard) 
-	{
+	public void setCurrentCard(int currentCard){
 		this.currentCard = currentCard;
 	}
 

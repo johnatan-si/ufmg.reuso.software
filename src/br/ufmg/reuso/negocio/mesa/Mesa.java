@@ -22,8 +22,8 @@ import br.ufmg.reuso.negocio.carta.Artefato;
 import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.jogo.Jogo;
 
-public class Mesa 
-{
+public class Mesa{
+	
 	public static final int ARTEFATOS_BONS = 0;
 	public static final int ARTEFATOS_RUINS = 1;	
 	
@@ -73,8 +73,7 @@ public class Mesa
 	
 	/*---------------------------------------------------------------------------------------*/
 	@SuppressWarnings("unchecked")
-	public Mesa ()
-	{
+	public Mesa (){
 		efeitoAumentarMaturidadeEngenheiro = 0;     		/**nao ha efeito algum no inicio do jogo*/
 		efeitoAumentarHabilidadeEngenheiro = 0;				/**nao ha efeito algum no inicio do jogo*/
 		efeitoModuloIntegradoNeutralizado = false;			/**nao ha efeito algum no inicio do jogo*/
@@ -100,108 +99,87 @@ public class Mesa
 	}
 	
 	
-	public CartaEngenheiro getCartaMesa()
-	{
+	public CartaEngenheiro getCartaMesa(){
 		return cartaMesa;
 	}
 
-	public void setCartaMesa(CartaEngenheiro cartaMesa) 
-	{
+	public void setCartaMesa(CartaEngenheiro cartaMesa){
 		this.cartaMesa = cartaMesa;
 	}
 
-	public boolean getModuloJaIntegrado() 
-	{
+	public boolean getModuloJaIntegrado(){
 		return moduloJaIntegrado;
 	}
 
-	public void setModuloJaIntegrado(boolean moduloJaIntegrado) 
-	{
+	public void setModuloJaIntegrado(boolean moduloJaIntegrado){
 		this.moduloJaIntegrado = moduloJaIntegrado;
 	}
 
-	public ArrayList<Artefato> getAjudas() 
-	{
+	public ArrayList<Artefato> getAjudas(){
 		return ajudas;
 	}
 
-	public void setAjudas(ArrayList<Artefato> ajudas) 
-	{
+	public void setAjudas(ArrayList<Artefato> ajudas){
 		this.ajudas = ajudas;
 	}
 
-	public ArrayList<Artefato> getCodigos() 
-	{
+	public ArrayList<Artefato> getCodigos(){
 		return codigos;
 	}
 
-	public void setCodigos(ArrayList<Artefato> codigos)
-	{
+	public void setCodigos(ArrayList<Artefato> codigos){
 		this.codigos = codigos;
 	}
 
-	public ArrayList<Artefato> getDesenhos()
-	{
+	public ArrayList<Artefato> getDesenhos(){
 		return desenhos;
 	}
 
-	public void setDesenhos(ArrayList<Artefato> desenhos)
-	{
+	public void setDesenhos(ArrayList<Artefato> desenhos){
 		this.desenhos = desenhos;
 	}
 
-	public ArrayList<Artefato> getRastros() 
-	{
+	public ArrayList<Artefato> getRastros(){
 		return rastros;
 	}
 
-	public void setRastros(ArrayList<Artefato> rastros)
-	{
+	public void setRastros(ArrayList<Artefato> rastros){
 		this.rastros = rastros;
 	}
 
-	public ArrayList<Artefato> getRequisitos()
-	{
+	public ArrayList<Artefato> getRequisitos(){
 		return requisitos;
 	}
 
-	public void setRequisitos(ArrayList<Artefato> requisitos) 
-	{
+	public void setRequisitos(ArrayList<Artefato> requisitos){
 		this.requisitos = requisitos;
 	}
 
-	public ArrayList<Artefato>[] getModuloIntegrado() 
-	{
+	public ArrayList<Artefato>[] getModuloIntegrado(){
 		return moduloIntegrado;
 	}
 
-	public void setModuloIntegrado(ArrayList<Artefato>[] moduloIntegrado) 
-	{
+	public void setModuloIntegrado(ArrayList<Artefato>[] moduloIntegrado){
 		this.moduloIntegrado = moduloIntegrado;
 	}
 
-	public int getEspecificacaoModuloIntegrado() 
-	{
+	public int getEspecificacaoModuloIntegrado(){
 		return especificacaoModuloIntegrado;
 	}
 
-	public void setEspecificacaoModuloIntegrado(int especificacaoModuloIntegrado) 
-	{
+	public void setEspecificacaoModuloIntegrado(int especificacaoModuloIntegrado){
 		this.especificacaoModuloIntegrado = especificacaoModuloIntegrado;
 	}
 
-	public int getEfeitoAumentarMaturidadeEngenheiro()
-	{
+	public int getEfeitoAumentarMaturidadeEngenheiro(){
 		return efeitoAumentarMaturidadeEngenheiro;
 	}
 
-	public void setEfeitoAumentarMaturidadeEngenheiro ( int efeitoAumentarMaturidadeEngenheiro)
-	{
+	public void setEfeitoAumentarMaturidadeEngenheiro ( int efeitoAumentarMaturidadeEngenheiro){
 		this.efeitoAumentarMaturidadeEngenheiro = efeitoAumentarMaturidadeEngenheiro;
 	}
 
-	public int getEfeitoAumentarHabilidadeEngenheiro() 
-	{
+	public int getEfeitoAumentarHabilidadeEngenheiro(){
 		return efeitoAumentarHabilidadeEngenheiro;
 	}
 
@@ -210,73 +188,59 @@ public class Mesa
 		int efeitoAumentarHabilidadeEngenheiro){this.efeitoAumentarHabilidadeEngenheiro = efeitoAumentarHabilidadeEngenheiro;
 	}
 
-	public boolean isEfeitoModuloIntegradoNeutralizado() 
-	{
+	public boolean isEfeitoModuloIntegradoNeutralizado(){
 		return efeitoModuloIntegradoNeutralizado;
 	}
 
-	public void setEfeitoModuloIntegradoNeutralizado (boolean efeitoModuloIntegradoNeutralizado) 
-	{
+	public void setEfeitoModuloIntegradoNeutralizado (boolean efeitoModuloIntegradoNeutralizado){
 		this.efeitoModuloIntegradoNeutralizado = efeitoModuloIntegradoNeutralizado;
 	}
 
-	public int getDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts() 
-	{
+	public int getDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(){
 		return duracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts;
 	}
 
-	public void setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(int duracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts) 
-	{
+	public void setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(int duracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts){
 		this.duracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts = duracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts;
 	}
 
-	public int getDuracaoEfeito_TEMPORARIO_EnginnersNotInspectArtifacts()
-	{
+	public int getDuracaoEfeito_TEMPORARIO_EnginnersNotInspectArtifacts(){
 		return duracaoEfeito_TEMPORARIO_EnginnersNotInspectArtifacts;
 	}
 
-	public void setDuracaoEfeito_TEMPORARIO_EnginnersNotInspectArtifacts(int duracaoEfeito_TEMPORARIO_EnginnersNotInspectArtifacts) 
-	{
+	public void setDuracaoEfeito_TEMPORARIO_EnginnersNotInspectArtifacts(int duracaoEfeito_TEMPORARIO_EnginnersNotInspectArtifacts){
 		this.duracaoEfeito_TEMPORARIO_EnginnersNotInspectArtifacts = duracaoEfeito_TEMPORARIO_EnginnersNotInspectArtifacts;
 	}
 
-	public int getDuracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts() 
-	{
+	public int getDuracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts(){
 		return duracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts;
 	}
 
-	public void setDuracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts(int duracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts)
-	{
+	public void setDuracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts(int duracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts){
 		this.duracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts = duracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts;
 	}
 
-	public int getEfeitoPenalizarAjuda()
-	{
+	public int getEfeitoPenalizarAjuda(){
 		return efeitoPenalizarAjuda;
 	}
 
-	public void setEfeitoPenalizarAjuda(int efeitoPenalizarAjuda) 
-	{
+	public void setEfeitoPenalizarAjuda(int efeitoPenalizarAjuda){
 		this.efeitoPenalizarAjuda = efeitoPenalizarAjuda;
 	}
 
-	public int getDuracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts() 
-	{
+	public int getDuracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts(){
 		return duracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts;
 	}
 
-	public void setDuracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts(int duracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts) 
-	{
+	public void setDuracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts(int duracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts){
 		this.duracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts = duracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts;
 	}
 
-	public int getDuracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts() 
-	{
+	public int getDuracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts(){
 		return duracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts;
 	}
 
-	public void setDuracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts(int duracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts)
-	{
+	public void setDuracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts(int duracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts){
 		this.duracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts = duracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts;
 	}
 	
@@ -287,38 +251,33 @@ public class Mesa
 	 * @param ArtefatosB
 	 * @param ArtefatosR
 	 */
-	public void virarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR)
-	{
+	public void virarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR){
 		
-		if(pedido[ARTEFATOS_BONS].getAjudas()>0)
-		{
+		if(pedido[ARTEFATOS_BONS].getAjudas()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getAjudas();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getAjudas();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((ajudas.get(j).inspected() == true)||(ajudas.get(j).isPoorQuality()== true))
+				while((ajudas.get(j).inspected() == true)||(ajudas.get(j).isPoorQuality()== true)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
+				}
 				ajudas.get(j).setArtefatoInspecionado(true);
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getCodigos()>0)
-		{
+		if(pedido[ARTEFATOS_BONS].getCodigos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getCodigos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getCodigos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((codigos.get(j).inspected() == true)||(codigos.get(j).isPoorQuality()== true))
+				while((codigos.get(j).inspected() == true)||(codigos.get(j).isPoorQuality()== true)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
+				}
 				codigos.get(j).setArtefatoInspecionado(true);
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getDesenhos()>0)
-		{
+		if(pedido[ARTEFATOS_BONS].getDesenhos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getDesenhos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getDesenhos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((desenhos.get(j).inspected() == true)||(desenhos.get(j).isPoorQuality()== true))
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -326,59 +285,53 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getRastros()>0)
-		{
+		if(pedido[ARTEFATOS_BONS].getRastros()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRastros();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getRastros();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((rastros.get(j).inspected() == true)||(rastros.get(j).isPoorQuality()== true))
+				while((rastros.get(j).inspected() == true)||(rastros.get(j).isPoorQuality()== true)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
+				}
 				rastros.get(j).setArtefatoInspecionado(true);
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getRequisitos()>0)
-		{
+		if(pedido[ARTEFATOS_BONS].getRequisitos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRequisitos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getRequisitos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((requisitos.get(j).inspected() == true)||(requisitos.get(j).isPoorQuality()== true))
+				while((requisitos.get(j).inspected() == true)||(requisitos.get(j).isPoorQuality()== true)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
+				}
 				requisitos.get(j).setArtefatoInspecionado(true);
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getAjudas()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getAjudas()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getAjudas();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getAjudas();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((ajudas.get(j).inspected() == true)||(ajudas.get(j).isPoorQuality()== false))
+				while((ajudas.get(j).inspected() == true)||(ajudas.get(j).isPoorQuality()== false)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
+				}
 				ajudas.get(j).setArtefatoInspecionado(true);
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getCodigos()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getCodigos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getCodigos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getCodigos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((codigos.get(j).inspected() == true)||(codigos.get(j).isPoorQuality()== false))
+				while((codigos.get(j).inspected() == true)||(codigos.get(j).isPoorQuality()== false)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
+				}
 				codigos.get(j).setArtefatoInspecionado(true);
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getDesenhos()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getDesenhos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getDesenhos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getDesenhos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((desenhos.get(j).inspected() == true)||(desenhos.get(j).isPoorQuality()== false))
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -386,11 +339,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getRastros()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getRastros()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRastros();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRastros();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((rastros.get(j).inspected() == true)||(rastros.get(j).isPoorQuality()== false))
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -398,11 +349,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getRequisitos()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getRequisitos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRequisitos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRequisitos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((requisitos.get(j).inspected() == true)||(requisitos.get(j).isPoorQuality()== false))
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -411,48 +360,40 @@ public class Mesa
 		}
 		
 		System.out.println("\nartefatos AJUDAS inspecionadas:");
-		for (int i=0;i<ajudas.size();i++)			//TODO teste
-			{
+		for (int i=0;i<ajudas.size();i++){
 				ajudas.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + ajudas.get(i).inspected()+"\n");
 			}
 		
 		System.out.println("\nartefatos CODIGOS inpecionados:");
-		for (int i=0;i<codigos.size();i++)			//TODO teste
-			{
+		for (int i=0;i<codigos.size();i++){
 				codigos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + codigos.get(i).inspected()+"\n");
 			}
 		
 		System.out.println("\nartefatos DESENHOS inpecionados:");
-		for (int i=0;i<desenhos.size();i++)			//TODO teste
-			{
+		for (int i=0;i<desenhos.size();i++){
 				desenhos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + desenhos.get(i).inspected()+"\n");
 			}
 		
 		System.out.println("\nartefatos RASTROS inpecionados");
-		for (int i=0;i<rastros.size();i++)			//TODO teste
-			{
+		for (int i=0;i<rastros.size();i++){
 				rastros.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + rastros.get(i).inspected()+"\n");
 			}
 		
 		System.out.println("\nartefatos REQUISITOS inspecionados");
-		for (int i=0;i<requisitos.size();i++)			//TODO teste
-			{
+		for (int i=0;i<requisitos.size();i++){
 				requisitos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + requisitos.get(i).inspected()+"\n");
 			}
 	}
 
-	public void trocarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR)
-	{
-		if(pedido[ARTEFATOS_BONS].getAjudas()>0)
-		{
+	public void trocarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR){
+		if(pedido[ARTEFATOS_BONS].getAjudas()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getAjudas();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getAjudas();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((ajudas.get(j).inspected() == false)||(ajudas.get(j).isBug()==false)||(ajudas.get(j).isPoorQuality()== true))
 					j++;
@@ -469,11 +410,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getCodigos()>0)
-		{
+		if(pedido[ARTEFATOS_BONS].getCodigos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getCodigos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getCodigos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((codigos.get(j).inspected() == false)||(codigos.get(j).isBug()==false)||(codigos.get(j).isPoorQuality()== true))
 					j++;
@@ -490,11 +429,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getDesenhos()>0)
-		{
+		if(pedido[ARTEFATOS_BONS].getDesenhos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getDesenhos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getDesenhos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((desenhos.get(j).inspected() == false)||(desenhos.get(j).isBug()==false)||(desenhos.get(j).isPoorQuality()== true))
 					j++;
@@ -511,11 +448,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getRastros()>0)
-		{
+		if(pedido[ARTEFATOS_BONS].getRastros()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRastros();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getRastros();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((rastros.get(j).inspected() == false)||(rastros.get(j).isBug()==false)||(rastros.get(j).isPoorQuality()== true))
 					j++;
@@ -532,11 +467,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getRequisitos()>0)
-		{
+		if(pedido[ARTEFATOS_BONS].getRequisitos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRequisitos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getRequisitos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((requisitos.get(j).inspected() == false)||(requisitos.get(j).isBug()==false)||(requisitos.get(j).isPoorQuality()== true))
 					j++;
@@ -553,11 +486,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getAjudas()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getAjudas()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getAjudas();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getAjudas();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((ajudas.get(j).inspected() == false)||(ajudas.get(j).isBug()==false)||(ajudas.get(j).isPoorQuality()== false))
 					j++;
@@ -574,11 +505,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getCodigos()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getCodigos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getCodigos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getCodigos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((codigos.get(j).inspected() == false)||(codigos.get(j).isBug()==false)||(codigos.get(j).isPoorQuality()== false))
 					j++;
@@ -595,11 +524,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getDesenhos()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getDesenhos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getDesenhos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getDesenhos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((desenhos.get(j).inspected() == false)||(desenhos.get(j).isBug()==false)||(desenhos.get(j).isPoorQuality()== false))
 					j++;
@@ -616,11 +543,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getRastros()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getRastros()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRastros();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRastros();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((rastros.get(j).inspected() == false)||(rastros.get(j).isBug()==false)||(rastros.get(j).isPoorQuality()== false))
 					j++;
@@ -637,11 +562,9 @@ public class Mesa
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getRequisitos()>0)
-		{
+		if(pedido[ARTEFATOS_RUINS].getRequisitos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRequisitos();i++)
-			{
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRequisitos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((requisitos.get(j).inspected() == false)||(requisitos.get(j).isBug()==false)||(requisitos.get(j).isPoorQuality()== false))
 					j++;
@@ -659,43 +582,37 @@ public class Mesa
 		}
 		
 		System.out.println("\nartefatos AJUDAS inspecionadas:");
-		for (int i=0;i<ajudas.size();i++)			//TODO teste
-			{
+		for (int i=0;i<ajudas.size();i++){
 				ajudas.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + ajudas.get(i).inspected()+"\n");
 			}
 		
 		System.out.println("\nartefatos CODIGOS inpecionados:");
-		for (int i=0;i<codigos.size();i++)			//TODO teste
-			{
+		for (int i=0;i<codigos.size();i++){
 				codigos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + codigos.get(i).inspected()+"\n");
 			}
 		
 		System.out.println("\nartefatos DESENHOS inpecionados:");
-		for (int i=0;i<desenhos.size();i++)			//TODO teste
-			{
+		for (int i=0;i<desenhos.size();i++){
 				desenhos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + desenhos.get(i).inspected()+"\n");
 			}
 		
 		System.out.println("\nartefatos RASTROS inpecionados");
-		for (int i=0;i<rastros.size();i++)			//TODO teste
-			{
+		for (int i=0;i<rastros.size();i++){
 				rastros.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + rastros.get(i).inspected()+"\n");
 			}
 		
 		System.out.println("\nartefatos REQUISITOS inspecionados");
-		for (int i=0;i<requisitos.size();i++)			//TODO teste
-			{
+		for (int i=0;i<requisitos.size();i++){
 				requisitos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
 				System.out.println("Artefato Inspecionado?: " + requisitos.get(i).inspected()+"\n");
 			}
 	}
 	
-	public void trocarBaralhoArtefatosBons(BaralhoArtefatosBons[] artefatosB)		/**troca o baralho principal pelo auxiliar*/
-	{
+	public void trocarBaralhoArtefatosBons(BaralhoArtefatosBons[] artefatosB){//troca o baralho principal pelo auxiliar
 		BaralhoArtefatosBons temporario = artefatosB[Jogo.BARALHO_PRINCIPAL];
 		artefatosB[Jogo.BARALHO_AUXILIAR].embaralhar();								/**embaralhando as cartas que foram retiradas*/
 		artefatosB[Jogo.BARALHO_PRINCIPAL] = artefatosB[Jogo.BARALHO_AUXILIAR];
@@ -703,8 +620,7 @@ public class Mesa
 		artefatosB[Jogo.BARALHO_AUXILIAR].setCurrentArtifact(0);					/**o novo baralho auxiliar tem o indice retornada para zero*/
 	}
 	
-	public void trocarBaralhoArtefatosRuins(BaralhoArtefatosRuins[] artefatosR)		/**troca o baralho principal pelo auxiliar*/
-	{
+	public void trocarBaralhoArtefatosRuins(BaralhoArtefatosRuins[] artefatosR){//troca o baralho principal pelo auxiliar
 		BaralhoArtefatosRuins temporario = artefatosR[Jogo.BARALHO_PRINCIPAL];
 		artefatosR[Jogo.BARALHO_AUXILIAR].embaralhar();								/**embaralhando as cartas que foram retiradas*/
 		artefatosR[Jogo.BARALHO_PRINCIPAL] = artefatosR[Jogo.BARALHO_AUXILIAR];
@@ -713,11 +629,9 @@ public class Mesa
 	}
 	
 	/** calcula quantos artefatos nao inspecionados um ArrayList contem.*/
-	public int somarArtefatosNotInspecionados (ArrayList <Artefato> arrayArtefatos)
-	{
+	public int somarArtefatosNotInspecionados (ArrayList <Artefato> arrayArtefatos){
 		int contador = 0;
-		for (int i=0;i<arrayArtefatos.size();i++)
-		{	
+		for (int i=0;i<arrayArtefatos.size();i++){	
 			if (arrayArtefatos.get(i).inspected() == true)			/** se artefato foi inspecionado, pula iteracao*/
 				continue;
 			contador++;
@@ -726,11 +640,9 @@ public class Mesa
 	}
 	
 	/** calcula quantos artefatos que contem bug estao inspecionados em um ArrayList.*/
-	public int somarArtefatosInspecionadosBug (ArrayList <Artefato> arrayArtefatos)
-	{
+	public int somarArtefatosInspecionadosBug (ArrayList <Artefato> arrayArtefatos){
 		int contador = 0;
-		for (int i=0;i<arrayArtefatos.size();i++)
-		{	
+		for (int i=0;i<arrayArtefatos.size();i++){	
 			if (arrayArtefatos.get(i).inspected() == false) /**se artefato nao foi inspecionado, pula iteracao*/
 				continue;
 			if((arrayArtefatos.get(i).inspected() == true) &&(arrayArtefatos.get(i).isBug()==false)) /** se artefato foi inspecionado e nao contem bug, pula iteracao*/
@@ -740,23 +652,19 @@ public class Mesa
 		return contador;
 	}
 	
-	public int[] somarArtefatosNotInspecionadosSeparados(ArrayList <Artefato> arrayArtefatos)
-	{
+	public int[] somarArtefatosNotInspecionadosSeparados(ArrayList <Artefato> arrayArtefatos){
 		int[] artefatosSeparados = new int[2];
 		int contadorArtefatosBons = 0;
 		int contadorArtefatosRuins = 0;
-		for (int i=0;i<arrayArtefatos.size();i++)
-		{	
-			if (arrayArtefatos.get(i).inspected() == true)			/** se artefato foi inspecionado, pula iteracao*/
+		for (int i=0;i<arrayArtefatos.size();i++){	
+			if (arrayArtefatos.get(i).inspected() == true){//se artefato foi inspecionado, pula iteracao
 				continue;
-			else
-			{
-				if(arrayArtefatos.get(i).isPoorQuality()==true)		/**se artefato e ruim*/
-				{
+			}
+			else{
+				if(arrayArtefatos.get(i).isPoorQuality()==true){//se artefato e ruim
 					contadorArtefatosRuins++;
 				}
-				else
-				{
+				else{
 					contadorArtefatosBons++;
 				}
 			}
@@ -768,13 +676,11 @@ public class Mesa
 		
 	}
 	
-	public int[] somarArtefatosInspecionadosBugSeparados (ArrayList <Artefato> arrayArtefatos)
-	{
+	public int[] somarArtefatosInspecionadosBugSeparados (ArrayList <Artefato> arrayArtefatos){
 		int[] artefatosSeparados = new int[2];
 		int contadorArtefatosBons = 0;
 		int contadorArtefatosRuins = 0;
-		for (int i=0;i<arrayArtefatos.size();i++)
-		{	
+		for (int i=0;i<arrayArtefatos.size();i++){	
 			if (arrayArtefatos.get(i).inspected() == false) /**se artefato nao foi inspecionado, pula iteracao*/
 				continue;
 			if((arrayArtefatos.get(i).inspected() == true) &&(arrayArtefatos.get(i).isBug()==false)) /** se artefato foi inspecionado e nao contem bug, pula iteracao*/
@@ -790,49 +696,37 @@ public class Mesa
 		return artefatosSeparados;
 	}
 	
-	public void receberArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] artefatosB,BaralhoArtefatosRuins[] ArtefatosR)
-	{
+	public void receberArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] artefatosB,BaralhoArtefatosRuins[] ArtefatosR){
 		
-		if(pedido[ARTEFATOS_BONS].getAjudas()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getAjudas();i++)
-			{
+		if(pedido[ARTEFATOS_BONS].getAjudas()>0){
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getAjudas();i++){
 				ajudas.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
+				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosBons(artefatosB);
 				}
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_BONS].getCodigos()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getCodigos();i++)
-			{
+		if(pedido[ARTEFATOS_BONS].getCodigos()>0){
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getCodigos();i++){
 				codigos.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
+				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosBons(artefatosB);
 				}
 			}
 		}	
 			
-		if(pedido[ARTEFATOS_BONS].getDesenhos()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getDesenhos();i++)
-			{
+		if(pedido[ARTEFATOS_BONS].getDesenhos()>0){
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getDesenhos();i++){
 				desenhos.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
+				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosBons(artefatosB);
 				}
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_BONS].getRastros()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRastros();i++)
-			{
+		if(pedido[ARTEFATOS_BONS].getRastros()>0){
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getRastros();i++){
 				rastros.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
 				{
@@ -841,98 +735,59 @@ public class Mesa
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_BONS].getRequisitos()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRequisitos();i++)
-			{
+		if(pedido[ARTEFATOS_BONS].getRequisitos()>0){
+			for (int i=0;i<pedido[ARTEFATOS_BONS].getRequisitos();i++){
 				requisitos.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
+				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosBons(artefatosB);
 				}
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getAjudas()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getAjudas();i++)
-			{
+		if(pedido[ARTEFATOS_RUINS].getAjudas()>0){
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getAjudas();i++){
 				ajudas.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
+				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
 				}
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getCodigos()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getCodigos();i++)
-			{
+		if(pedido[ARTEFATOS_RUINS].getCodigos()>0){
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getCodigos();i++){
 				codigos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
+				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
 				}
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getDesenhos()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getDesenhos();i++)
-			{
+		if(pedido[ARTEFATOS_RUINS].getDesenhos()>0){
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getDesenhos();i++){
 				desenhos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
+				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
 				}
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getRastros()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRastros();i++)
-			{
+		if(pedido[ARTEFATOS_RUINS].getRastros()>0){
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRastros();i++){
 				rastros.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
+				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
 				}
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getRequisitos()>0)
-		{
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRequisitos();i++)
-			{
+		if(pedido[ARTEFATOS_RUINS].getRequisitos()>0){
+			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRequisitos();i++){
 				requisitos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
+				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
 				}
 			}
 		}	
-		
-		System.out.println("\n\nArtefato AJUDAS recebido");
-		for (int i=0;i<ajudas.size();i++)			//TODO teste
-			ajudas.get(i).mostrarArtefato();
-		
-		System.out.println("\n\nArtefato CODIGOS recebido");
-		for (int i=0;i<codigos.size();i++)			//TODO teste
-			codigos.get(i).mostrarArtefato();
-		
-		System.out.println("\n\nArtefato DESENHOS recebido");
-		for (int i=0;i<desenhos.size();i++)			//TODO teste
-			desenhos.get(i).mostrarArtefato();
-		
-		System.out.println("\n\nArtefato RASTROS recebido");
-		for (int i=0;i<rastros.size();i++)			//TODO teste
-			rastros.get(i).mostrarArtefato();
-		
-		System.out.println("\n\nArtefato REQUISITOS recebido");
-		for (int i=0;i<requisitos.size();i++)			//TODO teste
-			requisitos.get(i).mostrarArtefato();		//TODO teste
-		
 				
 	}
 	
