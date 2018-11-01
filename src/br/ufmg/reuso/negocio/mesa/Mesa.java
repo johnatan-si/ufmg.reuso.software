@@ -24,16 +24,6 @@ import br.ufmg.reuso.negocio.jogo.Jogo;
 
 public class Mesa{
 	
-	public static final int ARTEFATOS_BONS = 0;
-	public static final int ARTEFATOS_RUINS = 1;	
-	
-	public static final int QUANTIDADE_TIPOS_DE_ARTEFATOS = 5;
-	public static final int ARTEFATOS_AJUDA = 0;
-	public static final int ARTEFATOS_CODIGO = 1;
-	public static final int ARTEFATOS_DESENHO = 2;
-	public static final int ARTEFATOS_RASTROS = 3;
-	public static final int ARTEFATOS_REQUISITOS = 4;
-
 	private CartaEngenheiro cartaMesa;
 	private boolean moduloJaIntegrado;				/** variavel que mostra se ha modulo integrado na mesa ou nao*/
 	private int especificacaoModuloIntegrado;       /** especifica qual modulo integrado do projeto a mesa contem (de 0 ate (tamanho do projeto-1)*/
@@ -253,9 +243,9 @@ public class Mesa{
 	 */
 	public void virarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR){
 		
-		if(pedido[ARTEFATOS_BONS].getAjudas()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getAjudas();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((ajudas.get(j).inspected() == true)||(ajudas.get(j).isPoorQuality()== true)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -264,9 +254,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getCodigos()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getCodigos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((codigos.get(j).inspected() == true)||(codigos.get(j).isPoorQuality()== true)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -275,9 +265,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getDesenhos()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getDesenhos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((desenhos.get(j).inspected() == true)||(desenhos.get(j).isPoorQuality()== true))
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -285,9 +275,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getRastros()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRastros();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((rastros.get(j).inspected() == true)||(rastros.get(j).isPoorQuality()== true)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -296,9 +286,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getRequisitos()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRequisitos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((requisitos.get(j).inspected() == true)||(requisitos.get(j).isPoorQuality()== true)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -307,9 +297,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getAjudas()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getAjudas();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((ajudas.get(j).inspected() == true)||(ajudas.get(j).isPoorQuality()== false)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -318,9 +308,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getCodigos()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getCodigos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((codigos.get(j).inspected() == true)||(codigos.get(j).isPoorQuality()== false)){
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -329,9 +319,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getDesenhos()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getDesenhos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((desenhos.get(j).inspected() == true)||(desenhos.get(j).isPoorQuality()== false))
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -339,9 +329,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getRastros()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRastros();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((rastros.get(j).inspected() == true)||(rastros.get(j).isPoorQuality()== false))
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -349,9 +339,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getRequisitos()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRequisitos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos();i++){
 				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
 				while((requisitos.get(j).inspected() == true)||(requisitos.get(j).isPoorQuality()== false))
 					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
@@ -391,9 +381,9 @@ public class Mesa{
 	}
 
 	public void trocarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR){
-		if(pedido[ARTEFATOS_BONS].getAjudas()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getAjudas();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((ajudas.get(j).inspected() == false)||(ajudas.get(j).isBug()==false)||(ajudas.get(j).isPoorQuality()== true))
 					j++;
@@ -410,9 +400,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getCodigos()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getCodigos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((codigos.get(j).inspected() == false)||(codigos.get(j).isBug()==false)||(codigos.get(j).isPoorQuality()== true))
 					j++;
@@ -429,9 +419,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getDesenhos()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getDesenhos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((desenhos.get(j).inspected() == false)||(desenhos.get(j).isBug()==false)||(desenhos.get(j).isPoorQuality()== true))
 					j++;
@@ -448,9 +438,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getRastros()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRastros();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((rastros.get(j).inspected() == false)||(rastros.get(j).isBug()==false)||(rastros.get(j).isPoorQuality()== true))
 					j++;
@@ -467,9 +457,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_BONS].getRequisitos()>0){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRequisitos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
 				while((requisitos.get(j).inspected() == false)||(requisitos.get(j).isBug()==false)||(requisitos.get(j).isPoorQuality()== true))
 					j++;
@@ -486,9 +476,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getAjudas()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getAjudas();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((ajudas.get(j).inspected() == false)||(ajudas.get(j).isBug()==false)||(ajudas.get(j).isPoorQuality()== false))
 					j++;
@@ -505,9 +495,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getCodigos()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getCodigos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((codigos.get(j).inspected() == false)||(codigos.get(j).isBug()==false)||(codigos.get(j).isPoorQuality()== false))
 					j++;
@@ -524,9 +514,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getDesenhos()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getDesenhos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((desenhos.get(j).inspected() == false)||(desenhos.get(j).isBug()==false)||(desenhos.get(j).isPoorQuality()== false))
 					j++;
@@ -543,9 +533,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getRastros()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRastros();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((rastros.get(j).inspected() == false)||(rastros.get(j).isBug()==false)||(rastros.get(j).isPoorQuality()== false))
 					j++;
@@ -562,9 +552,9 @@ public class Mesa{
 			}
 		}
 		
-		if(pedido[ARTEFATOS_RUINS].getRequisitos()>0){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos()>0){
 			int j=0;
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRequisitos();i++){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos();i++){
 				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
 				while((requisitos.get(j).inspected() == false)||(requisitos.get(j).isBug()==false)||(requisitos.get(j).isPoorQuality()== false))
 					j++;
@@ -669,8 +659,8 @@ public class Mesa{
 				}
 			}
 		}
-		artefatosSeparados[ARTEFATOS_BONS]=contadorArtefatosBons;
-		artefatosSeparados[ARTEFATOS_RUINS]=contadorArtefatosRuins;
+		artefatosSeparados[ArtefatoQualidade.BOM.getCodigo()]=contadorArtefatosBons;
+		artefatosSeparados[ArtefatoQualidade.RUIM.getCodigo()]=contadorArtefatosRuins;
 
 		return artefatosSeparados;
 		
@@ -690,16 +680,16 @@ public class Mesa{
 			else
 				contadorArtefatosBons++;
 		}
-		artefatosSeparados[ARTEFATOS_BONS]=contadorArtefatosBons;
-		artefatosSeparados[ARTEFATOS_RUINS]=contadorArtefatosRuins;
+		artefatosSeparados[ArtefatoQualidade.BOM.getCodigo()]=contadorArtefatosBons;
+		artefatosSeparados[ArtefatoQualidade.RUIM.getCodigo()]=contadorArtefatosRuins;
 
 		return artefatosSeparados;
 	}
 	
 	public void receberArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] artefatosB,BaralhoArtefatosRuins[] ArtefatosR){
 		
-		if(pedido[ARTEFATOS_BONS].getAjudas()>0){
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getAjudas();i++){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas();i++){
 				ajudas.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosBons(artefatosB);
@@ -707,8 +697,8 @@ public class Mesa{
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_BONS].getCodigos()>0){
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getCodigos();i++){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos();i++){
 				codigos.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosBons(artefatosB);
@@ -716,8 +706,8 @@ public class Mesa{
 			}
 		}	
 			
-		if(pedido[ARTEFATOS_BONS].getDesenhos()>0){
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getDesenhos();i++){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos();i++){
 				desenhos.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosBons(artefatosB);
@@ -725,8 +715,8 @@ public class Mesa{
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_BONS].getRastros()>0){
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRastros();i++){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros();i++){
 				rastros.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
 				{
@@ -735,8 +725,8 @@ public class Mesa{
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_BONS].getRequisitos()>0){
-			for (int i=0;i<pedido[ARTEFATOS_BONS].getRequisitos();i++){
+		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos();i++){
 				requisitos.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosBons(artefatosB);
@@ -744,8 +734,8 @@ public class Mesa{
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getAjudas()>0){
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getAjudas();i++){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas();i++){
 				ajudas.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
@@ -753,8 +743,8 @@ public class Mesa{
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getCodigos()>0){
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getCodigos();i++){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos();i++){
 				codigos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
@@ -762,8 +752,8 @@ public class Mesa{
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getDesenhos()>0){
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getDesenhos();i++){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos();i++){
 				desenhos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
@@ -771,8 +761,8 @@ public class Mesa{
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getRastros()>0){
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRastros();i++){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros();i++){
 				rastros.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
@@ -780,8 +770,8 @@ public class Mesa{
 			}
 		}	
 		
-		if(pedido[ARTEFATOS_RUINS].getRequisitos()>0){
-			for (int i=0;i<pedido[ARTEFATOS_RUINS].getRequisitos();i++){
+		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos()>0){
+			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos();i++){
 				requisitos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
 				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
 					trocarBaralhoArtefatosRuins(ArtefatosR);
