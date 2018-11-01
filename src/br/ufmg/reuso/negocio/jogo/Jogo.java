@@ -257,7 +257,7 @@ public final class Jogo{
 			// usuario
 			setupController.pedirRolarDadosInicial(jogadores[i].getNome());
 
-			pontuacaoJogador[i] = Dado.sortearValor(); // jogando dados e guardando os pontos do jogadores
+			pontuacaoJogador[i] = Dado.getInstance().sortearValor(); // jogando dados e guardando os pontos do jogadores
 
 			//Em caso de empate com outro jogador, a funão empatePontuacao retorna true.
 			while (desempatarPontuacao(pontuacaoJogador[i], pontuacaoJogador) == true){
@@ -267,7 +267,7 @@ public final class Jogo{
 
 				// passando o nome do jogador i para que a GUI exiba o nome dele pedindo nova rolagem de dados devido e empate.
 				setupController.mostrarEmpatePontosObtidosInicial(jogadores[i].getNome());
-				pontuacaoJogador[i] = Dado.sortearValor(); // tenta desempatar a pontuacao obtida
+				pontuacaoJogador[i] = Dado.getInstance().sortearValor(); // tenta desempatar a pontuacao obtida
 			}
 
 			// passando pontuacao obtida por sorteio para que a GUI exiba tal pontuacao
@@ -4981,8 +4981,7 @@ public final class Jogo{
 					while (percorreuTudo == false){
 						for (int j = 0; j < jogador.getTabuleiro().getMesas()[i].getAjudas().size(); j++){//percorrendo vetor de artefatos de ajuda na mesa
 							if (jogador.getTabuleiro().getMesas()[i].getAjudas().get(j).isPoorQuality() == true){
-								baralhoArtefatosRuins[BARALHO_AUXILIAR]
-										.recolherArtefato(jogador.getTabuleiro().getMesas()[i].getAjudas().remove(j));
+								baralhoArtefatosRuins[BARALHO_AUXILIAR].recolherArtefato(jogador.getTabuleiro().getMesas()[i].getAjudas().remove(j));
 								break;
 							}
 						}
@@ -5100,6 +5099,7 @@ public final class Jogo{
 		}
 	}
 
+	//TODO: Refatorar.
 	public void diminuirDuracaoEfeitosTemporario(int jogador){
 		for (int i = 0; i < getJogadores()[jogador].getTabuleiro().getMesas().length; i++){
 			if (getJogadores()[jogador].getTabuleiro().getMesas()[i]
