@@ -28,6 +28,7 @@ import br.ufmg.reuso.negocio.carta.CartaPenalizacao;
 import br.ufmg.reuso.negocio.carta.CartaoProjeto;
 import br.ufmg.reuso.negocio.dado.Dado;
 import br.ufmg.reuso.negocio.jogador.Jogador;
+import br.ufmg.reuso.negocio.mesa.ArtefatoEstado;
 import br.ufmg.reuso.negocio.mesa.ArtefatoQualidade;
 import br.ufmg.reuso.negocio.mesa.ArtefatoTipo;
 import br.ufmg.reuso.negocio.mesa.Modulo;
@@ -642,7 +643,7 @@ public final class Jogo{
 		System.out.println("modulo escolhido = " + moduloEscolhido);
 		int contador = 0;
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
@@ -653,7 +654,7 @@ public final class Jogo{
 
 		contador = 0;
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
@@ -665,7 +666,7 @@ public final class Jogo{
 
 		contador = 0;
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
@@ -676,7 +677,7 @@ public final class Jogo{
 
 		contador = 0;
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
@@ -686,7 +687,7 @@ public final class Jogo{
 
 		contador = 0;
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
@@ -707,7 +708,7 @@ public final class Jogo{
 		}
 
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas().get(artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i]);
 				// copiando um artefato escolhido numa variavel temporaria 
 				jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas().remove(artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i]);
@@ -717,7 +718,7 @@ public final class Jogo{
 		}
 		
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos().get(artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i]);
 				jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos().remove(artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i]);
 				moduloIntegrado[ArtefatoTipo.CODIGO.getCodigo()].add(temporario);
@@ -725,7 +726,7 @@ public final class Jogo{
 		}
 
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos().get(artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i]);
 				jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos().remove(artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i]);
 				moduloIntegrado[ArtefatoTipo.DESENHO.getCodigo()].add(temporario);
@@ -733,7 +734,7 @@ public final class Jogo{
 		}
 
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros().get(artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i]);
 				jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros().remove(artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i]);
 				moduloIntegrado[ArtefatoTipo.RASTRO.getCodigo()].add(temporario);
@@ -742,7 +743,7 @@ public final class Jogo{
 		}
 
 		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i] == GameController.ARTEFATOS_SELECIONADO){
+			if (artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos().get(artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i]);
 				jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos().remove(artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i]);
 				moduloIntegrado[ArtefatoTipo.REQUISITO.getCodigo()].add(temporario);
