@@ -27,6 +27,13 @@ import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.carta.CartaPenalizacao;
 import br.ufmg.reuso.negocio.carta.CartaoProjeto;
 import br.ufmg.reuso.negocio.dado.Dado;
+import br.ufmg.reuso.negocio.integracao.IntegradorAjuda;
+import br.ufmg.reuso.negocio.integracao.IntegradorCodigo;
+import br.ufmg.reuso.negocio.integracao.IntegradorDesenho;
+import br.ufmg.reuso.negocio.integracao.IntegracaoModulo;
+import br.ufmg.reuso.negocio.integracao.IntegradorRastro;
+import br.ufmg.reuso.negocio.integracao.IntegradorRequisito;
+import br.ufmg.reuso.negocio.integracao.Integrador;
 import br.ufmg.reuso.negocio.jogador.Jogador;
 import br.ufmg.reuso.negocio.mesa.ArtefatoEstado;
 import br.ufmg.reuso.negocio.mesa.ArtefatoQualidade;
@@ -35,11 +42,15 @@ import br.ufmg.reuso.negocio.mesa.Modulo;
 import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
 import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
 import br.ufmg.reuso.ui.ScreenInteraction;
-/**
- * @author Michael David
- *
- */
 
+/**
+ * Classe para encapsulamento do jogo.
+ * 
+ * @author Michael David
+ * 
+ * Editador por Aline Brito, Igor Muzetti (2018-02). Modificações:
+ * 	- Refatoração do método construirModuloIntegrado(), incluindo o padrão de projeto Strategy.
+ */
 public final class Jogo{
 
 	private static Jogo jogo;
@@ -631,7 +642,7 @@ public final class Jogo{
 		// engenheiro trabalhou na rodada, logo atualizando isso
 		engenheiroCorrigindo.setEngenheiroTrabalhouNestaRodada(true);
 
-		ArrayList<Artefato>[] moduloIntegrado = construirModuloIntegrado(jogador, projeto, mesaTrabalho, moduloEscolhido, artefatosEscolhidos);
+		ArrayList<Artefato>[] moduloIntegrado = construirModuloIntegrado(jogador, mesaTrabalho, artefatosEscolhidos);
 		jogador.getTabuleiro().getMesas()[mesaTrabalho].setModuloIntegrado(moduloIntegrado);
 		jogador.getTabuleiro().getMesas()[mesaTrabalho].setEspecificacaoModuloIntegrado(moduloEscolhido);
 		jogador.getTabuleiro().getMesas()[mesaTrabalho].setModuloJaIntegrado(true);
@@ -699,57 +710,34 @@ public final class Jogo{
 		return true;
 	}
 
-	//TODO: Refatorar
-	public ArrayList<Artefato>[] construirModuloIntegrado(Jogador jogador, CartaoProjeto projeto, int mesaTrabalho,	int moduloEscolhido, int[][] artefatosEscolhidos){
-		@SuppressWarnings("unchecked")
+	/**
+	 * Contrói módulo e remove artefatos selecionados da mesa.
+	 * @return - lista de artefatos integrados, agrupados por tipo.
+	 */
+	public ArrayList<Artefato>[] construirModuloIntegrado(Jogador jogador, int mesaTrabalho, int[][] artefatosEscolhidos){
+
 		ArrayList<Artefato>[] moduloIntegrado = new ArrayList[5];
 		for (int i = 0; i < moduloIntegrado.length; i++){
 			moduloIntegrado[i] = new ArrayList<Artefato>();
 		}
-
-		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas().get(artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i]);
-				// copiando um artefato escolhido numa variavel temporaria 
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas().remove(artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i]);
-				// retira artefato da mesa para o modulo a ser integrado
-				moduloIntegrado[ArtefatoTipo.AJUDA.getCodigo()].add(temporario);
-			}
-		}
 		
-		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos().get(artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i]);
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos().remove(artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i]);
-				moduloIntegrado[ArtefatoTipo.CODIGO.getCodigo()].add(temporario);
-			}
-		}
-
-		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos().get(artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i]);
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos().remove(artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i]);
-				moduloIntegrado[ArtefatoTipo.DESENHO.getCodigo()].add(temporario);
-			}
-		}
-
-		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros().get(artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i]);
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros().remove(artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i]);
-				moduloIntegrado[ArtefatoTipo.RASTRO.getCodigo()].add(temporario);
-			}
-
-		}
-
-		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()].length; i++){
-			if (artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos().get(artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i]);
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos().remove(artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i]);
-				moduloIntegrado[ArtefatoTipo.REQUISITO.getCodigo()].add(temporario);
-			}
-		}
-
+		IntegracaoModulo modulo = new IntegracaoModulo();
+		
+		Integrador ajuda = new IntegradorAjuda(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.AJUDA.getCodigo()].addAll(modulo.integrar(ajuda));
+		
+		Integrador codigo = new IntegradorCodigo(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.CODIGO.getCodigo()].addAll(modulo.integrar(codigo));
+		
+		Integrador desenho = new IntegradorDesenho(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.DESENHO.getCodigo()].addAll(modulo.integrar(desenho));
+		
+		Integrador rastro = new IntegradorRastro(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.RASTRO.getCodigo()].addAll(modulo.integrar(rastro));
+		
+		Integrador requisito = new IntegradorRequisito(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.REQUISITO.getCodigo()].addAll(modulo.integrar(requisito));
+		
 		return moduloIntegrado;
 	}
 
