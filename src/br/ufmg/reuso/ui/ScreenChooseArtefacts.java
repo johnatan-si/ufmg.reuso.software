@@ -465,8 +465,9 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 			} else if (text.getName() == "Rastros"){
 				pedidoArtefatos[bons].setRastros(value);
 			} else if (text.getName() == "Ajudas"){
-				pedidoArtefatos[bons]
-						.setAjudas(value);
+				pedidoArtefatos[bons].setAjudas(value);
+			} else if (text.getName() == "Testes"){
+					pedidoArtefatos[bons].setTestes(value);
 			}
 
 		}
@@ -540,28 +541,28 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
 			public void run(){
+				
 				Modulo modulo[] = new Modulo[2];
+				
 				modulo[0] = new Modulo();
-				modulo[1] = new Modulo();
-
 				modulo[0].setAjudas(2);
 				modulo[0].setCodigos(3);
 				modulo[0].setRastros(0);
 				modulo[0].setRequisitos(1);
+				modulo[0].setTestes(1);
+				
+				modulo[1] = new Modulo();
 				modulo[1].setAjudas(3);
 				modulo[1].setCodigos(1);
 				modulo[1].setRastros(4);
 				modulo[1].setRequisitos(0);
-				Modulo[] retorno = (createAndShowChooseArtefacts(
-						"Selecione os artefatos a serem produzidos.",
-						null,4, 7).getReturn());
+				modulo[1].setTestes(0);
+				Modulo[] retorno = (createAndShowChooseArtefacts("Selecione os artefatos a serem produzidos.", null,4, 7).getReturn());
 
 				System.out.println(retorno[0].toString());
 				System.out.println(retorno[1].toString());
 				
-				retorno = (createAndShowChooseArtefacts(
-						"Selecione os artefatos a serem inspecionados.",
-						modulo,-1, 7).getReturn());
+				retorno = (createAndShowChooseArtefacts("Selecione os artefatos a serem inspecionados.", modulo,-1, 7).getReturn());
 
 				System.out.println(retorno[0].toString());
 				System.out.println(retorno[1].toString());

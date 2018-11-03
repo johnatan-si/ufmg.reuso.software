@@ -14,8 +14,7 @@ package br.ufmg.reuso.negocio.carta;
  *
  */
 
-public abstract class Carta 					
-{
+public abstract class Carta {
 	protected String tituloCarta; // título da carta
 	protected String codigoCarta; // código da carta
 	protected String textoCarta; // texto contido na carta

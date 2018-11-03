@@ -388,6 +388,9 @@ public class ScreenInspectArtefacts extends JDialog implements ActionListener{
 			} else if (text.getName() == "Ajudas"){
 				pedidoArtefatos[bons].setAjudas(((Integer) text
 						.getSelectedItem()).intValue());
+			} else if (text.getName() == "Testes"){
+				pedidoArtefatos[bons].setTestes(((Integer) text
+						.getSelectedItem()).intValue());
 			}
 
 		}
@@ -464,18 +467,22 @@ public class ScreenInspectArtefacts extends JDialog implements ActionListener{
 		javax.swing.SwingUtilities.invokeLater(new Runnable(){
 			@Override
 			public void run(){
+				
 				Modulo modulo[] = new Modulo[2];
+				
 				modulo[0] = new Modulo();
-				modulo[1] = new Modulo();
-
 				modulo[0].setAjudas(2);
 				modulo[0].setCodigos(3);
 				modulo[0].setRastros(0);
 				modulo[0].setRequisitos(1);
+				modulo[0].setTestes(1);
+				
+				modulo[1] = new Modulo();
 				modulo[1].setAjudas(3);
 				modulo[1].setCodigos(1);
 				modulo[1].setRastros(4);
 				modulo[1].setRequisitos(0);
+				modulo[1].setTestes(0);
 				Modulo[] retorno = (createAndShowInspectArtefacts(
 						"Selecione os artefatos a serem inspecionados.",
 						modulo, 7).getReturn());

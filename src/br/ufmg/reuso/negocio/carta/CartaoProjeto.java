@@ -72,6 +72,7 @@ public class CartaoProjeto{
 				modulos[contador].setCodigos((sorteio.nextInt(2)+1));
 				modulos[contador].setRastros((sorteio.nextInt(2)+1));
 				modulos[contador].setAjudas((sorteio.nextInt(2)+1));
+				modulos[contador].setTestes((sorteio.nextInt(2)+1));
 			} //fim do preenchimento do módulo
 
 		}
@@ -96,6 +97,7 @@ public class CartaoProjeto{
 				modulos[contador].setCodigos((sorteio.nextInt(3)+1));
 				modulos[contador].setRastros((sorteio.nextInt(3)+1));
 				modulos[contador].setAjudas((sorteio.nextInt(3)+1));
+				modulos[contador].setTestes((sorteio.nextInt(3)+1));
 			}//fim do preenchimento do módulo
 
 		}
@@ -154,6 +156,7 @@ public class CartaoProjeto{
 				modulos[contador].setCodigos((sorteio.nextInt(3)+2));
 				modulos[contador].setRastros((sorteio.nextInt(3)+2));
 				modulos[contador].setAjudas((sorteio.nextInt(3)+2));
+				modulos[contador].setTestes((sorteio.nextInt(3)+2));
 			}//fim do preenchimento do módulo
 		}
 

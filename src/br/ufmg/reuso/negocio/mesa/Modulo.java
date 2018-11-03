@@ -11,10 +11,12 @@ package br.ufmg.reuso.negocio.mesa;
 
 /**
  * @author Michael David
- * Classe que contém o objeto Módulo, composto por cinco variáveis inteiras.
  * 
- * dadada
- *
+ * Classe que contém o objeto Módulo.
+ * 
+ * Editado por Aline Brito, Igor Muzetti (2018-02). Modificações:
+ * 	- Cartas de teste adicionadas.	
+ * 
  */
 
 public class Modulo{
@@ -24,6 +26,7 @@ public class Modulo{
 	private int codigos;
 	private int rastros;
 	private int ajudas;
+	private int testes;
 	
 	
 	/**
@@ -73,6 +76,16 @@ public class Modulo{
 	public void setAjudas(int ajudas){
 		this.ajudas = ajudas;
 	}
+	
+
+	public int getTestes() {
+		return testes;
+	}
+
+
+	public void setTestes(int testes) {
+		this.testes = testes;
+	}
 
 
 	@Override
@@ -104,6 +117,13 @@ public class Modulo{
 				+ Integer.toString(this
 						.getAjudas()) + "AJ");
 		}
+		
+		if (this.getTestes() > 0){
+			modules += (" + "
+				+ Integer.toString(this
+						.getTestes()) + "TE");
+		}
+		
 			
 		return modules;
 	}

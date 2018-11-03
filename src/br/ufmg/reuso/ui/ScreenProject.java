@@ -267,6 +267,11 @@ public class ScreenProject extends JDialog implements ActionListener{
 							+ Integer.toString(projeto.getModulos()[i]
 									.getAjudas()) + "AJ");
 				}
+				if (projeto.getModulos()[i].getTestes() > 0){
+					modules[i] += (" + "
+							+ Integer.toString(projeto.getModulos()[i]
+									.getTestes()) + "TE");
+				}
 
 			}
 

@@ -474,29 +474,30 @@ public final class Jogo{
 
 		System.out.println("habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
 
-		int[] artefatosAjudasNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas());
-		int[] artefatosCodigosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos());
-		int[] artefatosDesenhosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos());
-		int[] artefatosRastrosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros());
-		int[] artefatosRequisitosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
+		int[] artefatosAjudasNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas());
+		int[] artefatosCodigosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos());
+		int[] artefatosDesenhosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos());
+		int[] artefatosRastrosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros());
+		int[] artefatosRequisitosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
+		int[] artefatosTestesNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getTestes());
+		
 		Modulo[] artefatosNotInspecionados = new Modulo[2];
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()] = new Modulo();
-		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()] = new Modulo();
+		
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setAjudas(artefatosAjudasNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setCodigos(artefatosCodigosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setDesenhos(artefatosDesenhosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setRastros(artefatosRastrosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setRequisitos(artefatosRequisitosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setTestes(artefatosTestesNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()] = new Modulo();
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setAjudas(artefatosAjudasNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setCodigos(artefatosCodigosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setDesenhos(artefatosDesenhosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setRastros(artefatosRastrosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setRequisitos(artefatosRequisitosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setTestes(artefatosTestesNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 
 		Modulo[] pedido = setupController.exibirTabelaInspecao(habilidadeTemporaria, artefatosNotInspecionados);
 
@@ -538,39 +539,29 @@ public final class Jogo{
 
 		System.out.println("habilidade do engenheiro que vai trabalhar(confere qual mesa trabalhara): " + habilidadeTemporaria);
 
-		int[] artefatosAjudasInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas());
-		int[] artefatosCodigosInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos());
-		int[] artefatosDesenhosInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos());
-		int[] artefatosRastrosInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros());
-		int[] artefatosRequisitosInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho]
-				.somarArtefatosInspecionadosBugSeparados(
-						jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
+		int[] artefatosAjudasInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas());
+		int[] artefatosCodigosInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos());
+		int[] artefatosDesenhosInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos());
+		int[] artefatosRastrosInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros());
+		int[] artefatosRequisitosInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
+		int[] artefatosTestesInspecionadosBug = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosInspecionadosBugSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getTestes());
+		
 		Modulo[] artefatosInspecionadosBug = new Modulo[2];
 		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()] = new Modulo();
-		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()] = new Modulo();
 		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()].setAjudas(artefatosAjudasInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
-		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]
-				.setCodigos(artefatosCodigosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
-		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]
-				.setDesenhos(artefatosDesenhosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
-		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]
-				.setRastros(artefatosRastrosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
-		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]
-				.setRequisitos(artefatosRequisitosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
-		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
-				.setAjudas(artefatosAjudasInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
-		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
-				.setCodigos(artefatosCodigosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
-		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
-				.setDesenhos(artefatosDesenhosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
-		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
-				.setRastros(artefatosRastrosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
-		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
-				.setRequisitos(artefatosRequisitosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()].setCodigos(artefatosCodigosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()].setDesenhos(artefatosDesenhosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()].setRastros(artefatosRastrosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()].setRequisitos(artefatosRequisitosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()].setTestes(artefatosTestesInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()] = new Modulo();
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()].setAjudas(artefatosAjudasInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()].setCodigos(artefatosCodigosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()].setDesenhos(artefatosDesenhosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()].setRastros(artefatosRastrosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()].setRequisitos(artefatosRequisitosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()].setTestes(artefatosTestesInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
 
 		Modulo[] pedido = setupController.exibirTabelaCorrecao(habilidadeTemporaria, artefatosInspecionadosBug);
 
@@ -1424,20 +1415,25 @@ public final class Jogo{
 		int[] artefatosDesenhosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos());
 		int[] artefatosRastrosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros());
 		int[] artefatosRequisitosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
+		int[] artefatosTestesNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getTestes());
 		
 		Modulo[] artefatosNotInspecionados = new Modulo[2];
+		
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()] = new Modulo();
-		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()] = new Modulo();
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setAjudas(artefatosAjudasNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setCodigos(artefatosCodigosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setDesenhos(artefatosDesenhosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setRastros(artefatosRastrosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setRequisitos(artefatosRequisitosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setTestes(artefatosTestesNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()] = new Modulo();
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setAjudas(artefatosAjudasNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setCodigos(artefatosCodigosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setDesenhos(artefatosDesenhosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setRastros(artefatosRastrosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setRequisitos(artefatosRequisitosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setTestes(artefatosTestesNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 
 		Modulo[] pedido = null;
 		while (pedido == null){
