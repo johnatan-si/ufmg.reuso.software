@@ -58,6 +58,11 @@ public class ModuloTest{
 		modulo.setRequisitos(in);
 		assertEquals(out,modulo.getRequisitos());		
 	}
+	@Test
+	public void testTestes(){
+		modulo.setTestes(in);
+		assertEquals(out,modulo.getTestes());		
+	}
 	
 	@Test
 	public void testTotal(){		
@@ -65,7 +70,8 @@ public class ModuloTest{
 		testCodigos();
 		testDesenhos();
 		testRastros();
-		testRequisitos();		
+		testRequisitos();	
+		testTestes();
 		assertEquals(5*out, modulo.somatorioModulo());
 		System.out.println(modulo.toString());
 	}

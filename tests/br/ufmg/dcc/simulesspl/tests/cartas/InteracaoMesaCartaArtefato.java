@@ -84,6 +84,30 @@ public class InteracaoMesaCartaArtefato extends TestCase{
 	}
 	
 	@Test
+	public void testReceberArtefatoTesteBom(){
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
+		pedido[0].setTestes(1);
+		
+		assertEquals("Existe mais de um teste na mesa!", 0, mesa.getTestes().size());
+		
+		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		
+		assertEquals("Não existe um teste na mesa!", 1, mesa.getTestes().size());
+	}
+	
+	@Test
+	public void testReceberArtefatoTesteRuim(){
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
+		pedido[1].setTestes(1);
+		
+		assertEquals("Existe mais de um teste na mesa!", 0, mesa.getTestes().size());
+		
+		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		
+		assertEquals("Não existe um teste na mesa!", 1, mesa.getTestes().size());
+	}
+	
+	@Test
 	public void testReceberArtefatoDesenhoBom(){
 		Modulo[] pedido ={new Modulo(), new Modulo()};		
 		pedido[0].setDesenhos(1);
@@ -154,8 +178,7 @@ public class InteracaoMesaCartaArtefato extends TestCase{
 		
 		assertEquals("Não existe um requisito na mesa!", 1, mesa.getRequisitos().size());	
 	}
-
-//	public void testVirarArtefatos(){}
+	
 		
 	@Test
 	public void testVirarArtefatoAjudaBom(){
@@ -282,8 +305,33 @@ public class InteracaoMesaCartaArtefato extends TestCase{
 		
 		assertTrue("O artefato requisitos ainda não foi inspecionado!", mesa.getRequisitos().get(0).inspected());
 	}
+	
+	@Test
+	public void testVirarArtefatoTesteBom(){
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
+		pedido[0].setTestes(1);
+		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		
+		assertFalse("O artefato teste já está inspecionado!", mesa.getTestes().get(0).inspected());
+		
+		mesa.virarArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		
+		assertTrue("O artefato testes ainda não foi inspecionado!", mesa.getTestes().get(0).inspected());
+	}
+	
+	@Test
+	public void testVirarArtefatoTesteRuim(){
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
+		pedido[1].setTestes(1);
+		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		
+		assertFalse("O artefato teste já está inspecionado!", mesa.getTestes().get(0).inspected());
+		
+		mesa.virarArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		
+		assertTrue("O artefato testes ainda não foi inspecionado!", mesa.getTestes().get(0).inspected());
+	}
 
-//	public void testTrocarArtefatos(){
 	@Test
 	public void testTrocarArtefatoAjudaBOM(){
 		Modulo[] pedido ={new Modulo(), new Modulo()};		
@@ -470,6 +518,44 @@ public class InteracaoMesaCartaArtefato extends TestCase{
 		Artefato artefatoNovo = mesa.getRequisitos().get(0);
 		
 		assertEquals("Não existe um desenho na mesa!", 1, mesa.getRequisitos().size());
+		assertFalse("Não houve troca de artefato!", artefatoVelho == artefatoNovo);
+	}
+	
+	@Test
+	public void testTrocarArtefatosTestesBONS(){
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
+		pedido[0].setTestes(1);
+		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		
+		assertEquals("Não existe um desenho na mesa!", 1, mesa.getTestes().size());
+		mesa.getTestes().get(0).setArtefatoInspecionado(true);
+		mesa.getTestes().get(0).setBug(true);
+		mesa.getTestes().get(0).setQualidadeArtefatoRuim(false);
+		
+		Artefato artefatoVelho = mesa.getTestes().get(0);
+		mesa.trocarArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		Artefato artefatoNovo = mesa.getTestes().get(0);
+		
+		assertEquals("Não existe um desenho na mesa!", 1, mesa.getTestes().size());
+		assertFalse("Não houve troca de artefato!", artefatoVelho == artefatoNovo);
+	}
+	
+	@Test
+	public void testTrocarArtefatosTestesRUINS(){
+		Modulo[] pedido ={new Modulo(), new Modulo()};		
+		pedido[1].setTestes(1);
+		mesa.receberArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		
+		assertEquals("Não existe um desenho na mesa!", 1, mesa.getTestes().size());
+		mesa.getTestes().get(0).setArtefatoInspecionado(true);
+		mesa.getTestes().get(0).setBug(true);
+		mesa.getTestes().get(0).setQualidadeArtefatoRuim(true);
+		
+		Artefato artefatoVelho = mesa.getTestes().get(0);
+		mesa.trocarArtefatos(pedido, jogo.getBaralhoArtefatosBons(), jogo.getBaralhoArtefatosRuins());
+		Artefato artefatoNovo = mesa.getTestes().get(0);
+		
+		assertEquals("Não existe um desenho na mesa!", 1, mesa.getTestes().size());
 		assertFalse("Não houve troca de artefato!", artefatoVelho == artefatoNovo);
 	}
 	
