@@ -26,11 +26,7 @@ import br.ufmg.reuso.ui.ScreenInteraction;
 public class GameController implements GameInteraction{
 	
 	private static GameController GameController;
-	public static final int ARTEFATOS_BONS = 0;
-	public static final int ARTEFATOS_RUINS = 1;
-	public static final int ARTEFATOS_SELECIONADO = 0;
-	public static final int ARTEFATOS_NAO_SELECIONADO = -1;
-
+	
 	private GameController(){
 		
 	}

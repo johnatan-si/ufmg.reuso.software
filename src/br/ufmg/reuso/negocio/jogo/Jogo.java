@@ -27,17 +27,30 @@ import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.carta.CartaPenalizacao;
 import br.ufmg.reuso.negocio.carta.CartaoProjeto;
 import br.ufmg.reuso.negocio.dado.Dado;
+import br.ufmg.reuso.negocio.integracao.IntegradorAjuda;
+import br.ufmg.reuso.negocio.integracao.IntegradorCodigo;
+import br.ufmg.reuso.negocio.integracao.IntegradorDesenho;
+import br.ufmg.reuso.negocio.integracao.IntegracaoModulo;
+import br.ufmg.reuso.negocio.integracao.IntegradorRastro;
+import br.ufmg.reuso.negocio.integracao.IntegradorRequisito;
+import br.ufmg.reuso.negocio.integracao.Integrador;
 import br.ufmg.reuso.negocio.jogador.Jogador;
-import br.ufmg.reuso.negocio.mesa.Mesa;
+import br.ufmg.reuso.negocio.mesa.ArtefatoEstado;
+import br.ufmg.reuso.negocio.mesa.ArtefatoQualidade;
+import br.ufmg.reuso.negocio.mesa.ArtefatoTipo;
 import br.ufmg.reuso.negocio.mesa.Modulo;
 import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
 import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
 import br.ufmg.reuso.ui.ScreenInteraction;
-/**
- * @author Michael David
- *
- */
 
+/**
+ * Classe para encapsulamento do jogo.
+ * 
+ * @author Michael David
+ * 
+ * Editador por Aline Brito, Igor Muzetti (2018-02). Modificações:
+ * 	- Refatoração do método construirModuloIntegrado(), incluindo o padrão de projeto Strategy.
+ */
 public final class Jogo{
 
 	private static Jogo jogo;
@@ -257,7 +270,7 @@ public final class Jogo{
 			// usuario
 			setupController.pedirRolarDadosInicial(jogadores[i].getNome());
 
-			pontuacaoJogador[i] = Dado.sortearValor(); // jogando dados e guardando os pontos do jogadores
+			pontuacaoJogador[i] = Dado.getInstance().sortearValor(); // jogando dados e guardando os pontos do jogadores
 
 			//Em caso de empate com outro jogador, a funão empatePontuacao retorna true.
 			while (desempatarPontuacao(pontuacaoJogador[i], pontuacaoJogador) == true){
@@ -267,7 +280,7 @@ public final class Jogo{
 
 				// passando o nome do jogador i para que a GUI exiba o nome dele pedindo nova rolagem de dados devido e empate.
 				setupController.mostrarEmpatePontosObtidosInicial(jogadores[i].getNome());
-				pontuacaoJogador[i] = Dado.sortearValor(); // tenta desempatar a pontuacao obtida
+				pontuacaoJogador[i] = Dado.getInstance().sortearValor(); // tenta desempatar a pontuacao obtida
 			}
 
 			// passando pontuacao obtida por sorteio para que a GUI exiba tal pontuacao
@@ -429,8 +442,8 @@ public final class Jogo{
 		} else{ // ha pedido valido
 			System.out.printf("tem pedido valido\n");
 
-			int numeroArtefatoBons = pedido[Mesa.ARTEFATOS_BONS].somatorioModulo();
-			int numeroArtefatosRuins = pedido[Mesa.ARTEFATOS_RUINS].somatorioModulo();
+			int numeroArtefatoBons = pedido[ArtefatoQualidade.BOM.getCodigo()].somatorioModulo();
+			int numeroArtefatosRuins = pedido[ArtefatoQualidade.RUIM.getCodigo()].somatorioModulo();
 			int somatorioComplexidade = numeroArtefatoBons * projeto.getComplexidade() + ((int) numeroArtefatosRuins * projeto.getComplexidade() / 2);
 
 			//atualizando habilidade atual do engenheiro
@@ -472,18 +485,18 @@ public final class Jogo{
 		int[] artefatosRequisitosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho]
 				.somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
 		Modulo[] artefatosNotInspecionados = new Modulo[2];
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS] = new Modulo();
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS] = new Modulo();
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setAjudas(artefatosAjudasNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setCodigos(artefatosCodigosNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setDesenhos(artefatosDesenhosNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setRastros(artefatosRastrosNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setRequisitos(artefatosRequisitosNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setAjudas(artefatosAjudasNotInspecionados[Mesa.ARTEFATOS_RUINS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setCodigos(artefatosCodigosNotInspecionados[Mesa.ARTEFATOS_RUINS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setDesenhos(artefatosDesenhosNotInspecionados[Mesa.ARTEFATOS_RUINS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setRastros(artefatosRastrosNotInspecionados[Mesa.ARTEFATOS_RUINS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setRequisitos(artefatosRequisitosNotInspecionados[Mesa.ARTEFATOS_RUINS]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()] = new Modulo();
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()] = new Modulo();
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setAjudas(artefatosAjudasNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setCodigos(artefatosCodigosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setDesenhos(artefatosDesenhosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setRastros(artefatosRastrosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setRequisitos(artefatosRequisitosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setAjudas(artefatosAjudasNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setCodigos(artefatosCodigosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setDesenhos(artefatosDesenhosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setRastros(artefatosRastrosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setRequisitos(artefatosRequisitosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 
 		Modulo[] pedido = setupController.exibirTabelaInspecao(habilidadeTemporaria, artefatosNotInspecionados);
 
@@ -493,8 +506,8 @@ public final class Jogo{
 		} else{// ha pedido valido
 			System.out.printf("tem pedido valido\n");
 
-			int numeroArtefatoBons = pedido[Mesa.ARTEFATOS_BONS].somatorioModulo();
-			int numeroArtefatosRuins = pedido[Mesa.ARTEFATOS_RUINS].somatorioModulo();
+			int numeroArtefatoBons = pedido[ArtefatoQualidade.BOM.getCodigo()].somatorioModulo();
+			int numeroArtefatosRuins = pedido[ArtefatoQualidade.RUIM.getCodigo()].somatorioModulo();
 			int somatorioComplexidade = numeroArtefatoBons * projeto.getComplexidade() + ((int) numeroArtefatosRuins * projeto.getComplexidade() / 2);
 
 			// atualizando habilidade atual do engenheiro
@@ -537,27 +550,27 @@ public final class Jogo{
 				.somarArtefatosInspecionadosBugSeparados(
 						jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
 		Modulo[] artefatosInspecionadosBug = new Modulo[2];
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_BONS] = new Modulo();
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_RUINS] = new Modulo();
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_BONS].setAjudas(artefatosAjudasInspecionadosBug[Mesa.ARTEFATOS_BONS]);
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_BONS]
-				.setCodigos(artefatosCodigosInspecionadosBug[Mesa.ARTEFATOS_BONS]);
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_BONS]
-				.setDesenhos(artefatosDesenhosInspecionadosBug[Mesa.ARTEFATOS_BONS]);
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_BONS]
-				.setRastros(artefatosRastrosInspecionadosBug[Mesa.ARTEFATOS_BONS]);
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_BONS]
-				.setRequisitos(artefatosRequisitosInspecionadosBug[Mesa.ARTEFATOS_BONS]);
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_RUINS]
-				.setAjudas(artefatosAjudasInspecionadosBug[Mesa.ARTEFATOS_RUINS]);
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_RUINS]
-				.setCodigos(artefatosCodigosInspecionadosBug[Mesa.ARTEFATOS_RUINS]);
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_RUINS]
-				.setDesenhos(artefatosDesenhosInspecionadosBug[Mesa.ARTEFATOS_RUINS]);
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_RUINS]
-				.setRastros(artefatosRastrosInspecionadosBug[Mesa.ARTEFATOS_RUINS]);
-		artefatosInspecionadosBug[Mesa.ARTEFATOS_RUINS]
-				.setRequisitos(artefatosRequisitosInspecionadosBug[Mesa.ARTEFATOS_RUINS]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()] = new Modulo();
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()] = new Modulo();
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()].setAjudas(artefatosAjudasInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]
+				.setCodigos(artefatosCodigosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]
+				.setDesenhos(artefatosDesenhosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]
+				.setRastros(artefatosRastrosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]
+				.setRequisitos(artefatosRequisitosInspecionadosBug[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
+				.setAjudas(artefatosAjudasInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
+				.setCodigos(artefatosCodigosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
+				.setDesenhos(artefatosDesenhosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
+				.setRastros(artefatosRastrosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]
+				.setRequisitos(artefatosRequisitosInspecionadosBug[ArtefatoQualidade.RUIM.getCodigo()]);
 
 		Modulo[] pedido = setupController.exibirTabelaCorrecao(habilidadeTemporaria, artefatosInspecionadosBug);
 
@@ -567,8 +580,8 @@ public final class Jogo{
 		} else{// ha pedido valido
 			System.out.printf("tem pedido valido\n");
 
-			int numeroArtefatoBons = pedido[Mesa.ARTEFATOS_BONS].somatorioModulo();
-			int numeroArtefatosRuins = pedido[Mesa.ARTEFATOS_RUINS].somatorioModulo();
+			int numeroArtefatoBons = pedido[ArtefatoQualidade.BOM.getCodigo()].somatorioModulo();
+			int numeroArtefatosRuins = pedido[ArtefatoQualidade.RUIM.getCodigo()].somatorioModulo();
 			int somatorioComplexidade = numeroArtefatoBons * projeto.getComplexidade() + ((int) numeroArtefatosRuins * projeto.getComplexidade() / 2);
 
 			// atualizando habilidade atual do engenheiro
@@ -629,7 +642,7 @@ public final class Jogo{
 		// engenheiro trabalhou na rodada, logo atualizando isso
 		engenheiroCorrigindo.setEngenheiroTrabalhouNestaRodada(true);
 
-		ArrayList<Artefato>[] moduloIntegrado = construirModuloIntegrado(jogador, projeto, mesaTrabalho, moduloEscolhido, artefatosEscolhidos);
+		ArrayList<Artefato>[] moduloIntegrado = construirModuloIntegrado(jogador, mesaTrabalho, artefatosEscolhidos);
 		jogador.getTabuleiro().getMesas()[mesaTrabalho].setModuloIntegrado(moduloIntegrado);
 		jogador.getTabuleiro().getMesas()[mesaTrabalho].setEspecificacaoModuloIntegrado(moduloEscolhido);
 		jogador.getTabuleiro().getMesas()[mesaTrabalho].setModuloJaIntegrado(true);
@@ -640,8 +653,8 @@ public final class Jogo{
 	public boolean conferirQuantidadeArtefatosSuficiente(Jogador jogador, CartaoProjeto projeto, int mesaTrabalho, int moduloEscolhido, int[][] artefatosEscolhidos){
 		System.out.println("modulo escolhido = " + moduloEscolhido);
 		int contador = 0;
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA][i] == GameController.ARTEFATOS_SELECIONADO){
+		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()].length; i++){
+			if (artefatosEscolhidos[ArtefatoTipo.AJUDA.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
@@ -651,8 +664,8 @@ public final class Jogo{
 		}
 
 		contador = 0;
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO][i] == GameController.ARTEFATOS_SELECIONADO){
+		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()].length; i++){
+			if (artefatosEscolhidos[ArtefatoTipo.CODIGO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
@@ -663,8 +676,8 @@ public final class Jogo{
 		}
 
 		contador = 0;
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO][i] == GameController.ARTEFATOS_SELECIONADO){
+		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()].length; i++){
+			if (artefatosEscolhidos[ArtefatoTipo.DESENHO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
@@ -674,19 +687,18 @@ public final class Jogo{
 		}
 
 		contador = 0;
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_RASTROS].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_RASTROS][i] == GameController.ARTEFATOS_SELECIONADO){
+		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()].length; i++){
+			if (artefatosEscolhidos[ArtefatoTipo.RASTRO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
-		System.out.println(
-				"contador = " + contador + "\tprojeto Rastros = " + projeto.getModulos()[moduloEscolhido].getRastros());
+		System.out.println("contador = " + contador + "\tprojeto Rastros = " + projeto.getModulos()[moduloEscolhido].getRastros());
 		if (contador != projeto.getModulos()[moduloEscolhido].getRastros())
 			return false;
 
 		contador = 0;
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_REQUISITOS].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_REQUISITOS][i] == GameController.ARTEFATOS_SELECIONADO){
+		for (int i = 0; i < artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()].length; i++){
+			if (artefatosEscolhidos[ArtefatoTipo.REQUISITO.getCodigo()][i] == ArtefatoEstado.SELECIONADO.getCodigo()){
 				contador++;
 			}
 		}
@@ -698,57 +710,34 @@ public final class Jogo{
 		return true;
 	}
 
-	//TODO: Refatorar
-	public ArrayList<Artefato>[] construirModuloIntegrado(Jogador jogador, CartaoProjeto projeto, int mesaTrabalho,	int moduloEscolhido, int[][] artefatosEscolhidos){
-		@SuppressWarnings("unchecked")
+	/**
+	 * Contrói módulo e remove artefatos selecionados da mesa.
+	 * @return - lista de artefatos integrados, agrupados por tipo.
+	 */
+	public ArrayList<Artefato>[] construirModuloIntegrado(Jogador jogador, int mesaTrabalho, int[][] artefatosEscolhidos){
+
 		ArrayList<Artefato>[] moduloIntegrado = new ArrayList[5];
 		for (int i = 0; i < moduloIntegrado.length; i++){
 			moduloIntegrado[i] = new ArrayList<Artefato>();
 		}
-
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA][i] == GameController.ARTEFATOS_SELECIONADO){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas().get(artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA][i]);
-				// copiando um artefato escolhido numa variavel temporaria 
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getAjudas().remove(artefatosEscolhidos[Mesa.ARTEFATOS_AJUDA][i]);
-				// retira artefato da mesa para o modulo a ser integrado
-				moduloIntegrado[Mesa.ARTEFATOS_AJUDA].add(temporario);
-			}
-		}
 		
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO][i] == GameController.ARTEFATOS_SELECIONADO){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos().get(artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO][i]);
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getCodigos().remove(artefatosEscolhidos[Mesa.ARTEFATOS_CODIGO][i]);
-				moduloIntegrado[Mesa.ARTEFATOS_CODIGO].add(temporario);
-			}
-		}
-
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO][i] == GameController.ARTEFATOS_SELECIONADO){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos().get(artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO][i]);
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getDesenhos().remove(artefatosEscolhidos[Mesa.ARTEFATOS_DESENHO][i]);
-				moduloIntegrado[Mesa.ARTEFATOS_DESENHO].add(temporario);
-			}
-		}
-
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_RASTROS].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_RASTROS][i] == GameController.ARTEFATOS_SELECIONADO){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros().get(artefatosEscolhidos[Mesa.ARTEFATOS_RASTROS][i]);
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getRastros().remove(artefatosEscolhidos[Mesa.ARTEFATOS_RASTROS][i]);
-				moduloIntegrado[Mesa.ARTEFATOS_RASTROS].add(temporario);
-			}
-
-		}
-
-		for (int i = 0; i < artefatosEscolhidos[Mesa.ARTEFATOS_REQUISITOS].length; i++){
-			if (artefatosEscolhidos[Mesa.ARTEFATOS_REQUISITOS][i] == GameController.ARTEFATOS_SELECIONADO){
-				Artefato temporario = jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos().get(artefatosEscolhidos[Mesa.ARTEFATOS_REQUISITOS][i]);
-				jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos().remove(artefatosEscolhidos[Mesa.ARTEFATOS_REQUISITOS][i]);
-				moduloIntegrado[Mesa.ARTEFATOS_REQUISITOS].add(temporario);
-			}
-		}
-
+		IntegracaoModulo modulo = new IntegracaoModulo();
+		
+		Integrador ajuda = new IntegradorAjuda(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.AJUDA.getCodigo()].addAll(modulo.integrar(ajuda));
+		
+		Integrador codigo = new IntegradorCodigo(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.CODIGO.getCodigo()].addAll(modulo.integrar(codigo));
+		
+		Integrador desenho = new IntegradorDesenho(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.DESENHO.getCodigo()].addAll(modulo.integrar(desenho));
+		
+		Integrador rastro = new IntegradorRastro(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.RASTRO.getCodigo()].addAll(modulo.integrar(rastro));
+		
+		Integrador requisito = new IntegradorRequisito(jogador, mesaTrabalho, artefatosEscolhidos);
+		moduloIntegrado[ArtefatoTipo.REQUISITO.getCodigo()].addAll(modulo.integrar(requisito));
+		
 		return moduloIntegrado;
 	}
 
@@ -831,7 +820,7 @@ public final class Jogo{
 			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_HELP_ARTIFACTS):{
 				Random sorteio = new Random();
 				int sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_AJUDA,
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), ArtefatoTipo.AJUDA.getCodigo(),
 						sorteado);
 				break;
 			}
@@ -856,7 +845,7 @@ public final class Jogo{
 			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_REQUIREMENTS_ARTIFACTS):{
 				Random sorteio = new Random();
 				int sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_REQUISITOS, sorteado);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), ArtefatoTipo.REQUISITO.getCodigo(), sorteado);
 				break;
 			}
 			
@@ -904,7 +893,7 @@ public final class Jogo{
 			case(CardsConstants.ENGINNER_CHOSEN_RECEIVE_TRAIL_ARTIFACTS):{
 				Random sorteio = new Random();
 				int sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_RASTROS,
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), ArtefatoTipo.RASTRO.getCodigo(),
 						sorteado);
 				break;
 			}
@@ -913,13 +902,13 @@ public final class Jogo{
 				Random sorteio = new Random();
 				int tipoArtefato = sorteio.nextInt(5);
 				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), tipoArtefato,
-						Mesa.ARTEFATOS_BONS);
+						ArtefatoQualidade.BOM.getCodigo());
 				break;
 			}
 			
 			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_CODE_ARTIFACT):{
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_CODIGO,
-						Mesa.ARTEFATOS_BONS);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), ArtefatoTipo.CODIGO.getCodigo(),
+						ArtefatoQualidade.BOM.getCodigo());
 				break;
 			}
 			
@@ -948,13 +937,13 @@ public final class Jogo{
 				if (engenheiros[0] == null)	;
 				else{
 					sorteado = sorteio.nextInt(2);
-					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_DESENHO, sorteado, engenheiros[0]);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(),ArtefatoTipo.DESENHO.getCodigo(), sorteado, engenheiros[0]);
 				}
 				if (engenheiros[1] == null)
 					break;
 				else{
 					sorteado = sorteio.nextInt(2);
-					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_DESENHO, sorteado, engenheiros[1]);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(),ArtefatoTipo.DESENHO.getCodigo(), sorteado, engenheiros[1]);
 				}
 				break;
 			}
@@ -966,13 +955,13 @@ public final class Jogo{
 				if (engenheiros[0] == null);
 				else{
 					sorteado = sorteio.nextInt(2);
-					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_RASTROS, sorteado, engenheiros[0]);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), ArtefatoTipo.RASTRO.getCodigo(), sorteado, engenheiros[0]);
 				}
 				if (engenheiros[1] == null)
 					break;
 				else{
 					sorteado = sorteio.nextInt(2);
-					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_RASTROS, sorteado, engenheiros[1]);
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito(), ArtefatoTipo.RASTRO.getCodigo(), sorteado, engenheiros[1]);
 				}
 				break;
 			}
@@ -1025,7 +1014,7 @@ public final class Jogo{
 			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_HELP_ARTIFACTS):{
 				Random sorteio = new Random();
 				int sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_AJUDA,
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), ArtefatoTipo.AJUDA.getCodigo(),
 						sorteado);
 				break;
 			}
@@ -1054,7 +1043,7 @@ public final class Jogo{
 			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_REQUIREMENTS_ARTIFACTS):{
 				Random sorteio = new Random();
 				int sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_REQUISITOS,	sorteado);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), ArtefatoTipo.REQUISITO.getCodigo(),	sorteado);
 				break;
 			}
 			
@@ -1109,7 +1098,7 @@ public final class Jogo{
 			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_TRAIL_ARTIFACTS):{
 				Random sorteio = new Random();
 				int sorteado = sorteio.nextInt(2);
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS, sorteado);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), ArtefatoTipo.RASTRO.getCodigo(), sorteado);
 				break;
 			}
 			
@@ -1117,13 +1106,13 @@ public final class Jogo{
 				Random sorteio = new Random();
 				int tipoArtefato = sorteio.nextInt(5);
 				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), tipoArtefato,
-						Mesa.ARTEFATOS_BONS);
+						ArtefatoQualidade.BOM.getCodigo());
 				break;
 			}
 			
 			case (CardsConstants.ENGINNER_CHOSEN_RECEIVE_WHITE_CODE_ARTIFACT):{
-				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_CODIGO,
-						Mesa.ARTEFATOS_BONS);
+				insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), ArtefatoTipo.CODIGO.getCodigo(),
+						ArtefatoQualidade.BOM.getCodigo());
 				break;
 			}
 			
@@ -1157,7 +1146,7 @@ public final class Jogo{
 				if (engenheiros[0] == null);
 				else{
 					sorteado = sorteio.nextInt(2);
-					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_DESENHO,
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(),ArtefatoTipo.DESENHO.getCodigo(),
 							sorteado, engenheiros[0]);
 				}
 				if (engenheiros[1] == null){
@@ -1165,7 +1154,7 @@ public final class Jogo{
 				}
 				else{
 					sorteado = sorteio.nextInt(2);
-					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_DESENHO,
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(),ArtefatoTipo.DESENHO.getCodigo(),
 							sorteado, engenheiros[1]);
 				}
 				break;
@@ -1179,7 +1168,7 @@ public final class Jogo{
 				if (engenheiros[0] == null);
 				else{
 					sorteado = sorteio.nextInt(2);
-					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS,
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), ArtefatoTipo.RASTRO.getCodigo(),
 							sorteado, engenheiros[0]);
 				}
 				if (engenheiros[1] == null){
@@ -1187,7 +1176,7 @@ public final class Jogo{
 				}
 				else{
 					sorteado = sorteio.nextInt(2);
-					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS,
+					insertArtifactByEffect(jogador, cartaUtilizada.getQuantidadeSegundoEfeito(), ArtefatoTipo.RASTRO.getCodigo(),
 							sorteado, engenheiros[1]);
 				}
 				break;
@@ -1255,40 +1244,40 @@ public final class Jogo{
 			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
 				// cedendo a quantidade de efeito da carta
 				for (int j = 0; j < quantidade; j++){
-					if (tipoArtefato == Mesa.ARTEFATOS_AJUDA){
-						if (sorteado == Mesa.ARTEFATOS_BONS){
+					if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){
 							jogador.getTabuleiro().getMesas()[i].getAjudas().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
 						}
 						else{
 							jogador.getTabuleiro().getMesas()[i].getAjudas().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
 						}
 					}
-					if (tipoArtefato == Mesa.ARTEFATOS_CODIGO){
-						if (sorteado == Mesa.ARTEFATOS_BONS){//inserindo efeito
+					if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){//inserindo efeito
 							jogador.getTabuleiro().getMesas()[i].getCodigos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
 						}
 						else{
 							jogador.getTabuleiro().getMesas()[i].getCodigos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
 						}
 					}
-					if (tipoArtefato == Mesa.ARTEFATOS_DESENHO){
-						if (sorteado == Mesa.ARTEFATOS_BONS){//inserindo efeito
+					if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){//inserindo efeito
 							jogador.getTabuleiro().getMesas()[i].getDesenhos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
 						}
 						else{
 							jogador.getTabuleiro().getMesas()[i].getDesenhos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
 						}
 					}
-					if (tipoArtefato == Mesa.ARTEFATOS_RASTROS){
-						if (sorteado == Mesa.ARTEFATOS_BONS){//inserindo efeito
+					if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){//inserindo efeito
 							jogador.getTabuleiro().getMesas()[i].getRastros().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
 						}
 						else{
 							jogador.getTabuleiro().getMesas()[i].getRastros().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
 						}
 					}
-					if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS){
-						if (sorteado == Mesa.ARTEFATOS_BONS){//inserindo efeito
+					if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){//inserindo efeito
 							jogador.getTabuleiro().getMesas()[i].getRequisitos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
 						}
 						else{
@@ -1310,40 +1299,40 @@ public final class Jogo{
 			
 			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro)){//encontra engenheiro que recebera efeito
 				for (int j = 0; j < quantidade; j++){ //cedendo a quantidade de efeito da carta
-					if (tipoArtefato == Mesa.ARTEFATOS_AJUDA){
-						if (sorteado == Mesa.ARTEFATOS_BONS){
+					if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){
 							jogador.getTabuleiro().getMesas()[i].getAjudas().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());//inserindo efeito
 						}
 						else{
 							jogador.getTabuleiro().getMesas()[i].getAjudas().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
 						}
 					}
-					if (tipoArtefato == Mesa.ARTEFATOS_CODIGO){
-						if (sorteado == Mesa.ARTEFATOS_BONS){//inserindo efeito
+					if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){//inserindo efeito
 							jogador.getTabuleiro().getMesas()[i].getCodigos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
 						}
 						else{
 							jogador.getTabuleiro().getMesas()[i].getCodigos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
 						}
 					}
-					if (tipoArtefato == Mesa.ARTEFATOS_DESENHO){
-						if (sorteado == Mesa.ARTEFATOS_BONS){
+					if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){
 							jogador.getTabuleiro().getMesas()[i].getDesenhos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
 						}
 						else{
 							jogador.getTabuleiro().getMesas()[i].getDesenhos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
 						}
 					}
-					if (tipoArtefato == Mesa.ARTEFATOS_RASTROS){
-						if (sorteado == Mesa.ARTEFATOS_BONS){//inserindo efeito
+					if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){//inserindo efeito
 							jogador.getTabuleiro().getMesas()[i].getRastros().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
 						}
 						else{
 							jogador.getTabuleiro().getMesas()[i].getRastros().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
 						}
 					}
-					if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS){
-						if (sorteado == Mesa.ARTEFATOS_BONS){// inserindo efeito
+					if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo()){
+						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){// inserindo efeito
 							jogador.getTabuleiro().getMesas()[i].getRequisitos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
 						}
 						else{
@@ -1437,18 +1426,18 @@ public final class Jogo{
 		int[] artefatosRequisitosNotInspecionados = jogador.getTabuleiro().getMesas()[mesaTrabalho].somarArtefatosNotInspecionadosSeparados(jogador.getTabuleiro().getMesas()[mesaTrabalho].getRequisitos());
 		
 		Modulo[] artefatosNotInspecionados = new Modulo[2];
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS] = new Modulo();
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS] = new Modulo();
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setAjudas(artefatosAjudasNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setCodigos(artefatosCodigosNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setDesenhos(artefatosDesenhosNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setRastros(artefatosRastrosNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_BONS].setRequisitos(artefatosRequisitosNotInspecionados[Mesa.ARTEFATOS_BONS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setAjudas(artefatosAjudasNotInspecionados[Mesa.ARTEFATOS_RUINS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setCodigos(artefatosCodigosNotInspecionados[Mesa.ARTEFATOS_RUINS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setDesenhos(artefatosDesenhosNotInspecionados[Mesa.ARTEFATOS_RUINS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setRastros(artefatosRastrosNotInspecionados[Mesa.ARTEFATOS_RUINS]);
-		artefatosNotInspecionados[Mesa.ARTEFATOS_RUINS].setRequisitos(artefatosRequisitosNotInspecionados[Mesa.ARTEFATOS_RUINS]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()] = new Modulo();
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()] = new Modulo();
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setAjudas(artefatosAjudasNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setCodigos(artefatosCodigosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setDesenhos(artefatosDesenhosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setRastros(artefatosRastrosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()].setRequisitos(artefatosRequisitosNotInspecionados[ArtefatoQualidade.BOM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setAjudas(artefatosAjudasNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setCodigos(artefatosCodigosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setDesenhos(artefatosDesenhosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setRastros(artefatosRastrosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
+		artefatosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()].setRequisitos(artefatosRequisitosNotInspecionados[ArtefatoQualidade.RUIM.getCodigo()]);
 
 		Modulo[] pedido = null;
 		while (pedido == null){
@@ -1507,12 +1496,12 @@ public final class Jogo{
 			}
 			
 			case (CardsConstants.ALL_ENGINEERS_LOSE_DESIGN_ARTIFACT):{
-				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_DESENHO);
+				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(),ArtefatoTipo.DESENHO.getCodigo());
 				break;
 			}
 			
 			case (CardsConstants.ALL_ENGINEERS_LOSE_TRAIL_ARTIFACT):{
-				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(), Mesa.ARTEFATOS_RASTROS);
+				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(), ArtefatoTipo.RASTRO.getCodigo());
 				break;
 			}
 			
@@ -1636,7 +1625,7 @@ public final class Jogo{
 			}
 			
 			case (CardsConstants.CHANGE_WHITE_DESIGN_ARTIFACTS_BY_GRAY_DESIGN_ARTIFACTS):{
-				changeWhiteArtifactsByGrayArtifacts(jogadorAlvo, Mesa.ARTEFATOS_DESENHO);
+				changeWhiteArtifactsByGrayArtifacts(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
 				break;
 			}
 			
@@ -1671,7 +1660,7 @@ public final class Jogo{
 																								 * engenheiro
 																								 */
 								{
-									retirarArtefato(jogadorAlvo, j, Mesa.ARTEFATOS_CODIGO);
+									retirarArtefato(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
 								}
 							}
 						}
@@ -1691,11 +1680,11 @@ public final class Jogo{
 						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
 							continue;
 						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_AJUDA);
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_CODIGO);
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_DESENHO);
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_RASTROS);
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_REQUISITOS);
+							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.AJUDA.getCodigo());
+							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
+							retirarTodosArtefatos(jogadorAlvo, j,ArtefatoTipo.DESENHO.getCodigo());
+							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.RASTRO.getCodigo());
+							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.REQUISITO.getCodigo());
 	
 						}
 	
@@ -1716,7 +1705,7 @@ public final class Jogo{
 						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
 							for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){
 								Random sorteio = new Random();
-								retirarArtefato(jogadorAlvo, j, sorteio.nextInt(Mesa.QUANTIDADE_TIPOS_DE_ARTEFATOS));
+								retirarArtefato(jogadorAlvo, j, sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo()));
 							}
 						}
 	
@@ -1736,7 +1725,7 @@ public final class Jogo{
 							continue;
 						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
 							for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){
-								retirarArtefato(jogadorAlvo, j, Mesa.ARTEFATOS_CODIGO);
+								retirarArtefato(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
 							}
 						}
 	
@@ -1858,27 +1847,27 @@ public final class Jogo{
 			}
 
 			case (CardsConstants.LOSE_ALL_CODE_ARTIFACTS):{
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, Mesa.ARTEFATOS_CODIGO);
+				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ArtefatoTipo.CODIGO.getCodigo());
 				break;
 			}
 
 			case (CardsConstants.LOSE_ALL_GRAY_DESIGN_ARTIFACTS):{
-				retirarTodosArtefatosCinzas(jogadorAlvo, Mesa.ARTEFATOS_DESENHO);
+				retirarTodosArtefatosCinzas(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
 				break;
 			}
 
 			case (CardsConstants.LOSE_ALL_GRAY_REQUIREMENTS_ARTIFACTS):{
-				retirarTodosArtefatosCinzas(jogadorAlvo, Mesa.ARTEFATOS_REQUISITOS);
+				retirarTodosArtefatosCinzas(jogadorAlvo, ArtefatoTipo.REQUISITO.getCodigo());
 				break;
 			}
 
 			case (CardsConstants.LOSE_ALL_DESIGN_ARTIFACTS):{
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, Mesa.ARTEFATOS_DESENHO);
+				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS,ArtefatoTipo.DESENHO.getCodigo());
 				break;
 			}
 
 			case (CardsConstants.LOSE_ALL_REQUIREMENTS_ARTIFACTS):{
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, Mesa.ARTEFATOS_REQUISITOS);
+				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ArtefatoTipo.REQUISITO.getCodigo());
 				break;
 			}
 
@@ -1886,7 +1875,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					int tipoArtefatoSorteado = sorteio.nextInt(Mesa.QUANTIDADE_TIPOS_DE_ARTEFATOS);
+					int tipoArtefatoSorteado = sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo());
 					retirarArtefato(jogadorAlvo, mesaSorteada, tipoArtefatoSorteado);
 				}
 				break;
@@ -1896,7 +1885,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_CODIGO);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.CODIGO.getCodigo());
 				}
 				break;
 			}
@@ -1905,7 +1894,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_DESENHO);
+					retirarArtefato(jogadorAlvo, mesaSorteada,ArtefatoTipo.DESENHO.getCodigo());
 				}
 				break;
 			}
@@ -1914,7 +1903,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_AJUDA);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.AJUDA.getCodigo());
 				}
 				break;
 			}
@@ -1923,7 +1912,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_REQUISITOS);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.REQUISITO.getCodigo());
 				}
 				break;
 			}
@@ -1931,17 +1920,17 @@ public final class Jogo{
 			case (CardsConstants.LOSE_HALF_OF_ARTIFACTS):{
 				Random sorteio = new Random();
 				int totalArtefatos = 0;
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_AJUDA);
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_CODIGO);
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_DESENHO);
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_RASTROS);
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_REQUISITOS);
+				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.AJUDA.getCodigo());
+				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.CODIGO.getCodigo());
+				totalArtefatos += contarArtefatos(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
+				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.RASTRO.getCodigo());
+				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.REQUISITO.getCodigo());
 	
 				int metadeArtefatos = (int) totalArtefatos / 2;
 	
 				for (int i = 0; i < metadeArtefatos; i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					int tipoArtefatoSorteado = sorteio.nextInt(Mesa.QUANTIDADE_TIPOS_DE_ARTEFATOS);
+					int tipoArtefatoSorteado = sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo());
 					retirarArtefato(jogadorAlvo, mesaSorteada, tipoArtefatoSorteado);
 				}
 				break;
@@ -1949,26 +1938,26 @@ public final class Jogo{
 
 			case (CardsConstants.LOSE_HALF_OF_CODE_ARTIFACTS):{
 				Random sorteio = new Random();
-				int totalArtefatosCodigo = contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_CODIGO);
+				int totalArtefatosCodigo = contarArtefatos(jogadorAlvo, ArtefatoTipo.CODIGO.getCodigo());
 	
 				int metadeArtefatos = (int) totalArtefatosCodigo / 2;
 	
 				for (int i = 0; i < metadeArtefatos; i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_CODIGO);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.CODIGO.getCodigo());
 				}
 				break;
 			}
 
 			case (CardsConstants.LOSE_HALF_OF_DESIGN_ARTIFACTS):{
 				Random sorteio = new Random();
-				int totalArtefatosDesenho = contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_DESENHO);
+				int totalArtefatosDesenho = contarArtefatos(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
 	
 				int metadeArtefatos = (int) totalArtefatosDesenho / 2;
 	
 				for (int i = 0; i < metadeArtefatos; i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_DESENHO);
+					retirarArtefato(jogadorAlvo, mesaSorteada,ArtefatoTipo.DESENHO.getCodigo());
 				}
 				break;
 			}
@@ -1981,7 +1970,7 @@ public final class Jogo{
 	
 				for (int i = 0; i < quantidadeArtefatosPerdidos; i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_REQUISITOS);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.REQUISITO.getCodigo());
 				}
 				break;
 			}
@@ -1990,7 +1979,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_RASTROS);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.RASTRO.getCodigo());
 				}
 				break;
 			}
@@ -2041,7 +2030,7 @@ public final class Jogo{
 
 			case (CardsConstants.TABLE_CHOSEN_LOSE_ALL_CODE_ARTIFACT):{
 				int mesa = setupController.escolherMesaSofrerProblema();
-				retirarTodosArtefatos(jogadorAlvo, mesa, Mesa.ARTEFATOS_CODIGO);
+				retirarTodosArtefatos(jogadorAlvo, mesa, ArtefatoTipo.CODIGO.getCodigo());
 				break;
 			}
 			
@@ -2082,12 +2071,12 @@ public final class Jogo{
 			}
 
 			case (CardsConstants.ALL_ENGINEERS_LOSE_DESIGN_ARTIFACT):{
-				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_DESENHO);
+				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadeSegundoEfeito(),ArtefatoTipo.DESENHO.getCodigo());
 				break;
 			}
 
 			case (CardsConstants.ALL_ENGINEERS_LOSE_TRAIL_ARTIFACT):{
-				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadeSegundoEfeito(), Mesa.ARTEFATOS_RASTROS);
+				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadeSegundoEfeito(), ArtefatoTipo.RASTRO.getCodigo());
 				break;
 			}
 
@@ -2240,7 +2229,7 @@ public final class Jogo{
 			}
 
 			case (CardsConstants.CHANGE_WHITE_DESIGN_ARTIFACTS_BY_GRAY_DESIGN_ARTIFACTS):{
-				changeWhiteArtifactsByGrayArtifacts(jogadorAlvo, Mesa.ARTEFATOS_DESENHO);
+				changeWhiteArtifactsByGrayArtifacts(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
 				break;
 			}
 
@@ -2255,7 +2244,7 @@ public final class Jogo{
 						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
 							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCodigos().size() > cartaUtilizada.getQuantidadeSegundoEfeito()){ //se ele ter mais que que a quantidade do limite inferior
 								for (int k = 0; k < (jogadorAlvo.getTabuleiro().getMesas()[j].getCodigos().size() - cartaUtilizada.getQuantidadeSegundoEfeito()); k++){ //retira o restante dos artefatos do engenheiro
-									retirarArtefato(jogadorAlvo, j, Mesa.ARTEFATOS_CODIGO);
+									retirarArtefato(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
 								}
 							}
 						}
@@ -2275,11 +2264,11 @@ public final class Jogo{
 						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
 							continue;
 						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_AJUDA);
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_CODIGO);
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_DESENHO);
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_RASTROS);
-							retirarTodosArtefatos(jogadorAlvo, j, Mesa.ARTEFATOS_REQUISITOS);
+							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.AJUDA.getCodigo());
+							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
+							retirarTodosArtefatos(jogadorAlvo, j,ArtefatoTipo.DESENHO.getCodigo());
+							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.RASTRO.getCodigo());
+							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.REQUISITO.getCodigo());
 	
 						}
 	
@@ -2300,7 +2289,7 @@ public final class Jogo{
 						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
 							for (int k = 0; k < cartaUtilizada.getQuantidadeSegundoEfeito(); k++){
 								Random sorteio = new Random();
-								retirarArtefato(jogadorAlvo, j, sorteio.nextInt(Mesa.QUANTIDADE_TIPOS_DE_ARTEFATOS));
+								retirarArtefato(jogadorAlvo, j, sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo()));
 							}
 						}
 	
@@ -2320,7 +2309,7 @@ public final class Jogo{
 							continue;
 						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
 							for (int k = 0; k < cartaUtilizada.getQuantidadeSegundoEfeito(); k++){
-								retirarArtefato(jogadorAlvo, j, Mesa.ARTEFATOS_CODIGO);
+								retirarArtefato(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
 							}
 						}
 	
@@ -2441,27 +2430,27 @@ public final class Jogo{
 			}
 
 			case (CardsConstants.LOSE_ALL_CODE_ARTIFACTS):{
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, Mesa.ARTEFATOS_CODIGO);
+				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ArtefatoTipo.CODIGO.getCodigo());
 				break;
 			}
 
 			case (CardsConstants.LOSE_ALL_GRAY_DESIGN_ARTIFACTS):{
-				retirarTodosArtefatosCinzas(jogadorAlvo, Mesa.ARTEFATOS_DESENHO);
+				retirarTodosArtefatosCinzas(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
 				break;
 			}
 
 			case (CardsConstants.LOSE_ALL_GRAY_REQUIREMENTS_ARTIFACTS):{
-				retirarTodosArtefatosCinzas(jogadorAlvo, Mesa.ARTEFATOS_REQUISITOS);
+				retirarTodosArtefatosCinzas(jogadorAlvo, ArtefatoTipo.REQUISITO.getCodigo());
 				break;
 			}
 
 			case (CardsConstants.LOSE_ALL_DESIGN_ARTIFACTS):{
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, Mesa.ARTEFATOS_DESENHO);
+				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS,ArtefatoTipo.DESENHO.getCodigo());
 				break;
 			}
 
 			case (CardsConstants.LOSE_ALL_REQUIREMENTS_ARTIFACTS):{
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, Mesa.ARTEFATOS_REQUISITOS);
+				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ArtefatoTipo.REQUISITO.getCodigo());
 				break;
 			}
 
@@ -2469,7 +2458,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadeSegundoEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					int tipoArtefatoSorteado = sorteio.nextInt(Mesa.QUANTIDADE_TIPOS_DE_ARTEFATOS);
+					int tipoArtefatoSorteado = sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo());
 					retirarArtefato(jogadorAlvo, mesaSorteada, tipoArtefatoSorteado);
 				}
 				break;
@@ -2479,7 +2468,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadeSegundoEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_CODIGO);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.CODIGO.getCodigo());
 				}
 				break;
 			}
@@ -2488,7 +2477,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadeSegundoEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_DESENHO);
+					retirarArtefato(jogadorAlvo, mesaSorteada,ArtefatoTipo.DESENHO.getCodigo());
 				}
 				break;
 			}
@@ -2497,7 +2486,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadeSegundoEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_AJUDA);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.AJUDA.getCodigo());
 				}
 				break;
 			}
@@ -2506,7 +2495,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadeSegundoEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_REQUISITOS);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.REQUISITO.getCodigo());
 				}
 				break;
 			}
@@ -2514,17 +2503,17 @@ public final class Jogo{
 			case (CardsConstants.LOSE_HALF_OF_ARTIFACTS):{
 				Random sorteio = new Random();
 				int totalArtefatos = 0;
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_AJUDA);
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_CODIGO);
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_DESENHO);
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_RASTROS);
-				totalArtefatos += contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_REQUISITOS);
+				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.AJUDA.getCodigo());
+				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.CODIGO.getCodigo());
+				totalArtefatos += contarArtefatos(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
+				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.RASTRO.getCodigo());
+				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.REQUISITO.getCodigo());
 	
 				int metadeArtefatos = (int) totalArtefatos / 2;
 	
 				for (int i = 0; i < metadeArtefatos; i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					int tipoArtefatoSorteado = sorteio.nextInt(Mesa.QUANTIDADE_TIPOS_DE_ARTEFATOS);
+					int tipoArtefatoSorteado = sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo());
 					retirarArtefato(jogadorAlvo, mesaSorteada, tipoArtefatoSorteado);
 				}
 				break;
@@ -2532,24 +2521,24 @@ public final class Jogo{
 
 			case (CardsConstants.LOSE_HALF_OF_CODE_ARTIFACTS):{
 				Random sorteio = new Random();
-				int totalArtefatosCodigo = contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_CODIGO);
+				int totalArtefatosCodigo = contarArtefatos(jogadorAlvo, ArtefatoTipo.CODIGO.getCodigo());
 	
 				int metadeArtefatos = (int) totalArtefatosCodigo / 2;
 	
 				for (int i = 0; i < metadeArtefatos; i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_CODIGO);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.CODIGO.getCodigo());
 				}
 				break;
 			}
 
 			case (CardsConstants.LOSE_HALF_OF_DESIGN_ARTIFACTS):{
 				Random sorteio = new Random();
-				int totalArtefatosDesenho = contarArtefatos(jogadorAlvo, Mesa.ARTEFATOS_DESENHO);
+				int totalArtefatosDesenho = contarArtefatos(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
 				int metadeArtefatos = (int) totalArtefatosDesenho / 2;
 				for (int i = 0; i < metadeArtefatos; i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_DESENHO);
+					retirarArtefato(jogadorAlvo, mesaSorteada,ArtefatoTipo.DESENHO.getCodigo());
 				}
 				break;
 			}
@@ -2560,7 +2549,7 @@ public final class Jogo{
 				int quantidadeArtefatosPerdidos = totalArtefatosBug * cartaUtilizada.getQuantidadeSegundoEfeito();
 				for (int i = 0; i < quantidadeArtefatosPerdidos; i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_REQUISITOS);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.REQUISITO.getCodigo());
 				}
 				break;
 			}
@@ -2569,7 +2558,7 @@ public final class Jogo{
 				Random sorteio = new Random();
 				for (int i = 0; i < cartaUtilizada.getQuantidadeSegundoEfeito(); i++){
 					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, Mesa.ARTEFATOS_RASTROS);
+					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.RASTRO.getCodigo());
 				}
 				break;
 			}
@@ -2620,7 +2609,7 @@ public final class Jogo{
 
 			case (CardsConstants.TABLE_CHOSEN_LOSE_ALL_CODE_ARTIFACT):{
 				int mesa = setupController.escolherMesaSofrerProblema();
-				retirarTodosArtefatos(jogadorAlvo, mesa, Mesa.ARTEFATOS_CODIGO);
+				retirarTodosArtefatos(jogadorAlvo, mesa, ArtefatoTipo.CODIGO.getCodigo());
 				break;
 			}
 			
@@ -2675,271 +2664,271 @@ public final class Jogo{
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 1)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 2)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 3)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 4)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 5)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 0)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 4)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 5)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 1)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 2)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 3)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 4)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 5)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 1)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 2)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 3)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 4)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 5)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 1)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 2)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 3)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 4)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 5)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 1)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 2)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 3)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 4)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 5)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_6):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 6)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
 						return false;
 					break;
 				}
@@ -2981,73 +2970,73 @@ public final class Jogo{
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_6):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 6)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 6)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_6):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 6)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
 						return false;
 					break;
 				}
@@ -3119,103 +3108,103 @@ public final class Jogo{
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 0)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_1):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 1)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_2):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 2)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_3):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 3)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_4):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 4)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_5):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 5)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_6):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 6)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
 						return false;
 				}
 	
@@ -3310,163 +3299,163 @@ public final class Jogo{
 				}
 	
 				case (CardsConstants.TABLE_WITH_BUG_CODE_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_BUG_TRAIL_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_CODIGO) >= 1)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_CODIGO) >= 2)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_CODIGO) >= 3)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) >= 1)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) >= 2)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) >= 3)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 1)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 2)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 3)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 1)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 2)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 3)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 1)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 2)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 3)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 4)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 5)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 1)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 2)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 3)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 4)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 5)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
@@ -3577,271 +3566,271 @@ public final class Jogo{
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 1)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 2)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 3)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 4)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 5)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 0)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 4)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_DESENHO) <= 5)
+					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 1)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 2)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 3)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 4)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 5)
+					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 1)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 2)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 3)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 4)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 5)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 1)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 2)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 3)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 4)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) <= 5)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 1)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 2)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 3)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 4)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.CODE_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_CODIGO) >= 5)
+					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.DESIGN_LESS_THAN_6):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 6)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
 						return false;
 					break;
 				}
@@ -3883,73 +3872,73 @@ public final class Jogo{
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_GREATER_THAN_6):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 6)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 6)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.HELP_LESS_THAN_6):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 6)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
 						return false;
 					break;
 				}
@@ -4021,103 +4010,103 @@ public final class Jogo{
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 0)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_1):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 1)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_2):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 2)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_3):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 3)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_4):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 4)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_5):{
-					if (contarArtefatosNaoInspecionados(jogador, Mesa.ARTEFATOS_REQUISITOS) <= 5)
+					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) <= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 1)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 2)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 3)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 4)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 5)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.REQUIREMENTS_LESS_THAN_6):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_DESENHO) >= 6)
+					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
 						return false;
 				}
 	
@@ -4212,163 +4201,163 @@ public final class Jogo{
 				}
 	
 				case (CardsConstants.TABLE_WITH_BUG_CODE_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_CODIGO) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_BUG_TRAIL_ARTIFACTS):{
-					if (contarBugs(jogador, Mesa.ARTEFATOS_RASTROS) <= 0)
+					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_CODIGO) >= 1)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_CODIGO) >= 2)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_CODIGO) >= 3)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) <= 1)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) <= 2)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) <= 3)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) >= 1)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) >= 2)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_DESENHO) >= 3)
+					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 1)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 2)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 3)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 1)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 2)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, Mesa.ARTEFATOS_REQUISITOS) >= 3)
+					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 1)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 2)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 3)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 4)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) <= 5)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_1):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 1)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 1)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_2):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 2)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 2)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_3):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 3)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 3)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_4):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 4)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 4)
 						return false;
 					break;
 				}
 	
 				case (CardsConstants.TRAIL_LESS_THAN_5):{
-					if (contarArtefatos(jogador, Mesa.ARTEFATOS_RASTROS) >= 5)
+					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 5)
 						return false;
 					break;
 				}
@@ -4473,23 +4462,23 @@ public final class Jogo{
 	public int contarBugs(Jogador jogador, int tipoArtefato){
 		int contador = 0;
 		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-			if (tipoArtefato == Mesa.ARTEFATOS_AJUDA)
+			if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getAjudas().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosInspecionadosBug(jogador.getTabuleiro().getMesas()[i].getAjudas());
-			if (tipoArtefato == Mesa.ARTEFATOS_CODIGO)
+			if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getCodigos().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosInspecionadosBug(jogador.getTabuleiro().getMesas()[i].getCodigos());
-			if (tipoArtefato == Mesa.ARTEFATOS_DESENHO)
+			if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getDesenhos().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosInspecionadosBug(jogador.getTabuleiro().getMesas()[i].getDesenhos());
-			if (tipoArtefato == Mesa.ARTEFATOS_RASTROS)
+			if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getRastros().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosInspecionadosBug(jogador.getTabuleiro().getMesas()[i].getRastros());
-			if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS)
+			if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getRequisitos().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosInspecionadosBug(jogador.getTabuleiro().getMesas()[i].getRequisitos());
@@ -4500,15 +4489,15 @@ public final class Jogo{
 	public int contarArtefatos(Jogador jogador, int tipoArtefato){
 		int contador = 0;
 		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-			if (tipoArtefato == Mesa.ARTEFATOS_AJUDA)
+			if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo())
 				contador = contador + jogador.getTabuleiro().getMesas()[i].getAjudas().size();
-			if (tipoArtefato == Mesa.ARTEFATOS_CODIGO)
+			if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo())
 				contador = contador + jogador.getTabuleiro().getMesas()[i].getCodigos().size();
-			if (tipoArtefato == Mesa.ARTEFATOS_DESENHO)
+			if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo())
 				contador = contador + jogador.getTabuleiro().getMesas()[i].getDesenhos().size();
-			if (tipoArtefato == Mesa.ARTEFATOS_RASTROS)
+			if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo())
 				contador = contador + jogador.getTabuleiro().getMesas()[i].getRastros().size();
-			if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS)
+			if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo())
 				contador = contador + jogador.getTabuleiro().getMesas()[i].getRequisitos().size();
 		}
 		return contador;
@@ -4544,27 +4533,27 @@ public final class Jogo{
 	public int contarArtefatosNaoInspecionados(Jogador jogador, int tipoArtefato){
 		int contador = 0;
 		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-			if (tipoArtefato == Mesa.ARTEFATOS_AJUDA)
+			if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getAjudas().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosNotInspecionados(jogador.getTabuleiro().getMesas()[i].getAjudas());
 
-			if (tipoArtefato == Mesa.ARTEFATOS_CODIGO)
+			if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getCodigos().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosNotInspecionados(jogador.getTabuleiro().getMesas()[i].getCodigos());
 
-			if (tipoArtefato == Mesa.ARTEFATOS_DESENHO)
+			if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getDesenhos().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosNotInspecionados(jogador.getTabuleiro().getMesas()[i].getDesenhos());
 
-			if (tipoArtefato == Mesa.ARTEFATOS_RASTROS)
+			if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getRastros().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosNotInspecionados(jogador.getTabuleiro().getMesas()[i].getRastros());
 
-			if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS)
+			if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getRequisitos().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i]
 							.somarArtefatosNotInspecionados(jogador.getTabuleiro().getMesas()[i].getRequisitos());
@@ -4576,23 +4565,23 @@ public final class Jogo{
 		int contador = 0;
 		int max = contador;
 		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-			if (tipoArtefato == Mesa.ARTEFATOS_AJUDA)
+			if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getAjudas().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i].getAjudas().size();
 
-			if (tipoArtefato == Mesa.ARTEFATOS_CODIGO)
+			if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getCodigos().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i].getCodigos().size();
 
-			if (tipoArtefato == Mesa.ARTEFATOS_DESENHO)
+			if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getDesenhos().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i].getDesenhos().size();
 
-			if (tipoArtefato == Mesa.ARTEFATOS_RASTROS)
+			if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getRastros().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i].getRastros().size();
 
-			if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS)
+			if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo())
 				if (jogador.getTabuleiro().getMesas()[i].getRequisitos().size() > 0)
 					contador = contador + jogador.getTabuleiro().getMesas()[i].getRequisitos().size();
 
@@ -4614,25 +4603,25 @@ public final class Jogo{
 			if (quantidadeArtefato == ALL_ARTIFACTS){//se deve-se retirara todos os artefatos
 				if (tipoArtefato == ANY_ARTIFACTS){//caso, seja todos os tipos de artefatos a serem retirados
 					/** retira todos os artefatos */
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_AJUDA);
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_CODIGO);
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_DESENHO);
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_RASTROS);
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_REQUISITOS);
+					retirarTodosArtefatos(jogador, i, ArtefatoTipo.AJUDA.getCodigo());
+					retirarTodosArtefatos(jogador, i, ArtefatoTipo.CODIGO.getCodigo());
+					retirarTodosArtefatos(jogador, i,ArtefatoTipo.DESENHO.getCodigo());
+					retirarTodosArtefatos(jogador, i, ArtefatoTipo.RASTRO.getCodigo());
+					retirarTodosArtefatos(jogador, i, ArtefatoTipo.REQUISITO.getCodigo());
 				}
 
-				if (tipoArtefato == Mesa.ARTEFATOS_AJUDA)
+				if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo())
 					/** caso, seja todos os tipos de artefatos de ajuda */
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_AJUDA);
+					retirarTodosArtefatos(jogador, i, ArtefatoTipo.AJUDA.getCodigo());
 				/** retira todos os artefatos de ajuda */
-				if (tipoArtefato == Mesa.ARTEFATOS_CODIGO)
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_CODIGO);
-				if (tipoArtefato == Mesa.ARTEFATOS_DESENHO)
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_DESENHO);
-				if (tipoArtefato == Mesa.ARTEFATOS_RASTROS)
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_RASTROS);
-				if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS)
-					retirarTodosArtefatos(jogador, i, Mesa.ARTEFATOS_REQUISITOS);
+				if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo())
+					retirarTodosArtefatos(jogador, i, ArtefatoTipo.CODIGO.getCodigo());
+				if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo())
+					retirarTodosArtefatos(jogador, i,ArtefatoTipo.DESENHO.getCodigo());
+				if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo())
+					retirarTodosArtefatos(jogador, i, ArtefatoTipo.RASTRO.getCodigo());
+				if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo())
+					retirarTodosArtefatos(jogador, i, ArtefatoTipo.REQUISITO.getCodigo());
 			} 
 			else{//se nao for todos os artefatos
 				for (int j = 0; j < quantidadeArtefato; j++){//ira retirar a quantidade de artefato de cadaengenheiro
@@ -4643,29 +4632,29 @@ public final class Jogo{
 							/**
 							 * sorteando qual tipo de artefato ira ser retirado
 							 */
-							if ((tipoArtefatoSorteado == Mesa.ARTEFATOS_AJUDA)
+							if ((tipoArtefatoSorteado == ArtefatoTipo.AJUDA.getCodigo())
 									&& (jogador.getTabuleiro().getMesas()[i].getAjudas().size() > 0)){
-								retirarArtefato(jogador, i, Mesa.ARTEFATOS_AJUDA);
+								retirarArtefato(jogador, i, ArtefatoTipo.AJUDA.getCodigo());
 								retirou = true;
 							}
-							if ((tipoArtefatoSorteado == Mesa.ARTEFATOS_CODIGO)
+							if ((tipoArtefatoSorteado == ArtefatoTipo.CODIGO.getCodigo())
 									&& (jogador.getTabuleiro().getMesas()[i].getCodigos().size() > 0)){
-								retirarArtefato(jogador, i, Mesa.ARTEFATOS_CODIGO);
+								retirarArtefato(jogador, i, ArtefatoTipo.CODIGO.getCodigo());
 								retirou = true;
 							}
-							if ((tipoArtefatoSorteado == Mesa.ARTEFATOS_DESENHO)
+							if ((tipoArtefatoSorteado ==ArtefatoTipo.DESENHO.getCodigo())
 									&& (jogador.getTabuleiro().getMesas()[i].getDesenhos().size() > 0)){
-								retirarArtefato(jogador, i, Mesa.ARTEFATOS_DESENHO);
+								retirarArtefato(jogador, i,ArtefatoTipo.DESENHO.getCodigo());
 								retirou = true;
 							}
-							if ((tipoArtefatoSorteado == Mesa.ARTEFATOS_RASTROS)
+							if ((tipoArtefatoSorteado == ArtefatoTipo.RASTRO.getCodigo())
 									&& (jogador.getTabuleiro().getMesas()[i].getRastros().size() > 0)){
-								retirarArtefato(jogador, i, Mesa.ARTEFATOS_RASTROS);
+								retirarArtefato(jogador, i, ArtefatoTipo.RASTRO.getCodigo());
 								retirou = true;
 							}
-							if ((tipoArtefatoSorteado == Mesa.ARTEFATOS_REQUISITOS)
+							if ((tipoArtefatoSorteado == ArtefatoTipo.REQUISITO.getCodigo())
 									&& (jogador.getTabuleiro().getMesas()[i].getRequisitos().size() > 0)){
-								retirarArtefato(jogador, i, Mesa.ARTEFATOS_REQUISITOS);
+								retirarArtefato(jogador, i, ArtefatoTipo.REQUISITO.getCodigo());
 								retirou = true;
 							}
 							if ((jogador.getTabuleiro().getMesas()[i].getAjudas().size() == 0)
@@ -4682,25 +4671,25 @@ public final class Jogo{
 						}
 					}
 
-					if ((tipoArtefato == Mesa.ARTEFATOS_AJUDA)
+					if ((tipoArtefato == ArtefatoTipo.AJUDA.getCodigo())
 							&& (jogador.getTabuleiro().getMesas()[i].getAjudas().size() > 0)){
-						retirarArtefato(jogador, i, Mesa.ARTEFATOS_AJUDA);
+						retirarArtefato(jogador, i, ArtefatoTipo.AJUDA.getCodigo());
 					}
-					if ((tipoArtefato == Mesa.ARTEFATOS_CODIGO)
+					if ((tipoArtefato == ArtefatoTipo.CODIGO.getCodigo())
 							&& (jogador.getTabuleiro().getMesas()[i].getCodigos().size() > 0)){
-						retirarArtefato(jogador, i, Mesa.ARTEFATOS_CODIGO);
+						retirarArtefato(jogador, i, ArtefatoTipo.CODIGO.getCodigo());
 					}
-					if ((tipoArtefato == Mesa.ARTEFATOS_DESENHO)
+					if ((tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo())
 							&& (jogador.getTabuleiro().getMesas()[i].getDesenhos().size() > 0)){
-						retirarArtefato(jogador, i, Mesa.ARTEFATOS_DESENHO);
+						retirarArtefato(jogador, i,ArtefatoTipo.DESENHO.getCodigo());
 					}
-					if ((tipoArtefato == Mesa.ARTEFATOS_RASTROS)
+					if ((tipoArtefato == ArtefatoTipo.RASTRO.getCodigo())
 							&& (jogador.getTabuleiro().getMesas()[i].getRastros().size() > 0)){
-						retirarArtefato(jogador, i, Mesa.ARTEFATOS_RASTROS);
+						retirarArtefato(jogador, i, ArtefatoTipo.RASTRO.getCodigo());
 					}
-					if ((tipoArtefato == Mesa.ARTEFATOS_REQUISITOS)
+					if ((tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo())
 							&& (jogador.getTabuleiro().getMesas()[i].getRequisitos().size() > 0)){
-						retirarArtefato(jogador, i, Mesa.ARTEFATOS_REQUISITOS);
+						retirarArtefato(jogador, i, ArtefatoTipo.REQUISITO.getCodigo());
 					}
 				}
 			}
@@ -4713,7 +4702,7 @@ public final class Jogo{
 		 * sempre, quando se remove um objeto do arrayList, todos os elementos
 		 * acima desse indice sao deslocados para baixo por 1
 		 */
-		if (tipoArtefato == Mesa.ARTEFATOS_AJUDA){
+		if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo()){
 			while (jogador.getTabuleiro().getMesas()[mesa].getAjudas().size() != 0){//retirando todos os artefatos de ajuda
 				if (jogador.getTabuleiro().getMesas()[mesa].getAjudas().get(auxiliar).isPoorQuality() == true){
 					baralhoArtefatosRuins[BARALHO_AUXILIAR].recolherArtefato(jogador.getTabuleiro().getMesas()[mesa].getAjudas().get(auxiliar));
@@ -4729,7 +4718,7 @@ public final class Jogo{
 
 			}
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_CODIGO){
+		if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo()){
 			while (jogador.getTabuleiro().getMesas()[mesa].getCodigos().size() != 0){//retirando todos os artefatos de codigo
 				if (jogador.getTabuleiro().getMesas()[mesa].getCodigos().get(auxiliar).isPoorQuality() == true){
 					baralhoArtefatosRuins[BARALHO_AUXILIAR].recolherArtefato(jogador.getTabuleiro().getMesas()[mesa].getCodigos().get(auxiliar));
@@ -4745,7 +4734,7 @@ public final class Jogo{
 
 			}
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_DESENHO){
+		if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo()){
 			while (jogador.getTabuleiro().getMesas()[mesa].getDesenhos().size() != 0){//retirando todos os artefatos de desenhos
 				if (jogador.getTabuleiro().getMesas()[mesa].getDesenhos().get(auxiliar).isPoorQuality() == true){
 					baralhoArtefatosRuins[BARALHO_AUXILIAR]
@@ -4763,7 +4752,7 @@ public final class Jogo{
 
 			}
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_RASTROS){
+		if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo()){
 			while (jogador.getTabuleiro().getMesas()[mesa].getRastros().size() != 0){//retirando todos os artefatos de rastros
 				if (jogador.getTabuleiro().getMesas()[mesa].getRastros().get(auxiliar).isPoorQuality() == true){
 					baralhoArtefatosRuins[BARALHO_AUXILIAR]
@@ -4781,7 +4770,7 @@ public final class Jogo{
 
 			}
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS){
+		if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo()){
 			while (jogador.getTabuleiro().getMesas()[mesa].getRequisitos().size() != 0){
 				if (jogador.getTabuleiro().getMesas()[mesa].getRequisitos().get(auxiliar).isPoorQuality() == true){
 					baralhoArtefatosRuins[BARALHO_AUXILIAR].recolherArtefato(jogador.getTabuleiro().getMesas()[mesa].getRequisitos().get(auxiliar));
@@ -4803,7 +4792,7 @@ public final class Jogo{
 	public void retirarArtefato(Jogador jogador, int mesa, int tipoArtefato){
 		Random sorteio = new Random();
 		/** sorteara qual artefato retirar de um arrayList */
-		if (tipoArtefato == Mesa.ARTEFATOS_AJUDA){
+		if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo()){
 			int sorteado = sorteio.nextInt(jogador.getTabuleiro().getMesas()[mesa].getAjudas().size());
 			/** sorteou o artefato a ser retirado */
 			if (jogador.getTabuleiro().getMesas()[mesa].getAjudas().get(sorteado).isPoorQuality() == true){
@@ -4820,7 +4809,7 @@ public final class Jogo{
 			}
 
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_CODIGO){
+		if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo()){
 			int sorteado = sorteio.nextInt(jogador.getTabuleiro().getMesas()[mesa].getCodigos().size());
 			/** sorteou o artefato a ser retirado */
 			if (jogador.getTabuleiro().getMesas()[mesa].getCodigos().get(sorteado).isPoorQuality() == true){
@@ -4838,7 +4827,7 @@ public final class Jogo{
 			}
 
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_DESENHO){
+		if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo()){
 			int sorteado = sorteio.nextInt(jogador.getTabuleiro().getMesas()[mesa].getDesenhos().size());
 			/** sorteou o artefato a ser retirado */
 			if (jogador.getTabuleiro().getMesas()[mesa].getDesenhos().get(sorteado).isPoorQuality() == true){
@@ -4856,7 +4845,7 @@ public final class Jogo{
 			}
 
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_RASTROS){
+		if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo()){
 			int sorteado = sorteio.nextInt(jogador.getTabuleiro().getMesas()[mesa].getRastros().size());
 			/** sorteou o artefato a ser retirado */
 			if (jogador.getTabuleiro().getMesas()[mesa].getRastros().get(sorteado).isPoorQuality() == true){
@@ -4874,7 +4863,7 @@ public final class Jogo{
 			}
 
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS){
+		if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo()){
 			int sorteado = sorteio.nextInt(jogador.getTabuleiro().getMesas()[mesa].getRequisitos().size());
 			/** sorteou o artefato a ser retirado */
 			if (jogador.getTabuleiro().getMesas()[mesa].getRequisitos().get(sorteado).isPoorQuality() == true){
@@ -4896,7 +4885,7 @@ public final class Jogo{
 
 	public void changeWhiteArtifactsByGrayArtifacts(Jogador jogador, int tipoArtefato){
 		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){//percorrendo mesas do jogador
-			if (tipoArtefato == Mesa.ARTEFATOS_AJUDA){
+			if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo()){
 				boolean percorreuTudo = false;
 				while (percorreuTudo == false){
 					for (int j = 0; j < jogador.getTabuleiro().getMesas()[i].getAjudas().size(); j++){// percorrendo vetor de artefatos de ajuda na mesa
@@ -4912,7 +4901,7 @@ public final class Jogo{
 				}
 			}
 
-			if (tipoArtefato == Mesa.ARTEFATOS_CODIGO){
+			if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo()){
 				boolean percorreuTudo = false;
 				while (percorreuTudo == false){
 					for (int j = 0; j < jogador.getTabuleiro().getMesas()[i].getCodigos()
@@ -4927,7 +4916,7 @@ public final class Jogo{
 				}
 			}
 
-			if (tipoArtefato == Mesa.ARTEFATOS_DESENHO){
+			if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo()){
 				boolean percorreuTudo = false;
 				while (percorreuTudo == false){
 					for (int j = 0; j < jogador.getTabuleiro().getMesas()[i].getDesenhos().size(); j++){//percorrendo vetor de artefatos de desenhos na mesa
@@ -4941,7 +4930,7 @@ public final class Jogo{
 				}
 			}
 
-			if (tipoArtefato == Mesa.ARTEFATOS_RASTROS){
+			if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo()){
 				boolean percorreuTudo = false;
 				while (percorreuTudo == false){
 					for (int j = 0; j < jogador.getTabuleiro().getMesas()[i].getRastros().size(); j++){// percorrendo vetor de artefatos de rastros na mesa
@@ -4955,7 +4944,7 @@ public final class Jogo{
 				}
 			}
 
-			if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS){
+			if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo()){
 				boolean percorreuTudo = false;
 				while (percorreuTudo == false){
 					for (int j = 0; j < jogador.getTabuleiro().getMesas()[i].getRequisitos().size(); j++){// percorrendo vetor de artefatos de requisitos na mesa
@@ -4974,15 +4963,14 @@ public final class Jogo{
 	}
 
 	public void retirarTodosArtefatosCinzas(Jogador jogador, int tipoArtefato){
-		if (tipoArtefato == Mesa.ARTEFATOS_AJUDA){
+		if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo()){
 			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ //percorrendo mesas
 				if (jogador.getTabuleiro().getMesas()[i].getAjudas().size() > 0){
 					boolean percorreuTudo = false;
 					while (percorreuTudo == false){
 						for (int j = 0; j < jogador.getTabuleiro().getMesas()[i].getAjudas().size(); j++){//percorrendo vetor de artefatos de ajuda na mesa
 							if (jogador.getTabuleiro().getMesas()[i].getAjudas().get(j).isPoorQuality() == true){
-								baralhoArtefatosRuins[BARALHO_AUXILIAR]
-										.recolherArtefato(jogador.getTabuleiro().getMesas()[i].getAjudas().remove(j));
+								baralhoArtefatosRuins[BARALHO_AUXILIAR].recolherArtefato(jogador.getTabuleiro().getMesas()[i].getAjudas().remove(j));
 								break;
 							}
 						}
@@ -4991,7 +4979,7 @@ public final class Jogo{
 				}
 			}
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_CODIGO){
+		if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo()){
 			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ //percorrendo mesas
 				if (jogador.getTabuleiro().getMesas()[i].getCodigos().size() > 0){
 					boolean percorreuTudo = false;
@@ -5008,7 +4996,7 @@ public final class Jogo{
 				}
 			}
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_DESENHO){
+		if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo()){
 			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ //percorrendo mesas
 				if (jogador.getTabuleiro().getMesas()[i].getDesenhos().size() > 0){
 					boolean percorreuTudo = false;
@@ -5026,7 +5014,7 @@ public final class Jogo{
 				}
 			}
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_RASTROS){
+		if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo()){
 			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ //percorrendo mesas
 				if (jogador.getTabuleiro().getMesas()[i].getRastros().size() > 0){
 					boolean percorreuTudo = false;
@@ -5042,7 +5030,7 @@ public final class Jogo{
 				}
 			}
 		}
-		if (tipoArtefato == Mesa.ARTEFATOS_REQUISITOS){
+		if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo()){
 			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ //percorrendo mesas
 				if (jogador.getTabuleiro().getMesas()[i].getRequisitos().size() > 0){
 					boolean percorreuTudo = false;
@@ -5100,6 +5088,7 @@ public final class Jogo{
 		}
 	}
 
+	//TODO: Refatorar.
 	public void diminuirDuracaoEfeitosTemporario(int jogador){
 		for (int i = 0; i < getJogadores()[jogador].getTabuleiro().getMesas().length; i++){
 			if (getJogadores()[jogador].getTabuleiro().getMesas()[i]

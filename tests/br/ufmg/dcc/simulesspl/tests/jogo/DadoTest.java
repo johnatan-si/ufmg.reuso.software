@@ -9,14 +9,14 @@ import org.junit.Test;
 
 public class DadoTest{
 
-	Dado dado = null;
+	Dado dado;
 	int sup = 6;	
 	int inf = 0;
 	
 			
 	@Before
 	public void setUp() throws Exception{
-		dado = new Dado();
+		this.dado = Dado.getInstance();
 	}
 
 	@After
@@ -25,25 +25,25 @@ public class DadoTest{
 
 	@Test
 	public void testSortearValorSuperior(){
-		int valor = Dado.sortearValor();
+		int valor = this.dado.sortearValor();
 		assertTrue(valor <= sup);				
 	}
 	
 	@Test
 	public void testSortearValorInferior(){
-		int valor = Dado.sortearValor();		
+		int valor = this.dado.sortearValor();		
 		assertTrue(valor >= inf);		
 	}
 
 	@Test
 	public void testContarPontosSuperior(){
-		int valor = Dado.contarPontos();
+		int valor = this.dado.contarPontos();
 		assertTrue(valor <= sup);		
 	}
 	
 	@Test
 	public void testContarPontosInferior(){
-		int valor = Dado.contarPontos();		
+		int valor = this.dado.contarPontos();		
 		assertTrue(valor >= inf);
 	}
 

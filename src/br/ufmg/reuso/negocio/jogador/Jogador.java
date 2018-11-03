@@ -84,7 +84,7 @@ public class Jogador{
 	public int analisarPontuacao(){
 		
 		int numberCards;
-		numberCards = Dado.contarPontos();
+		numberCards = Dado.getInstance().contarPontos();
 		Jogo.getJogo().setupController.mostrarPontosObtidosInicial(numberCards); // exibe a Gui mostrando pontos obtidos pelo jogador no lançamento de dados
 		
 		if ((getNumeroCartasMaoAtual() + numberCards) <= NUMERO_MAX_CARTAS_MAO){
