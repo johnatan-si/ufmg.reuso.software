@@ -82,6 +82,16 @@ public final class Jogo{
 	public Jogador[] getJogadores(){
 		return jogadores;
 	}
+	
+	public String getJogadoresToString() {
+		String nomes = "";
+		for(Jogador jogador : this.jogadores) {
+			if(jogador != null && jogador.getNome() != null) {
+				nomes += jogador.getNome() + ",";
+			}
+		}
+		return nomes.length() > 0 ? nomes.substring(0, nomes.length() - 1) : nomes;
+	}
 
 	public void setJogadores(Jogador[] jogadores){
 		this.jogadores = jogadores;

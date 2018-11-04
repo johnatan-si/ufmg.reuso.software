@@ -23,12 +23,12 @@ public aspect MessageAspect {
 	// Aspecto para exibir qualidade do artefato inspecionado.
 	// Executado após da chamada ao método Artefato.mostrarArtefato()
 	 
-	pointcut sortearArtefato(Artefato cArt) : call (void Artefato.mostrarArtefato())  && target(cArt);
+	pointcut mostrarArtefato(Artefato artefato) : call (void Artefato.mostrarArtefato())  && target(artefato);
 	
-	after(Artefato cArt) : sortearArtefato(cArt){
-		if (cArt.inspected() == true){
-			String message = "\nQualidade do artefato: " + cArt.getQualidadeArtefato();
-			message += "\n\nPossui bug: " + cArt.isArtefatoBug();
+	after(Artefato artefato) : mostrarArtefato(artefato){
+		if (artefato.inspected() == true){
+			String message = "\nQualidade do artefato: " + artefato.getQualidadeArtefato();
+			message += "\n\nPossui bug: " + artefato.isArtefatoBug();
 			JOptionPane.showMessageDialog(null, message, "[AOSD] SimulES", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}

@@ -27,16 +27,16 @@ public aspect LoggingAspect{
 	pointcut criarJogo() : call(Jogo Jogo.getJogo(..) );
 
 	after() : criarJogo(){
-		exibirLog("Recuperando instância do jogo,");
+		exibirLog("Recuperando instância do jogo.");
 	}
 	
 	//Aspecto para exibir status da criação dos jogadores. 
 	//Executado após chamada ao método Jogo.cadastrarJogadores(..)
 	
-	pointcut criarJogador() : call(void Jogo.cadastrarJogadores(..) );
+	pointcut criarJogador(Jogo jogo) : call(void Jogo.cadastrarJogadores(..) )  && target(jogo);
 	
-	after() : criarJogador(){
-		exibirLog("Jogadores criados com sucesso");
+	after(Jogo jogo) : criarJogador(jogo){
+		exibirLog("Jogadores criados com sucesso - " + jogo.getJogadoresToString());
 	}
 	
 	//Aspecto para exibir status de termino de jogada.
