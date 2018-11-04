@@ -30,8 +30,6 @@ public abstract class Carta {
 		setTipoCarta(tipo);
 	}
 	
-	public abstract void mostrarCarta(); //metodo abstrato para impressão de carta através de polimorfismo
-	
 	public String getTituloCarta(){
 		return tituloCarta;
 	}

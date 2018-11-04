@@ -178,7 +178,7 @@ public class ScreenModo extends JDialog implements ActionListener{
 		if (fl.isFile()){
 			return new ImageIcon(path);
 		} else{
-			System.err.println("Couldn't find file: " + path);
+//			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
 	}

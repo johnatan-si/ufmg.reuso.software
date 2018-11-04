@@ -73,4 +73,13 @@ public class Artefato{
 		estado.getEstado(this);
 	}
 	
+	public String getQualidadeArtefato() {
+		return qualidadeArtefatoRuim ? "ruim" : "bom";
+	}
+	
+	public String isArtefatoBug() {
+		return this.bug ? "sim" : "não";
+	}
+	
+	
 }

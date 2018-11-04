@@ -21,8 +21,8 @@ import br.ufmg.reuso.negocio.jogo.Jogo;
 import br.ufmg.reuso.negocio.mesa.Mesa;
 
 
-public class Tabuleiro 
-{
+public class Tabuleiro{
+	
 	public static final int NUMERO_MAX_MESAS_TABULEIRO = 5;				/** definindo número máximo de mesas no tabuleiro*/
 	private Mesa[] mesas = new Mesa[NUMERO_MAX_MESAS_TABULEIRO];		/** criando as mesas do tabuleiro*/
 	
@@ -212,8 +212,6 @@ public class Tabuleiro
 	public void alocarMesa(CartaEngenheiro novato, int posicaoMesa){
 		mesas[posicaoMesa].setCartaMesa(novato);				//inserindo engenheiro novato na mesa conforme a posição escolhida
 		
-		System.out.printf("engenheiro alocado:\n");				// TODO teste
-		mesas[posicaoMesa].getCartaMesa().mostrarCarta();		// TODO utilizado para mostrar a carta de engenheiro de software deste jogador -> ok
 	}
 	
 	public boolean despedirEngenheiro(CartaEngenheiro engDemitido){

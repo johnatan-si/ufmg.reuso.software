@@ -26,12 +26,6 @@ public class CartaEngenheiroTest{
 	}
 
 	@Test
-	public void testMostrarCarta(){
-		carta.mostrarCarta();		
-		
-	}
-
-	@Test
 	public void testCartaEngenheiro(){
 		assertNotNull(carta);		
 	}

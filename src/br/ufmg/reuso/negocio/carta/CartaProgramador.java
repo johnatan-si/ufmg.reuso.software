@@ -7,10 +7,4 @@ public class CartaProgramador extends Carta{
 		// TODO Incluir carta programador
 	}
 
-	@Override
-	public void mostrarCarta(){
-		// TODO Mostrar carta programador
-
-	}
-
 }

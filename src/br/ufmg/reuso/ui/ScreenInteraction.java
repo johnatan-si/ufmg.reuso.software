@@ -145,11 +145,7 @@ public class ScreenInteraction implements SetupInteraction{
 	}
 
 	@Override
-	public void exibirProjeto(CartaoProjeto projeto) /**
-	 * exibe cartao de projeto
-	 * na GUI
-	 */
-	{
+	public void exibirProjeto(CartaoProjeto projeto){
 		ScreenProject.createAndShowProject(tabuleiro, projeto);
 	}
 

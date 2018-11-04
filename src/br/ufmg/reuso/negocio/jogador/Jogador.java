@@ -137,7 +137,6 @@ public class Jogador{
 				continue;
 			}
 			System.out.println("iteracao: "+i);
-			cartas[i].mostrarCarta();
 		}
 	}
 	

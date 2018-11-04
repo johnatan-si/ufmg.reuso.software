@@ -33,13 +33,6 @@ public class CartaEngenheiro extends Carta
 		this.engenheiroTrabalhouNestaRodada=false;
 	}
 		
-	@Override
-	//TODO: Refatorar
-	public void mostrarCarta(){
-		System.out.printf("%s\t%s\t%s\n%s\nSalário: %d\nHabilidade: %d\nMaturidade: %d\n\n\n", super.getTituloCarta(), super.getCodigoCarta(),
-				getNomeEngenheiro(),super.getTextoCarta(), getSalarioEngenheiro(),getHabilidadeEngenheiro(),getMaturidadeEngenheiro());
-	}
-	
 	public String getNomeEngenheiro(){
 		return nomeEngenheiro;
 	}

@@ -495,12 +495,12 @@ public class ComponentCard extends JPanel{
 			if (fl.isFile()){
 				img = ImageIO.read(fl);
 			} else{
-				System.err.println("Couldn't find file: " + path);
+//				System.err.println("Couldn't find file: " + path);
 				return null;
 			}
 		} catch (Exception e){
 			e.printStackTrace();
-			System.err.println("Couldn't find file: " + path);
+//			System.err.println("Couldn't find file: " + path);
 			return null;
 		}
 

@@ -113,7 +113,6 @@ public final class Jogo{
 
 	public static Jogo getJogo(){
 		if (jogo == null){
-			System.out.println("criando jogo");
 			jogo = new Jogo();
 		}
 		return jogo;
@@ -397,7 +396,6 @@ public final class Jogo{
 	 */
 	public Jogador admitirEngenheiro(Jogador jogador, CartaEngenheiro engenheiroContratado, int posicaoMesa){
 		jogador.contratarEngenheiro(engenheiroContratado, posicaoMesa);
-		mostrarCartasDasMesasDoTabuleiro(jogador);
 		return jogador;
 	}
 
@@ -405,24 +403,9 @@ public final class Jogo{
 		if (jogador.removerCarta(engenheiroDemitido) == true){//se pode demitir engenheiro
 			baralhoCartas[BARALHO_AUXILIAR].recolherCarta(engenheiroDemitido);
 		}
-		System.out.printf("engenheiro ainda contratados, demitidos nao consta na lista:\n");
-		mostrarCartasDasMesasDoTabuleiro(jogador);
 		return jogador;
 	}// TODO tem que conferir se o engenheiro a ser demitido ainda nao trabalhou na rodada.
 
-
-	private void mostrarCartasDasMesasDoTabuleiro(Jogador jogador){// FIXME: Método para teste.
-		for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){ 
-			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null){																	// teste
-				continue;
-			}
-			else{
-				System.out.printf("engenheiros contratados:\n");
-				//Mostra carta de engenheiro de software no tabuleiro desse jogador.
-				jogador.getTabuleiro().getMesas()[i].getCartaMesa().mostrarCarta(); 
-			} 
-		}
-	}
 
 	public Jogador inserirArtefato(Jogador jogador, CartaEngenheiro engenheiroProduzindo, int mesaTrabalho){
 		int habilidadeTemporaria = engenheiroProduzindo.getHabilidadeEngenheiroAtual();
@@ -440,8 +423,6 @@ public final class Jogo{
 			System.out.println("\npedido cancelado pois retornou modulo null");
 			return jogador;
 		} else{ // ha pedido valido
-			System.out.printf("tem pedido valido\n");
-
 			int numeroArtefatoBons = pedido[ArtefatoQualidade.BOM.getCodigo()].somatorioModulo();
 			int numeroArtefatosRuins = pedido[ArtefatoQualidade.RUIM.getCodigo()].somatorioModulo();
 			int somatorioComplexidade = numeroArtefatoBons * projeto.getComplexidade() + ((int) numeroArtefatosRuins * projeto.getComplexidade() / 2);
@@ -505,8 +486,6 @@ public final class Jogo{
 			System.out.println("\npedido cancelado pois retornou modulo null");
 			return jogador;
 		} else{// ha pedido valido
-			System.out.printf("tem pedido valido\n");
-
 			int numeroArtefatoBons = pedido[ArtefatoQualidade.BOM.getCodigo()].somatorioModulo();
 			int numeroArtefatosRuins = pedido[ArtefatoQualidade.RUIM.getCodigo()].somatorioModulo();
 			int somatorioComplexidade = numeroArtefatoBons * projeto.getComplexidade() + ((int) numeroArtefatosRuins * projeto.getComplexidade() / 2);
@@ -569,8 +548,6 @@ public final class Jogo{
 			System.out.println("\npedido cancelado pois retornou modulo null");
 			return jogador;
 		} else{// ha pedido valido
-			System.out.printf("tem pedido valido\n");
-
 			int numeroArtefatoBons = pedido[ArtefatoQualidade.BOM.getCodigo()].somatorioModulo();
 			int numeroArtefatosRuins = pedido[ArtefatoQualidade.RUIM.getCodigo()].somatorioModulo();
 			int somatorioComplexidade = numeroArtefatoBons * projeto.getComplexidade() + ((int) numeroArtefatosRuins * projeto.getComplexidade() / 2);
