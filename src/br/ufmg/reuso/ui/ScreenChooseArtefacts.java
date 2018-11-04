@@ -83,8 +83,7 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 	 *            = habilidade do engenheiro
 	 * 
 	 */
-	public ScreenChooseArtefacts(String message, Modulo[] modulo,
-			int complexidade, int habilidade){
+	public ScreenChooseArtefacts(String message, Modulo[] modulo, int complexidade, int habilidade){
 		super();
 
 		this.modulo = modulo;
@@ -159,9 +158,9 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 	 */
 	JPanel getPanelArtefatos(){
 
-		JPanel panel = new JPanel(new GridLayout(6, 3, 10, 10));
+		JPanel panel = new JPanel(new GridLayout(7, 4, 11, 11));
 
-		panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		panel.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 6));
 
 		JLabel label;
 		JComboBox list;
@@ -173,8 +172,7 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 		int bons = ScreenInteraction.ARTEFATOS_BONS;
 		int ruins = ScreenInteraction.ARTEFATOS_RUINS;
 
-		String[] nomes = new String[]{ "Requisitos", "Desenhos", "Código",
-				"Rastros", "Ajudas" };
+		String[] nomes = new String[]{ "Requisitos", "Desenhos", "Código", "Rastros", "Ajudas", "Testes" };
 
 		int valor = 0;
 
@@ -199,6 +197,8 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 				valor = modulo[bons].getRastros();
 			} else if (nomes[i].equalsIgnoreCase("Ajudas")){
 				valor = modulo[bons].getAjudas();
+			} else if (nomes[i].equalsIgnoreCase("Testes")){
+				valor = modulo[bons].getTestes();
 			}
 			}else{
 				valor = 4;
@@ -228,6 +228,8 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 				valor = modulo[ruins].getRastros();
 			} else if (nomes[i].equalsIgnoreCase("Ajudas")){
 				valor = modulo[ruins].getAjudas();
+			} else if (nomes[i].equalsIgnoreCase("Testes")){
+				valor = modulo[ruins].getTestes();
 			}
 			}else{	
 				valor = 4;				
@@ -467,7 +469,7 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 			} else if (text.getName() == "Ajudas"){
 				pedidoArtefatos[bons].setAjudas(value);
 			} else if (text.getName() == "Testes"){
-					pedidoArtefatos[bons].setTestes(value);
+				pedidoArtefatos[bons].setTestes(value);
 			}
 
 		}
@@ -492,6 +494,8 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 			} else if (text.getName() == "Ajudas"){
 				pedidoArtefatos[ruins].setAjudas(value);
 
+			} else if (text.getName() == "Testes"){
+				pedidoArtefatos[ruins].setTestes(value);
 			}
 
 		}
@@ -513,12 +517,10 @@ public class ScreenChooseArtefacts extends JDialog implements ActionListener{
 	 * @param habilidade
 	 *            = habilidade do engenheiro
 	 */
-	public static ScreenChooseArtefacts createAndShowChooseArtefacts(
-			String message, Modulo[] modulo,int complexidade, int habilidade){
+	public static ScreenChooseArtefacts createAndShowChooseArtefacts(String message, Modulo[] modulo,int complexidade, int habilidade){
 
 		// Cria e configura a tela.
-		ScreenChooseArtefacts scr = new ScreenChooseArtefacts(message,
-				modulo, complexidade, habilidade);
+		ScreenChooseArtefacts scr = new ScreenChooseArtefacts(message, modulo, complexidade, habilidade);
 		scr.rootPane.setOpaque(true);
 		scr.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		scr.setPreferredSize(new Dimension(400, 300));

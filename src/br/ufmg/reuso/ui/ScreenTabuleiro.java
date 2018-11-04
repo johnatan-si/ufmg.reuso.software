@@ -135,6 +135,7 @@ public class ScreenTabuleiro extends JDialog{
 		Dimension screenSize = tk.getScreenSize();
 		this.setPreferredSize(screenSize);
 		mySise = screenSize;
+		mySise.setSize(1366, 768);
 
 	}
 
@@ -188,8 +189,7 @@ public class ScreenTabuleiro extends JDialog{
 	 */
 	private JPanel getPanelButtonsLeft(){
 		
-		Dimension myDim = new Dimension(mySise.width * 10 / 100,
-				mySise.height * 60 / 100);
+		Dimension myDim = new Dimension(mySise.width * 15 / 100, mySise.height * 60 / 100);
 
 		//Define componentes
 		JPanel jpanel = new JPanel();
@@ -235,16 +235,19 @@ public class ScreenTabuleiro extends JDialog{
 		ygap = (myDim.height) / ((2*numButtons)+1);
 		height =  (myDim.height) / (2*numButtons+1);
 		y = ygap/2;
-		buttonTabuleiro.setBounds(x, y, width, height);
+		
+		int heightButton = 40;
+		int widthButton = 150;
+		buttonTabuleiro.setBounds(x, y, widthButton, heightButton);
 
 		y += ygap + height;
-		buttonProjeto.setBounds(x, y, width, height);
+		buttonProjeto.setBounds(x, y, widthButton, heightButton);
 
 		y += ygap + height;
-		buttonDados.setBounds(x, y, width, height);
+		buttonDados.setBounds(x, y, widthButton, heightButton);
 
 		y += ygap + height;
-		buttonEnd.setBounds(x, y, width, height);
+		buttonEnd.setBounds(x, y, widthButton, heightButton);
 		
 		//Define Adiciona no painel
 		jpanel.add(buttonTabuleiro);
@@ -264,8 +267,7 @@ public class ScreenTabuleiro extends JDialog{
 	// TODO [ARS] Este painel pode apresentar problemas e conceitos ativos
 	private JPanel getPanelButtonsRight(){
 
-		Dimension myDim = new Dimension(mySise.width * 19 / 100,
-				mySise.height * 60 / 100);
+		Dimension myDim = new Dimension(mySise.width * 14 / 100, mySise.height * 60 / 100);
 		
 		JPanel jpanel = new JPanel();
 
@@ -324,7 +326,7 @@ public class ScreenTabuleiro extends JDialog{
 
 		jpanel.setBackground(colorBack);
 
-		dimPanel = new Dimension(mySise.width * 70 /100 ,mySise.height * 57 /100);
+		dimPanel = new Dimension(mySise.width * 70 /100, mySise.height * 80 /100);
 
 		jpanel.setPreferredSize(dimPanel);
 
@@ -334,8 +336,8 @@ public class ScreenTabuleiro extends JDialog{
 
 		x = y = 0;
 		xInc = dimPanel.width / 6;
-		yInc = 2 * dimPanel.height / 15;
-		height = yInc * 2;
+		yInc = 2 * dimPanel.height / 25;
+		height = yInc * 3;
 		width = xInc;
 
 		// Desenha os títulos das mesas
@@ -343,11 +345,8 @@ public class ScreenTabuleiro extends JDialog{
 
 		{
 			JPanel panelBoard;
-			JScrollPane scrollBoard;		
 			Jogador jogadorAtual = (oponent == null ? jogador : oponent);
 			
-			
-
 			for (int i = 0; i < jogadorAtual.getTabuleiro().getMesas().length; i++){
 
 				board = jogadorAtual.getTabuleiro().getMesas()[i];
@@ -377,10 +376,9 @@ public class ScreenTabuleiro extends JDialog{
 					modulo.add(board.getCodigos());
 					modulo.add(board.getRastros());
 					modulo.add(board.getAjudas());
+					modulo.add(board.getTestes());
 
-					Vector<String> names = new Vector<String>(
-							Arrays.asList(new String[]{ "Requisitos",
-									"Desenhos", "Códigos", "Rastros", "Ajudas" }));
+					Vector<String> names = new Vector<String>(Arrays.asList(new String[]{ "Requisitos", "Desenhos", "Códigos", "Rastros", "Ajudas", "Testes" }));
 					int j = 0;
 
 					int mesa = i;
@@ -451,23 +449,23 @@ public class ScreenTabuleiro extends JDialog{
 				y += height;
 				height = yInc / 2;
 				//width = (maxBoardSize > width ? maxBoardSize : width); 
-				buttonIntegrate.setBounds(x, y, width, height);
+				buttonIntegrate.setBounds(x, y + 20, width, height);
 				buttonIntegrate.setActionCommand(Integer.toString(i));
 				buttonIntegrate.addActionListener(getActionIntegrate());
 				buttonIntegrate.setEnabled(oponent == null);
 
 				panelBoard.add(buttonIntegrate);
 
-				panelBoard.setBounds(width * (i + 1), 0, maxBoardSize,
-						dimPanel.height);
+				panelBoard.setBounds(width * (i + 1), 0, maxBoardSize, dimPanel.height);
 				panelBoard.setPreferredSize(new Dimension(maxBoardSize,dimPanel.height));
 				panelBoard.setBorder(borderW);
 
+				JScrollPane scrollBoard;	
 				scrollBoard = new JScrollPane();
 				scrollBoard.setBorder(null);
-				scrollBoard.setBounds(width * (i + 1), 0, width,
-						dimPanel.height);
+				scrollBoard.setBounds(width * (i + 1), 0, width, dimPanel.height);
 				scrollBoard.setViewportView(panelBoard);
+				
 				jpanel.add(scrollBoard);
 
 			}
@@ -547,15 +545,15 @@ public class ScreenTabuleiro extends JDialog{
 
 		//Border borderW = BorderFactory.createLineBorder(Color.WHITE);
 
-		JLabel label = new JLabel("<html><center>Player:<br>"
-				+ (oponent == null ? jogador.getNome() : oponent.getNome()),
-				JLabel.CENTER);
-		label.setBounds(x, y, width, height);
+		JLabel label = new JLabel("<html><center><b>Jogador: " + (oponent == null ? jogador.getNome() : oponent.getNome()), JLabel.CENTER);
+		label.setBounds(x, y - 40, width, height);
 		//label.setBorder(borderW);
 		panelTitle.add(label);
 
+		panelTitle.setBounds(0, 0, width, dimPanel.height);
+		
 		label = new JLabel("Requisitos", JLabel.CENTER);
-		y += height;
+		y += height * 70/100;
 		height = yInc;
 		label.setBounds(x, y, width, height);
 		//label.setBorder(borderW);
@@ -584,15 +582,19 @@ public class ScreenTabuleiro extends JDialog{
 		label.setBounds(x, y, width, height);
 		//label.setBorder(borderW);
 		panelTitle.add(label);
-
-		label = new JLabel("Integração", JLabel.CENTER);
+		
+		label = new JLabel("Testes", JLabel.CENTER);
 		y += height;
-		height = yInc / 2;
 		label.setBounds(x, y, width, height);
 		//label.setBorder(borderW);
 		panelTitle.add(label);
 
-		panelTitle.setBounds(0, 0, width, dimPanel.height);
+		label = new JLabel("Integração", JLabel.CENTER);
+		y += height;
+		height = yInc / 2;
+		label.setBounds(x, y + 10, width, height);
+		//label.setBorder(borderW);
+		panelTitle.add(label);
 
 		return panelTitle;
 
@@ -685,7 +687,7 @@ public class ScreenTabuleiro extends JDialog{
 			else{
 				JLabel label = new JLabel("Vazio", JLabel.CENTER);
 				label.setBorder(border);
-				label.setBounds(x, y, width, height);
+				label.setBounds(x, y, width * 80/100, height * 90/100);
 				jpanel.add(label);
 				x += width;
 			}
