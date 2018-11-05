@@ -1,3 +1,5 @@
+.featureide/
+
 bin/
 
 .classpath
