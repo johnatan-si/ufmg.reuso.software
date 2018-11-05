@@ -2,104 +2,46 @@
 	<featureModel>
 		<properties/>
 		<struct>
-			<and mandatory="true" name="SimulES_Game">
-				<description>
-					
-				</description>
+			<and mandatory="true" name="SimulES">
 				<and mandatory="true" name="GameSetup">
-					<description>
-						
-					</description>
-					<feature mandatory="true" name="ChooseLevel">
-						<description>
-							
-						</description>
-					</feature>
-					<feature mandatory="true" name="CreateProject">
-						<description>
-							
-						</description>
-					</feature>
+					<feature mandatory="true" name="ChooseLevel"/>
+					<feature mandatory="true" name="CreateProject"/>
 				</and>
-				<feature mandatory="true" name="Project">
-					<description>
-						
-					</description>
-				</feature>
+				<feature mandatory="true" name="Project"/>
 				<and mandatory="true" name="Board">
-					<description>
-						
-					</description>
-					<feature mandatory="true" name="Artifacts">
-						<description>
-							
-						</description>
-					</feature>
-					<feature mandatory="true" name="Tables">
-						<description>
-							
-						</description>
-					</feature>
-					<feature mandatory="true" name="SeeProject">
-						<description>
-							
-						</description>
-					</feature>
-					<feature mandatory="true" name="SeeOponentBoard">
-						<description>
-							
-						</description>
-					</feature>
+					<feature mandatory="true" name="Artifacts"/>
+					<feature mandatory="true" name="Tables"/>
+					<feature mandatory="true" name="SeeProject"/>
+					<feature mandatory="true" name="SeeOponentBoard"/>
 				</and>
 				<and abstract="true" mandatory="true" name="DeckOfCards">
-					<description>
-						
-					</description>
 					<and abstract="true" mandatory="true" name="GameCards">
-						<description>
-							
-						</description>
-						<feature mandatory="true" name="SoftwareEngineer">
-							<description>
-								
-							</description>
-						</feature>
-						<feature mandatory="true" name="ProblemCard">
-							<description>
-								
-							</description>
-						</feature>
-						<feature name="ConceptCard">
-							<description>
-								
-							</description>
-						</feature>
+						<feature mandatory="true" name="SoftwareEngineer"/>
+						<and mandatory="true" name="ProblemCard">
+							<feature name="CodeProblem"/>
+							<feature name="ComunicationProblem"/>
+							<feature name="DesignProblem"/>
+							<feature name="ManagementProblem"/>
+							<feature name="HumanProblem"/>
+							<feature name="RequirementsProblem"/>
+							<feature name="TestProblem"/>
+						</and>
+						<and name="ConceptCard">
+							<feature name="CodeConcept"/>
+							<feature name="ComunicationConcept"/>
+							<feature name="DesignConcept"/>
+							<feature name="ManagementConcept"/>
+							<feature name="HumanConcept"/>
+							<feature name="RequirementConcept"/>
+							<feature name="TestConcept"/>
+						</and>
 					</and>
-					<feature mandatory="true" name="ArtifactCards">
-						<description>
-							
-						</description>
-					</feature>
+					<feature mandatory="true" name="ArtifactCards"/>
 				</and>
 				<and abstract="true" mandatory="true" name="SoftwareEngineerActions">
-					<description>
-						
-					</description>
-					<feature mandatory="true" name="InspectArtifact">
-						<description>
-							
-						</description>
-					</feature>
-					<feature mandatory="true" name="CreateArtifact">
-						<description>
-							
-						</description>
-					</feature>
-					<feature mandatory="true" name="CorrectArtifact">
-						<description>
-							
-						</description>
-					</feature>
+					<feature mandatory="true" name="InspectArtifact"/>
+					<feature mandatory="true" name="CreateArtifact"/>
+					<feature mandatory="true" name="CorrectArtifact"/>
 				</and>
 			</and>
 		</struct>
