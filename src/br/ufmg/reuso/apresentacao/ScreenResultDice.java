@@ -6,7 +6,7 @@
  * Created by Alisson
  * Date: 18/07/2011
  */
-package br.ufmg.reuso.ui;
+package br.ufmg.reuso.apresentacao;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

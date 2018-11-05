@@ -12,12 +12,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.ufmg.reuso.apresentacao.ScreenChooseArtefacts;
 import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.jogador.Jogador;
 import br.ufmg.reuso.negocio.jogo.Jogo;
 import br.ufmg.reuso.negocio.mesa.Mesa;
 import br.ufmg.reuso.negocio.mesa.Modulo;
-import br.ufmg.reuso.ui.ScreenChooseArtefacts;
 import junit.framework.TestCase;
 /**
  * @author alcemir

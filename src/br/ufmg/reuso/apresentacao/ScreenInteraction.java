@@ -6,7 +6,7 @@
  * Created by Alisson R Santos
  * Date: 30/07/2011
  */
-package br.ufmg.reuso.ui;
+package br.ufmg.reuso.apresentacao;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

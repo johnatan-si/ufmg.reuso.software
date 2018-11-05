@@ -7,9 +7,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import br.ufmg.reuso.apresentacao.ScreenInteraction;
 import br.ufmg.reuso.negocio.jogo.Jogo;
 import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
-import br.ufmg.reuso.ui.ScreenInteraction;
 
 public class JogoTest{
 

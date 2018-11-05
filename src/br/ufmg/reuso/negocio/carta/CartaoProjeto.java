@@ -19,10 +19,10 @@ import java.io.File;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+import br.ufmg.reuso.apresentacao.ScreenControl;
 import br.ufmg.reuso.dados.carta.RepositorioCartaoProjeto;
 import br.ufmg.reuso.negocio.jogo.Jogo;
 import br.ufmg.reuso.negocio.mesa.Modulo;
-import br.ufmg.reuso.ui.ScreenControl;
 
 public class CartaoProjeto{
 	private static final String PATH = "CartaoProjeto";	//variavel referenciando o diretório CartaoProjeto no qual há os cartoes de projeto

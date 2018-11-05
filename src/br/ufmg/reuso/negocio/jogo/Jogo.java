@@ -12,6 +12,7 @@ package br.ufmg.reuso.negocio.jogo;
 import java.util.ArrayList;
 import java.util.Random;
 
+import br.ufmg.reuso.apresentacao.ScreenInteraction;
 import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosBons;
 import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosRuins;
 import br.ufmg.reuso.negocio.baralho.BaralhoCartas;
@@ -41,7 +42,6 @@ import br.ufmg.reuso.negocio.mesa.ArtefatoTipo;
 import br.ufmg.reuso.negocio.mesa.Modulo;
 import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
 import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
-import br.ufmg.reuso.ui.ScreenInteraction;
 
 /**
  * Classe para encapsulamento do jogo.

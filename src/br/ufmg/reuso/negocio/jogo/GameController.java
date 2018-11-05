@@ -9,6 +9,7 @@
 package br.ufmg.reuso.negocio.jogo;
 
 
+import br.ufmg.reuso.apresentacao.ScreenInteraction;
 import br.ufmg.reuso.negocio.carta.Carta;
 //#ifdef ConceptCard
 import br.ufmg.reuso.negocio.carta.CartaBonificacao;
@@ -17,7 +18,6 @@ import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.carta.CartaPenalizacao;
 import br.ufmg.reuso.negocio.jogador.Jogador;
 import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
-import br.ufmg.reuso.ui.ScreenInteraction;
 
 /**
  * @author Michael David
