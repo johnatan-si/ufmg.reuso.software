@@ -267,7 +267,7 @@ public class ScreenTabuleiro extends JDialog{
 	// TODO [ARS] Este painel pode apresentar problemas e conceitos ativos
 	private JPanel getPanelButtonsRight(){
 
-		Dimension myDim = new Dimension(mySise.width * 14 / 100, mySise.height * 60 / 100);
+		Dimension myDim = new Dimension(mySise.width * 15 / 100, mySise.height * 60 / 100);
 		
 		JPanel jpanel = new JPanel();
 
@@ -326,7 +326,7 @@ public class ScreenTabuleiro extends JDialog{
 
 		jpanel.setBackground(colorBack);
 
-		dimPanel = new Dimension(mySise.width * 70 /100, mySise.height * 80 /100);
+		dimPanel = new Dimension(mySise.width * 65 /100, mySise.height * 80 /100);
 
 		jpanel.setPreferredSize(dimPanel);
 
