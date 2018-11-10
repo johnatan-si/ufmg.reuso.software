@@ -20,6 +20,8 @@ import br.ufmg.reuso.negocio.carta.Artefato;
 
 /**
  * @author Alisson
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
  *
  */
 public class ArtefatoTest{

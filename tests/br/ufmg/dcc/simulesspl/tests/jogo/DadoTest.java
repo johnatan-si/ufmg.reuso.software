@@ -7,6 +7,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
+/**
+ * @author alcemir
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
+ *
+ */
 public class DadoTest{
 
 	Dado dado;

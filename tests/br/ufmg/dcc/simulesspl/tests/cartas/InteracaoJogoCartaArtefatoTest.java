@@ -21,6 +21,8 @@ import br.ufmg.reuso.negocio.mesa.Modulo;
 import junit.framework.TestCase;
 /**
  * @author alcemir
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
  *
  */
 public class InteracaoJogoCartaArtefatoTest extends TestCase{

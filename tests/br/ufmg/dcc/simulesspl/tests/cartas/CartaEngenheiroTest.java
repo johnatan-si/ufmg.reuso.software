@@ -10,6 +10,11 @@ import org.junit.Test;
 
 import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 
+/**
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
+ *
+ */
 public class CartaEngenheiroTest{
 	
 	CartaEngenheiro carta;

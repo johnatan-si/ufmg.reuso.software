@@ -11,6 +11,8 @@ import junit.framework.TestCase;
 
 /**
  * @author alcemir
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
  *
  */
 public class InteracaoJogoCartasTest extends TestCase{

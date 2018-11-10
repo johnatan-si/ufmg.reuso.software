@@ -15,6 +15,13 @@ import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.jogador.Jogador;
 import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
 
+
+/**
+ * @author alcemir
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
+ *
+ */
 public class JogadorTest{
 
 	Jogador jogador;

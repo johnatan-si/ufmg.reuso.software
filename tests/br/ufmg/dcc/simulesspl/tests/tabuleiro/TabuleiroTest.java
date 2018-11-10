@@ -13,6 +13,11 @@ import br.ufmg.reuso.negocio.carta.CartaEngenheiro;
 import br.ufmg.reuso.negocio.mesa.Mesa;
 import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
 
+/**
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
+ *
+ */
 public class TabuleiroTest{
 
 	private Tabuleiro tabuleiro = null;

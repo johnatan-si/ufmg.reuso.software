@@ -18,6 +18,8 @@ import junit.framework.TestCase;
 
 /**
  * @author alcemir
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
  *
  */
 public class InteracaoMesaCartaArtefato extends TestCase{
@@ -31,9 +33,6 @@ public class InteracaoMesaCartaArtefato extends TestCase{
 		this.jogo.mockinit();
 		this.mesa = new Mesa();
 	}
-	
-	//	public void testReceberArtefatos(){}	
-	
 	
 	@Test
 	public void testReceberArtefatoAjudaBom(){

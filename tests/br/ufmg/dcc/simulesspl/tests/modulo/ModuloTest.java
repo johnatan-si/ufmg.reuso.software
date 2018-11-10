@@ -18,6 +18,8 @@ import br.ufmg.reuso.negocio.mesa.Modulo;
 
 /**
  * @author Alisson
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
  *
  */
 public class ModuloTest{

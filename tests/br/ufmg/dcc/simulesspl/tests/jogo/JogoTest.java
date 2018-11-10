@@ -11,6 +11,13 @@ import br.ufmg.reuso.apresentacao.ScreenInteraction;
 import br.ufmg.reuso.negocio.jogo.Jogo;
 import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
 
+
+/**
+ * @author alcemir
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
+ *
+ */
 public class JogoTest{
 
 	private Jogo jogo;

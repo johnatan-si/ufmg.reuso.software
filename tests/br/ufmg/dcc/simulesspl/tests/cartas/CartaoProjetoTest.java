@@ -11,6 +11,11 @@ import br.ufmg.reuso.negocio.carta.CartaoProjeto;
 import br.ufmg.reuso.negocio.jogo.Jogo;
 import br.ufmg.reuso.negocio.mesa.Modulo;
 
+/**
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
+ *
+ */
 public class CartaoProjetoTest{
 	
 	private CartaoProjeto cartao = null;
