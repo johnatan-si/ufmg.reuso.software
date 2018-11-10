@@ -11,9 +11,10 @@ package br.ufmg.reuso.negocio.mesa;
 
 /**
  * @author Michael David
+ * 
+ * Atualizado por Aline Brito, Igor Muzetti (2018-02).
  *
  */
-
 import java.util.ArrayList;
 
 import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosBons;

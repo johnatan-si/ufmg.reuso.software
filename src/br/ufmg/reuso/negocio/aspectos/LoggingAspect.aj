@@ -9,7 +9,8 @@
  * 
  * Editado por: Aline Brito, Igor Muzetti (2018-2). Modificações:
  * 	- Refatoração e reuso dos pointcut iniciarJogo(), criarJogador(), sortearArtefato().
- *  - 3 novos pointcut adicionados: criarJogo()
+ *  - 5 novos pointcut adicionados.
+ *  - Advices/pointcuts relacionados a janelas de avisos movidos para o aspecto Message.
  */
 
 import br.ufmg.reuso.negocio.baralho.BaralhoCartas;

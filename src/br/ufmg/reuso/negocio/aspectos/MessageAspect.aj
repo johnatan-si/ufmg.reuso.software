@@ -1,4 +1,7 @@
-
+/*
+ * Criado por: Aline Brito, Igor Muzetti (2018-2).
+ * Aspecto responsável por exibir janelas com informações ou avisos para os usuários.
+ */
 
 import javax.swing.JOptionPane;
 
