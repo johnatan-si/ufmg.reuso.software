@@ -33,6 +33,17 @@ O jogo SimulES compreende três etapas principais que envolvem a configuração 
 * Construir módulos:  A etapas posteriores do jogo consistem na construção dos módulos especificados no cartão do projeto. Em cada rodada o usuário deve jogar o dado para definir a qualidade de cartas que poderá acessar. Após esta etapa, o usuário pode optar por aplicar, guardar, ou descartar os itens adquiridos. Dentre as cartas sorteadas pode existir engenheiros, capazes de gerar e inspecionar os artefatos para a construção dos módulos. Dessa forma, a linha de produtos de software consiste nas várias combinações de artefatos e ações dos usuários no jogo. O novo módulo de testes incluído, assim como, as novas cartas de conceito e problema são instanciados a partir dessas funcionalidades disponíveis no tabuleiro.
 
 
+## Modificações realizadas:
+
+* Atualização dos testes de unidade.
+* Refatoração e atualização dos aspectos Loggin e Message.
+* Inclusão dos padrões de projeto Singleton e Strategy.
+* Reuso do padrão de arquitetura em três camadas.
+* Melhorias na indentação, coméntários e redimensionamento da interface gráfica.
+* Inclusão do módulo de testes no jogo.
+* Inclusão de cartas de conceito e problemas no contexto de testes.
+* Atualização do modelo de características.
+
 
 
 
