@@ -287,10 +287,10 @@ public class Mesa{
 	 * Virar artefatos = Inspecionar artefatos
 	 *  
 	 * @param pedido
-	 * @param ArtefatosB
-	 * @param ArtefatosR
+	 * @param artefatosB
+	 * @param artefatosR
 	 */
-	public void virarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB, BaralhoArtefatosRuins[] ArtefatosR) {
+	public void virarArtefatos(Modulo[] pedido, BaralhoArtefatosBons[] artefatosB, BaralhoArtefatosRuins[] artefatosR) {
 
 	/* MQS 2019/1 - Tarefa #13, solucao #S4a inicio de bloco de codigo */
 		this.inspecionarArtefatos(this.ajudas, pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas());
@@ -318,10 +318,11 @@ public class Mesa{
 	/* MQS 2019/1 - Tarefa #13, solucao #S4b - fim de bloco de codigo */
 	}
 	
-	
 	/**
 	 * MQS 2019/1 - Tarefa #13, solucao #S5a
 	 * @param artefatos
+	 * @param baralhoArtefatos
+	 * @param bonsOuRuins
 	 * @param qtdItensParaVerificar
 	 */
 	private void trocarArtefatos(List<Artefato> artefatos, BaralhoArtefatos[] baralhoArtefatos, 
@@ -354,15 +355,22 @@ public class Mesa{
 		}
 	}
 	
-	public void trocarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB, BaralhoArtefatosRuins[] ArtefatosR) {
+	public void trocarArtefatos(Modulo[] pedido, BaralhoArtefatosBons[] artefatosB, BaralhoArtefatosRuins[] artefatosR) {
 		
 	/* MQS 2019/1 - Tarefa #13, solucao #S5a - inicio de bloco de codigo */
-		this.trocarArtefatos(this.ajudas, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas());
-		this.trocarArtefatos(this.codigos, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos());
-		this.trocarArtefatos(this.desenhos, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos());
-		this.trocarArtefatos(this.rastros, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros());
-		this.trocarArtefatos(this.requisitos, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos());
-		this.trocarArtefatos(this.testes, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes());
+		this.trocarArtefatos(this.ajudas, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas());
+		this.trocarArtefatos(this.codigos, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos());
+		this.trocarArtefatos(this.desenhos, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos());
+		this.trocarArtefatos(this.rastros, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros());
+		this.trocarArtefatos(this.requisitos, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos());
+		this.trocarArtefatos(this.testes, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes());
+
+		this.trocarArtefatos(this.ajudas, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas());
+		this.trocarArtefatos(this.codigos, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos());
+		this.trocarArtefatos(this.desenhos, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos());
+		this.trocarArtefatos(this.rastros, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros());
+		this.trocarArtefatos(this.requisitos, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos());
+		this.trocarArtefatos(this.testes, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getTestes());
 	/* MQS 2019/1 - Tarefa #13, solucao #S5a - fim de bloco de codigo */
 
 	/* MQS 2019/1 - Tarefa #13, solucao #S5b - inicio de bloco de codigo */
@@ -458,118 +466,50 @@ public class Mesa{
 
 		return artefatosSeparados;
 	}
-	
-	public void receberArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] artefatosB,BaralhoArtefatosRuins[] ArtefatosR){
+
+	/**
+	 * MQS 2019/1 - Tarefa #13, solucao #S6
+	 * @param artefatos
+	 * @param baralhoArtefatos
+	 * @param bonsOuRuins
+	 * @param qtdItensParaVerificar
+	 */
+	public void receberArtefatos(List<Artefato> artefatos, 	BaralhoArtefatos[] baralhoArtefatos, 
+			ArtefatoQualidade bonsOuRuins, int qtdItensParaVerificar) {
 		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas();i++){
-				ajudas.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosBons(artefatosB);
-				}
-			}
-		}	
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos();i++){
-				codigos.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosBons(artefatosB);
-				}
-			}
-		}	
-			
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos();i++){
-				desenhos.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosBons(artefatosB);
-				}
-			}
-		}	
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros();i++){
-				rastros.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosBons(artefatosB);
-				}
-			}
-		}	
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos();i++){
-				requisitos.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosBons(artefatosB);
-				}
-			}
-		}	
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes();i++){
-				testes.add(artefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (artefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosBons(artefatosB);
+		if (qtdItensParaVerificar > 0) {
+			for (int i=0; i < qtdItensParaVerificar; i++) {
+				artefatos.add(baralhoArtefatos[Jogo.BARALHO_PRINCIPAL].darArtefato());
+				if (baralhoArtefatos[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual() <= 0) {
+					//TODO JP refatorar metodos trocarBaralhoArtefatosBons e trocarBaralhoArtefatosBons, unificando-os
+					if (bonsOuRuins.equals(ArtefatoQualidade.BOM)) {
+						this.trocarBaralhoArtefatosBons((BaralhoArtefatosBons[])baralhoArtefatos);
+					}
+					else if (bonsOuRuins.equals(ArtefatoQualidade.RUIM)) {
+						this.trocarBaralhoArtefatosRuins((BaralhoArtefatosRuins[])baralhoArtefatos);
+					}
 				}
 			}
 		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas();i++){
-				ajudas.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}	
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos();i++){
-				codigos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}	
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos();i++){
-				desenhos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}	
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros();i++){
-				rastros.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}	
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos();i++){
-				requisitos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}	
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getTestes()>0){
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getTestes();i++){
-				testes.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0){
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}
-				
 	}
-	
-	
+
+	public void receberArtefatos(Modulo[] pedido, BaralhoArtefatosBons[] artefatosB, BaralhoArtefatosRuins[] artefatosR) {
+		
+	/* MQS 2019/1 - Tarefa #13, solucao #S6 - inicio de bloco de codigo */
+		this.receberArtefatos(this.ajudas, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas());
+		this.receberArtefatos(this.codigos, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos());
+		this.receberArtefatos(this.desenhos, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos());
+		this.receberArtefatos(this.rastros, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros());
+		this.receberArtefatos(this.requisitos, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos());
+		this.receberArtefatos(this.testes, artefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes());
+
+		this.receberArtefatos(this.ajudas, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas());
+		this.receberArtefatos(this.codigos, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos());
+		this.receberArtefatos(this.desenhos, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos());
+		this.receberArtefatos(this.rastros, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros());
+		this.receberArtefatos(this.requisitos, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos());
+		this.receberArtefatos(this.testes, artefatosB, ArtefatoQualidade.RUIM, pedido[ArtefatoQualidade.RUIM.getCodigo()].getTestes());
+	/* MQS 2019/1 - Tarefa #13, solucao #S6 - fim de bloco de codigo */
+	}
+
 }
