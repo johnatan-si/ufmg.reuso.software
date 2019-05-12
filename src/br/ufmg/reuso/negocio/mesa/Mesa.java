@@ -18,6 +18,7 @@ package br.ufmg.reuso.negocio.mesa;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.ufmg.reuso.negocio.baralho.BaralhoArtefatos;
 import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosBons;
 import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosRuins;
 import br.ufmg.reuso.negocio.carta.Artefato;
@@ -289,7 +290,7 @@ public class Mesa{
 	 * @param ArtefatosB
 	 * @param ArtefatosR
 	 */
-	public void virarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR){
+	public void virarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB, BaralhoArtefatosRuins[] ArtefatosR) {
 
 	/* MQS 2019/1 - Tarefa #13, solucao #S4a inicio de bloco de codigo */
 		this.inspecionarArtefatos(this.ajudas, pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas());
@@ -317,270 +318,61 @@ public class Mesa{
 	/* MQS 2019/1 - Tarefa #13, solucao #S4b - fim de bloco de codigo */
 	}
 	
-	public void trocarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR){
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas()>0){
+	
+	/**
+	 * MQS 2019/1 - Tarefa #13, solucao #S5a
+	 * @param artefatos
+	 * @param qtdItensParaVerificar
+	 */
+	private void trocarArtefatos(List<Artefato> artefatos, BaralhoArtefatos[] baralhoArtefatos, 
+			ArtefatoQualidade bonsOuRuins, int qtdItensParaVerificar) {
+
+		if (qtdItensParaVerificar > 0) {
 			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
-				while((ajudas.get(j).inspected() == false)||(ajudas.get(j).isBug()==false)||(ajudas.get(j).isPoorQuality()== true))
+			for (int i=0; i< qtdItensParaVerificar; i++) {
+				/* Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato */
+				while (!artefatos.get(j).inspected() || !artefatos.get(j).isBug()
+						|| artefatos.get(j).isPoorQuality()) {
 					j++;
-				Artefato temporario=ajudas.get(j);
-				ArtefatosB[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
+				}
+				Artefato temporario = artefatos.get(j);
+				baralhoArtefatos[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario); /* colocando artefato descartado no baralho auxiliar */
 				
-				ajudas.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
+				artefatos.remove(j); /* removendo artefato descartado do tabuleiro do jogador para troca-lo por outro */
 				
-				ajudas.add(ArtefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosBons(ArtefatosB);
+				artefatos.add(baralhoArtefatos[Jogo.BARALHO_PRINCIPAL].darArtefato()); /* jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos */
+				if (baralhoArtefatos[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual() <= 0) {
+					//TODO JP refatorar metodos trocarBaralhoArtefatosBons e trocarBaralhoArtefatosBons, unificando-os
+					if (bonsOuRuins.equals(ArtefatoQualidade.BOM)) {
+						this.trocarBaralhoArtefatosBons((BaralhoArtefatosBons[])baralhoArtefatos);
+					}
+					else if (bonsOuRuins.equals(ArtefatoQualidade.RUIM)) {
+						this.trocarBaralhoArtefatosRuins((BaralhoArtefatosRuins[])baralhoArtefatos);
+					}
 				}
 			}
 		}
+	}
+	
+	public void trocarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB, BaralhoArtefatosRuins[] ArtefatosR) {
 		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
-				while((codigos.get(j).inspected() == false)||(codigos.get(j).isBug()==false)||(codigos.get(j).isPoorQuality()== true))
-					j++;
-				Artefato temporario=codigos.get(j);
-				ArtefatosB[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				codigos.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				codigos.add(ArtefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosBons(ArtefatosB);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
-				while((desenhos.get(j).inspected() == false)||(desenhos.get(j).isBug()==false)||(desenhos.get(j).isPoorQuality()== true))
-					j++;
-				Artefato temporario=desenhos.get(j);
-				ArtefatosB[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				desenhos.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				desenhos.add(ArtefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosBons(ArtefatosB);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
-				while((rastros.get(j).inspected() == false)||(rastros.get(j).isBug()==false)||(rastros.get(j).isPoorQuality()== true))
-					j++;
-				Artefato temporario=rastros.get(j);
-				ArtefatosB[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				rastros.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				rastros.add(ArtefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosBons(ArtefatosB);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
-				while((requisitos.get(j).inspected() == false)||(requisitos.get(j).isBug()==false)||(requisitos.get(j).isPoorQuality()== true))
-					j++;
-				Artefato temporario=requisitos.get(j);
-				ArtefatosB[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				requisitos.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				requisitos.add(ArtefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosBons(ArtefatosB);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser ruim, procura proximo artefato*/
-				while((testes.get(j).inspected() == false)||(testes.get(j).isBug()==false)||(testes.get(j).isPoorQuality()== true))
-					j++;
-				Artefato temporario=testes.get(j);
-				ArtefatosB[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				testes.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				testes.add(ArtefatosB[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosB[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosBons(ArtefatosB);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
-				while((ajudas.get(j).inspected() == false)||(ajudas.get(j).isBug()==false)||(ajudas.get(j).isPoorQuality()== false))
-					j++;
-				Artefato temporario=ajudas.get(j);
-				ArtefatosR[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				ajudas.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				ajudas.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
-				while((codigos.get(j).inspected() == false)||(codigos.get(j).isBug()==false)||(codigos.get(j).isPoorQuality()== false))
-					j++;
-				Artefato temporario=codigos.get(j);
-				ArtefatosR[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				codigos.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				codigos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
-				while((desenhos.get(j).inspected() == false)||(desenhos.get(j).isBug()==false)||(desenhos.get(j).isPoorQuality()== false))
-					j++;
-				Artefato temporario=desenhos.get(j);
-				ArtefatosR[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				desenhos.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				desenhos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
-				while((rastros.get(j).inspected() == false)||(rastros.get(j).isBug()==false)||(rastros.get(j).isPoorQuality()== false))
-					j++;
-				Artefato temporario=rastros.get(j);
-				ArtefatosR[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				rastros.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				rastros.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
-				while((requisitos.get(j).inspected() == false)||(requisitos.get(j).isBug()==false)||(requisitos.get(j).isPoorQuality()== false))
-					j++;
-				Artefato temporario=requisitos.get(j);
-				ArtefatosR[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				requisitos.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				requisitos.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getTestes()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getTestes();i++){
-				/**Enquanto artefato nao estiver inspecionado ou artefato nao conter bug ou artefato ser bom, procura proximo artefato*/
-				while((testes.get(j).inspected() == false)||(testes.get(j).isBug()==false)||(testes.get(j).isPoorQuality()== false))
-					j++;
-				Artefato temporario=testes.get(j);
-				ArtefatosR[Jogo.BARALHO_AUXILIAR].recolherArtefato(temporario);		/**colocando artefato descartado no baralho auxiliar*/
-				
-				testes.remove(j);													/**removendo artefato descartado do tabuleiro do jogador para troca-lo por outro*/
-				
-				testes.add(ArtefatosR[Jogo.BARALHO_PRINCIPAL].darArtefato());	/**jogador recebe novo artefato do mesmo tipo, logo houve uma troca de artefatos*/
-				if (ArtefatosR[Jogo.BARALHO_PRINCIPAL].getNumeroArtefatosAtual()<=0)
-				{
-					trocarBaralhoArtefatosRuins(ArtefatosR);
-				}
-			}
-		}
-		
-		System.out.println("\nartefatos AJUDAS inspecionadas:");
-		for (int i=0;i<ajudas.size();i++){
-				ajudas.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-				System.out.println("Artefato Inspecionado?: " + ajudas.get(i).inspected()+"\n");
-			}
-		
-		System.out.println("\nartefatos CODIGOS inpecionados:");
-		for (int i=0;i<codigos.size();i++){
-				codigos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-				System.out.println("Artefato Inspecionado?: " + codigos.get(i).inspected()+"\n");
-			}
-		
-		System.out.println("\nartefatos DESENHOS inpecionados:");
-		for (int i=0;i<desenhos.size();i++){
-				desenhos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-				System.out.println("Artefato Inspecionado?: " + desenhos.get(i).inspected()+"\n");
-			}
-		
-		System.out.println("\nartefatos RASTROS inpecionados");
-		for (int i=0;i<rastros.size();i++){
-				rastros.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-				System.out.println("Artefato Inspecionado?: " + rastros.get(i).inspected()+"\n");
-			}
-		
-		System.out.println("\nartefatos REQUISITOS inspecionados");
-		for (int i=0;i<requisitos.size();i++){
-			requisitos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-			System.out.println("Artefato Inspecionado?: " + requisitos.get(i).inspected()+"\n");
-		}
-		
-		System.out.println("\nartefatos TESTES inspecionados");
-		for (int i=0;i<testes.size();i++){
-			testes.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-			System.out.println("Artefato Inspecionado?: " + testes.get(i).inspected()+"\n");
-		}
+	/* MQS 2019/1 - Tarefa #13, solucao #S5a - inicio de bloco de codigo */
+		this.trocarArtefatos(this.ajudas, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas());
+		this.trocarArtefatos(this.codigos, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos());
+		this.trocarArtefatos(this.desenhos, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos());
+		this.trocarArtefatos(this.rastros, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros());
+		this.trocarArtefatos(this.requisitos, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos());
+		this.trocarArtefatos(this.testes, ArtefatosB, ArtefatoQualidade.BOM, pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes());
+	/* MQS 2019/1 - Tarefa #13, solucao #S5a - fim de bloco de codigo */
+
+	/* MQS 2019/1 - Tarefa #13, solucao #S5b - inicio de bloco de codigo */
+		this.mostrarArtefatos(this.ajudas, "AJUDAS inspecionadas");
+		this.mostrarArtefatos(this.codigos, "CODIGOS inspecionados");
+		this.mostrarArtefatos(this.desenhos, "DESENHOS inspecionados");
+		this.mostrarArtefatos(this.rastros, "RASTROS inspecionados");
+		this.mostrarArtefatos(this.requisitos, "REQUISITOS inspecionados");
+		this.mostrarArtefatos(this.testes, "TESTES inspecionados");
+	/* MQS 2019/1 - Tarefa #13, solucao #S5b - fim de bloco de codigo */
 	}
 	
 	public void trocarBaralhoArtefatosBons(BaralhoArtefatosBons[] artefatosB){//troca o baralho principal pelo auxiliar
