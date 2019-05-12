@@ -16,6 +16,7 @@ package br.ufmg.reuso.negocio.mesa;
  *
  */
 import java.util.ArrayList;
+import java.util.List;
 
 import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosBons;
 import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosRuins;
@@ -245,7 +246,42 @@ public class Mesa{
 	public void setDuracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts(int duracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts){
 		this.duracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts = duracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts;
 	}
-	
+
+	/**
+	 * MQS 2019/1 - Tarefa #13, solucao #S4a
+	 * @param artefatos
+	 * @param qtdItensParaVerificar
+	 */
+	private void inspecionarArtefatos(List<Artefato> artefatos, int qtdItensParaVerificar) {
+
+		if (qtdItensParaVerificar > 0) {
+			int j=0;
+			for (int i = 0; i < qtdItensParaVerificar; i++){
+				/* Enquanto artefato estiver inspecionado ou artefato ser ruim,
+				 * procura proximo artefato */
+				while ((artefatos.get(j).inspected() == true) ||
+						(artefatos.get(j).isPoorQuality()== true)) {
+					j++; //TODO lancar excecao em caso de nao haver artefatos a serem virados
+				}
+				artefatos.get(j).setArtefatoInspecionado(true);
+			}
+		}
+	}
+
+	/**
+	 * MQS 2019/1 - Tarefa #13, solucao #S4b
+	 * @param artefatos
+	 * @param cabecalhoMsg
+	 */
+	private void mostrarArtefatos(List<Artefato> artefatos, String cabecalhoMsg) {
+		System.out.println("\nartefatos " + cabecalhoMsg + ":");
+
+		for (int i=0; i < artefatos.size(); i++) {
+			artefatos.get(i).mostrarArtefato(); //TODO teste, so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
+			System.out.println("Artefato Inspecionado?: " + artefatos.get(i).inspected() + "\n");
+		}
+	}
+
 	/**
 	 * Virar artefatos = Inspecionar artefatos
 	 *  
@@ -254,171 +290,33 @@ public class Mesa{
 	 * @param ArtefatosR
 	 */
 	public void virarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR){
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((ajudas.get(j).inspected() == true)||(ajudas.get(j).isPoorQuality()== true)){
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				}
-				ajudas.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((codigos.get(j).inspected() == true)||(codigos.get(j).isPoorQuality()== true)){
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				}
-				codigos.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((desenhos.get(j).inspected() == true)||(desenhos.get(j).isPoorQuality()== true))
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				desenhos.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((rastros.get(j).inspected() == true)||(rastros.get(j).isPoorQuality()== true)){
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				}
-				rastros.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((requisitos.get(j).inspected() == true)||(requisitos.get(j).isPoorQuality()== true)){
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				}
-				requisitos.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((testes.get(j).inspected() == true)||(testes.get(j).isPoorQuality()== true)){
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				}
-				testes.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((ajudas.get(j).inspected() == true)||(ajudas.get(j).isPoorQuality()== false)){
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				}
-				ajudas.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((codigos.get(j).inspected() == true)||(codigos.get(j).isPoorQuality()== false)){
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				}
-				codigos.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((desenhos.get(j).inspected() == true)||(desenhos.get(j).isPoorQuality()== false))
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				desenhos.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((rastros.get(j).inspected() == true)||(rastros.get(j).isPoorQuality()== false))
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				rastros.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((requisitos.get(j).inspected() == true)||(requisitos.get(j).isPoorQuality()== false))
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				requisitos.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		if(pedido[ArtefatoQualidade.RUIM.getCodigo()].getTestes()>0){
-			int j=0;
-			for (int i=0;i<pedido[ArtefatoQualidade.RUIM.getCodigo()].getTestes();i++){
-				/**Enquanto artefato estiver inspecionado ou artefato ser ruim, procura proximo artefato*/
-				while((testes.get(j).inspected() == true)||(testes.get(j).isPoorQuality()== false))
-					j++; // TODO lancar excecao em caso de nao haver artefatos a serem virados
-				testes.get(j).setArtefatoInspecionado(true);
-			}
-		}
-		
-		System.out.println("\nartefatos AJUDAS inspecionadas:");
-		for (int i=0;i<ajudas.size();i++){
-			ajudas.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-			System.out.println("Artefato Inspecionado?: " + ajudas.get(i).inspected()+"\n");
-		}
-		
-		System.out.println("\nartefatos CODIGOS inpecionados:");
-		for (int i=0;i<codigos.size();i++){
-			codigos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-			System.out.println("Artefato Inspecionado?: " + codigos.get(i).inspected()+"\n");
-		}
-		
-		System.out.println("\nartefatos DESENHOS inpecionados:");
-		for (int i=0;i<desenhos.size();i++){
-			desenhos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-			System.out.println("Artefato Inspecionado?: " + desenhos.get(i).inspected()+"\n");
-		}
-		
-		System.out.println("\nartefatos RASTROS inpecionados");
-		for (int i=0;i<rastros.size();i++){
-			rastros.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-			System.out.println("Artefato Inspecionado?: " + rastros.get(i).inspected()+"\n");
-		}
-		
-		System.out.println("\nartefatos REQUISITOS inspecionados");
-		for (int i=0;i<requisitos.size();i++){
-			requisitos.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-			System.out.println("Artefato Inspecionado?: " + requisitos.get(i).inspected()+"\n");
-		}
-		
-		System.out.println("\nartefatos TESTES inspecionados");
-		for (int i=0;i<testes.size();i++){
-			testes.get(i).mostrarArtefato();	//TODO teste , so estou inspecionando requisitos la no metodo exibirTabelaInspecaoCorrecao
-			System.out.println("Artefato Inspecionado?: " + testes.get(i).inspected()+"\n");
-		}
-	}
 
+	/* MQS 2019/1 - Tarefa #13, solucao #S4a inicio de bloco de codigo */
+		this.inspecionarArtefatos(this.ajudas, pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas());
+		this.inspecionarArtefatos(this.codigos, pedido[ArtefatoQualidade.BOM.getCodigo()].getCodigos());
+		this.inspecionarArtefatos(this.desenhos, pedido[ArtefatoQualidade.BOM.getCodigo()].getDesenhos());
+		this.inspecionarArtefatos(this.rastros, pedido[ArtefatoQualidade.BOM.getCodigo()].getRastros());
+		this.inspecionarArtefatos(this.requisitos, pedido[ArtefatoQualidade.BOM.getCodigo()].getRequisitos());
+		this.inspecionarArtefatos(this.testes, pedido[ArtefatoQualidade.BOM.getCodigo()].getTestes());
+
+		this.inspecionarArtefatos(this.ajudas, pedido[ArtefatoQualidade.RUIM.getCodigo()].getAjudas());
+		this.inspecionarArtefatos(this.codigos, pedido[ArtefatoQualidade.RUIM.getCodigo()].getCodigos());
+		this.inspecionarArtefatos(this.desenhos, pedido[ArtefatoQualidade.RUIM.getCodigo()].getDesenhos());
+		this.inspecionarArtefatos(this.rastros, pedido[ArtefatoQualidade.RUIM.getCodigo()].getRastros());
+		this.inspecionarArtefatos(this.requisitos, pedido[ArtefatoQualidade.RUIM.getCodigo()].getRequisitos());
+		this.inspecionarArtefatos(this.testes, pedido[ArtefatoQualidade.RUIM.getCodigo()].getTestes());
+	/* MQS 2019/1 - Tarefa #13, solucao #S4a - fim de bloco de codigo */
+
+	/* MQS 2019/1 - Tarefa #13, solucao #S4b - inicio de bloco de codigo */
+		this.mostrarArtefatos(this.ajudas, "AJUDAS inspecionadas");
+		this.mostrarArtefatos(this.codigos, "CODIGOS inspecionados");
+		this.mostrarArtefatos(this.desenhos, "DESENHOS inspecionados");
+		this.mostrarArtefatos(this.rastros, "RASTROS inspecionados");
+		this.mostrarArtefatos(this.requisitos, "REQUISITOS inspecionados");
+		this.mostrarArtefatos(this.testes, "TESTES inspecionados");
+	/* MQS 2019/1 - Tarefa #13, solucao #S4b - fim de bloco de codigo */
+	}
+	
 	public void trocarArtefatos(Modulo [] pedido, BaralhoArtefatosBons[] ArtefatosB,BaralhoArtefatosRuins[] ArtefatosR){
 		if(pedido[ArtefatoQualidade.BOM.getCodigo()].getAjudas()>0){
 			int j=0;
