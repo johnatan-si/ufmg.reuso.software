@@ -30,13 +30,13 @@ public class Mesa{
 	private CartaEngenheiro cartaMesa;
 	private boolean moduloJaIntegrado;				/** variavel que mostra se ha modulo integrado na mesa ou nao*/
 	private int especificacaoModuloIntegrado;       /** especifica qual modulo integrado do projeto a mesa contem (de 0 ate (tamanho do projeto-1)*/
-	private ArrayList <Artefato>[] moduloIntegrado;	/** vetor de ArrayList contendo o modulo da integracao*/
-	private ArrayList <Artefato> ajudas;
-	private ArrayList <Artefato> codigos;
-	private ArrayList <Artefato> desenhos;
-	private ArrayList <Artefato> rastros;
-	private ArrayList <Artefato> requisitos;
-	private ArrayList <Artefato> testes;
+	private ArrayList<Artefato>[] moduloIntegrado;	/** vetor de ArrayList contendo o modulo da integracao*/
+	private List<Artefato> ajudas; //MQS 2019/1 - Tarefa #14, solucao #S10
+	private List<Artefato> codigos; //MQS 2019/1 - Tarefa #14, solucao #S10
+	private List<Artefato> desenhos; //MQS 2019/1 - Tarefa #14, solucao #S10
+	private List<Artefato> rastros; //MQS 2019/1 - Tarefa #14, solucao #S10
+	private List<Artefato> requisitos; //MQS 2019/1 - Tarefa #14, solucao #S10
+	private List<Artefato> testes; //MQS 2019/1 - Tarefa #14, solucao #S10
 
 	/*----------------------EFEITOS DA CARTA CONCEITO PERMANENTES---------------------------------*/
 	private int efeitoAumentarMaturidadeEngenheiro; /**contem um inteiro com efeito na maturidade do engenheiro que ocupa a mesa*/
@@ -110,52 +110,51 @@ public class Mesa{
 		this.moduloJaIntegrado = moduloJaIntegrado;
 	}
 
-	public ArrayList<Artefato> getAjudas(){
+	public List<Artefato> getAjudas() { //MQS 2019/1 - Tarefa #14, solucao #S10
 		return ajudas;
 	}
 
-	public void setAjudas(ArrayList<Artefato> ajudas){
+	public void setAjudas(List<Artefato> ajudas) { //MQS 2019/1 - Tarefa #14, solucao #S10
 		this.ajudas = ajudas;
 	}
 
-	public ArrayList<Artefato> getCodigos(){
+	public List<Artefato> getCodigos() { //MQS 2019/1 - Tarefa #14, solucao #S10
 		return codigos;
 	}
 
-	public void setCodigos(ArrayList<Artefato> codigos){
+	public void setCodigos(List<Artefato> codigos) { //MQS 2019/1 - Tarefa #14, solucao #S10
 		this.codigos = codigos;
 	}
 
-	public ArrayList<Artefato> getDesenhos(){
+	public List<Artefato> getDesenhos() { //MQS 2019/1 - Tarefa #14, solucao #S10
 		return desenhos;
 	}
 
-	public void setDesenhos(ArrayList<Artefato> desenhos){
+	public void setDesenhos(List<Artefato> desenhos) { //MQS 2019/1 - Tarefa #14, solucao #S10
 		this.desenhos = desenhos;
 	}
 
-	public ArrayList<Artefato> getRastros(){
+	public List<Artefato> getRastros() { //MQS 2019/1 - Tarefa #14, solucao #S10
 		return rastros;
 	}
 
-	public void setRastros(ArrayList<Artefato> rastros){
+	public void setRastros(List<Artefato> rastros) { //MQS 2019/1 - Tarefa #14, solucao #S10
 		this.rastros = rastros;
 	}
 
-	public ArrayList<Artefato> getRequisitos(){
+	public List<Artefato> getRequisitos() { //MQS 2019/1 - Tarefa #14, solucao #S10
 		return requisitos;
 	}
 	
-	public ArrayList<Artefato> getTestes() {
+	public List<Artefato> getTestes() { //MQS 2019/1 - Tarefa #14, solucao #S10
 		return testes;
 	}
 
-	public void setTestes(ArrayList<Artefato> testes) {
+	public void setTestes(List<Artefato> testes) { //MQS 2019/1 - Tarefa #14, solucao #S10
 		this.testes = testes;
 	}
 
-
-	public void setRequisitos(ArrayList<Artefato> requisitos){
+	public void setRequisitos(List<Artefato> requisitos) { //MQS 2019/1 - Tarefa #14, solucao #S10
 		this.requisitos = requisitos;
 	}
 
@@ -399,8 +398,11 @@ public class Mesa{
 		artefatosR[Jogo.BARALHO_AUXILIAR].setCurrentArtifact(0);					/**o novo baralho auxiliar tem o indice retornada para zero*/
 	}
 	
-	/** calcula quantos artefatos nao inspecionados um ArrayList contem.*/
-	public int somarArtefatosNotInspecionados (ArrayList <Artefato> arrayArtefatos){
+	/** 
+	 * calcula quantos artefatos nao inspecionados um ArrayList contem.
+	 * @param arrayArtefatos MQS 2019/1 - Tarefa #14, solucao #S10
+	 */
+	public int somarArtefatosNotInspecionados(List<Artefato> arrayArtefatos) {
 		int contador = 0;
 		for (int i=0;i<arrayArtefatos.size();i++){	
 			if (arrayArtefatos.get(i).inspected() == true)			/** se artefato foi inspecionado, pula iteracao*/
@@ -410,8 +412,11 @@ public class Mesa{
 		return contador;
 	}
 	
-	/** calcula quantos artefatos que contem bug estao inspecionados em um ArrayList.*/
-	public int somarArtefatosInspecionadosBug (ArrayList <Artefato> arrayArtefatos){
+	/** 
+	 * calcula quantos artefatos que contem bug estao inspecionados em um ArrayList.
+	 * @param arrayArtefatos MQS 2019/1 - Tarefa #14, solucao #S10
+	 */
+	public int somarArtefatosInspecionadosBug(List<Artefato> arrayArtefatos) {
 		int contador = 0;
 		for (int i=0;i<arrayArtefatos.size();i++){	
 			if (arrayArtefatos.get(i).inspected() == false) /**se artefato nao foi inspecionado, pula iteracao*/
@@ -423,7 +428,11 @@ public class Mesa{
 		return contador;
 	}
 	
-	public int[] somarArtefatosNotInspecionadosSeparados(ArrayList <Artefato> arrayArtefatos){
+	/**
+	 * @param arrayArtefatos MQS 2019/1 - Tarefa #14, solucao #S10
+	 * @return
+	 */
+	public int[] somarArtefatosNotInspecionadosSeparados(List<Artefato> arrayArtefatos) {
 		int[] artefatosSeparados = new int[2];
 		int contadorArtefatosBons = 0;
 		int contadorArtefatosRuins = 0;
@@ -447,7 +456,11 @@ public class Mesa{
 		
 	}
 	
-	public int[] somarArtefatosInspecionadosBugSeparados (ArrayList <Artefato> arrayArtefatos){
+	/**
+	 * @param arrayArtefatos MQS 2019/1 - Tarefa #14, solucao #S10
+	 * @return
+	 */
+	public int[] somarArtefatosInspecionadosBugSeparados(List<Artefato> arrayArtefatos) {
 		int[] artefatosSeparados = new int[2];
 		int contadorArtefatosBons = 0;
 		int contadorArtefatosRuins = 0;

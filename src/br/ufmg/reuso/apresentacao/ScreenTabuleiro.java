@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -370,7 +371,7 @@ public class ScreenTabuleiro extends JDialog{
 				// "");
 
 				{// Inicio do colocação da matriz de artefatos
-					ArrayList<ArrayList<Artefato>> modulo = new ArrayList<ArrayList<Artefato>>();
+					ArrayList<List<Artefato>> modulo = new ArrayList<List<Artefato>>(); //MQS 2019/1 - Tarefa #14, solucao #S10
 					modulo.add(board.getRequisitos());
 					modulo.add(board.getDesenhos());
 					modulo.add(board.getCodigos());
@@ -384,10 +385,10 @@ public class ScreenTabuleiro extends JDialog{
 					int mesa = i;
 
 					// Para cada tipo de artefato
-					Iterator<ArrayList<Artefato>> itModulo = modulo.iterator();
+					Iterator<List<Artefato>> itModulo = modulo.iterator(); //MQS 2019/1 - Tarefa #14, solucao #S10
 					while (itModulo.hasNext()){
 
-						ArrayList<Artefato> artefatos = itModulo.next();
+						List<Artefato> artefatos = itModulo.next(); //MQS 2019/1 - Tarefa #14, solucao #S10
 						x = 0;
 
 						if (artefatos.size() > 0){
