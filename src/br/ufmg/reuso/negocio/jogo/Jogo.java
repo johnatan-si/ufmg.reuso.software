@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Federal University of Minas Gerais 
  * Department of Computer Science
  * Simules-SPL Project
@@ -9,8 +9,9 @@
 
 package br.ufmg.reuso.negocio.jogo;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
+
+import java.lang.reflect.Method;
 
 import br.ufmg.reuso.apresentacao.ScreenInteraction;
 import br.ufmg.reuso.negocio.baralho.BaralhoArtefatosBons;
@@ -39,6 +40,7 @@ import br.ufmg.reuso.negocio.jogador.Jogador;
 import br.ufmg.reuso.negocio.mesa.ArtefatoEstado;
 import br.ufmg.reuso.negocio.mesa.ArtefatoQualidade;
 import br.ufmg.reuso.negocio.mesa.ArtefatoTipo;
+import br.ufmg.reuso.negocio.mesa.Mesa;
 import br.ufmg.reuso.negocio.mesa.Modulo;
 import br.ufmg.reuso.negocio.tabuleiro.SetupInteraction;
 import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
@@ -48,8 +50,8 @@ import br.ufmg.reuso.negocio.tabuleiro.Tabuleiro;
  * 
  * @author Michael David
  * 
- * Editador por Aline Brito, Igor Muzetti (2018-02). Modificações:
- * 	- Refatoração do método construirModuloIntegrado(), incluindo o padrão de projeto Strategy.
+ * Editador por Aline Brito, Igor Muzetti (2018-02). ModificaÃ§Ãµes:
+ * 	- RefatoraÃ§Ã£o do mÃ©todo construirModuloIntegrado(), incluindo o padrÃ£o de projeto Strategy.
  */
 public final class Jogo{
 
@@ -57,7 +59,7 @@ public final class Jogo{
 
 	public static enum Status{
 		CONTINUE, WINNER_END
-	};
+	};	
 
 	public static final int BARALHO_PRINCIPAL = 0;
 	public static final int BARALHO_AUXILIAR = 1;
@@ -128,6 +130,7 @@ public final class Jogo{
 		return jogo;
 	}
 
+	//Metodo para inicialização com base nos parametros fornecidos
 	private void init(){
 		
 		// exibe GUI(tela) para iniciar o jogo. Retorna 1 caso ha a necessidade de configurar o jogo. Retorna 0 caso contrario
@@ -156,33 +159,19 @@ public final class Jogo{
 		}
 
 		String[] nomeJogadores = setupController.inserirNomesJogadores(); 
+		String[] dificuldades = {FACIL, MODERADO, DIFICIL};
+		configurarJogo(dificuldades[dificuldade-1], nomeJogadores,
+			//#ifdef ConceptCard
+			cartasConceito,
+			//#endif
+			cartasProblema
+		);
 		
-		switch (dificuldade){
-		case 1:
-			configurarJogo(FACIL, nomeJogadores, 
-					//#ifdef ConceptCard
-					cartasConceito, 
-					//#endif
-					cartasProblema);
-			break;
-		case 2:
-			configurarJogo(MODERADO, nomeJogadores, 
-					//#ifdef ConceptCard
-					cartasConceito, 
-					//#endif
-					cartasProblema);
-			break;
-		case 3:
-			configurarJogo(DIFICIL, nomeJogadores, 
-					//#ifdef ConceptCard
-					cartasConceito,
-					//#endif
-					cartasProblema);
-			break;
-		}
+
 		gameStatus = Status.CONTINUE;
 	}
-
+	
+	//Inicia jogo atual
 	public void start(Jogo jogoAtual){
 		int jogador = 0;
 		jogo.init();
@@ -190,11 +179,10 @@ public final class Jogo{
 		while (getGameStatus() == Status.CONTINUE){ 
 			setupController.exibirDefault(jogoAtual, getJogadores()[jogador]); 
 			diminuirDuracaoEfeitosTemporario(jogador);
-			jogador++; // **Acrescentando jogador, ha a troca de jogador *//*
+			jogador = (jogador+1)%getJogadores().length; // **Acrescentando jogador, ha a troca de jogador *//*
 			
-			//Caso jogador ultrapasse vetor de jogadores, ja esta no ultimo jogador
-			if (jogador >= getJogadores().length){
-				jogador = 0; //Logo, retorna-se ao jogador inicial
+			//Executa efeitos de fim do turno
+			if (jogador == 0){
 				adicionarEfeitosFimTurno();
 			}
 		}
@@ -244,7 +232,7 @@ public final class Jogo{
 		while (i < jogadores.length){
 			String nomeJogador;
 			nomeJogador = nomeJogadores[i]; // passando nome de jogadores para a  variavel local
-			// construindo o jogador com parâmetros inicias iguais ao projeto
+			// construindo o jogador com parÃ¢metros inicias iguais ao projeto
 			jogadores[i] = new Jogador(nomeJogador, projeto.getOrcamento());
 			inserirEngenheiroInicial(jogadores[i]);
 			i++;
@@ -255,11 +243,11 @@ public final class Jogo{
 		Random sorteioEngenheiro = new Random();
 		Carta novato = null;
 		while (novato == null){
-			// Gera numeros aleatoriaos de 0 até o numero de engenheiros do baralho.
+			// Gera numeros aleatoriaos de 0 atÃ© o numero de engenheiros do baralho.
 			int sorteado = sorteioEngenheiro.nextInt(baralhoCartas[BARALHO_PRINCIPAL].getNumeroTotalEngenheiro());
 			
-			//Será selecionado um engenheiro do baralho, ja que as cartas de engenheiro ocupam a primeira posicao do
-			// baralho devido ao modo de construção do baralho.
+			//SerÃ¡ selecionado um engenheiro do baralho, ja que as cartas de engenheiro ocupam a primeira posicao do
+			// baralho devido ao modo de construÃ§Ã£o do baralho.
 			novato = baralhoCartas[BARALHO_PRINCIPAL].darCartaInicial(sorteado);
 		}
 		
@@ -281,7 +269,7 @@ public final class Jogo{
 
 			pontuacaoJogador[i] = Dado.getInstance().sortearValor(); // jogando dados e guardando os pontos do jogadores
 
-			//Em caso de empate com outro jogador, a funão empatePontuacao retorna true.
+			//Em caso de empate com outro jogador, a funÃ£o empatePontuacao retorna true.
 			while (desempatarPontuacao(pontuacaoJogador[i], pontuacaoJogador) == true){
 				
 				// passando pontuacao obtida por sorteio para que a GUI exiba tal pontuacao
@@ -385,7 +373,7 @@ public final class Jogo{
 
 	/**
 	 * Retira cartas da mao do jogador e as coloca no baralho auxiliar. Retorna
-	 * o mesmo jogador do parâmetro
+	 * o mesmo jogador do parÃ¢metro
 	 */
 	public Jogador retirarCartas(Jogador jogador, Carta[] cartasRetiradas){
 		for (int i = 0; i < cartasRetiradas.length; i++){
@@ -689,7 +677,7 @@ public final class Jogo{
 	}
 
 	/**
-	 * Contrói módulo e remove artefatos selecionados da mesa.
+	 * ContrÃ³i mÃ³dulo e remove artefatos selecionados da mesa.
 	 * @return - lista de artefatos integrados, agrupados por tipo.
 	 */
 	public ArrayList<Artefato>[] construirModuloIntegrado(Jogador jogador, int mesaTrabalho, int[][] artefatosEscolhidos){
@@ -750,7 +738,7 @@ public final class Jogo{
 	 */
 	public int validarProjeto(Jogador jogador){
 		if (jogador.contarModuloJaIntegrado() == projeto.getTamanho()){
-			// conferindo x modulos integrados,  onde x e igual à qualidade do projeto
+			// conferindo x modulos integrados,  onde x e igual Ã  qualidade do projeto
 			for (int i = 0; i < projeto.getQualidade(); i++){
 				for (int z = 0; z < jogador.getTabuleiro().getMesas().length; z++){
 					if (jogador.getTabuleiro().getMesas()[z].getModuloJaIntegrado() == false){ //se mesa nao tem modulo integrado
@@ -778,7 +766,9 @@ public final class Jogo{
 	}
 
 	//#ifdef ConceptCard
-	//TODO: Refatorar
+	
+	// TODO: Refatorar
+	// @ Switch-cases difíceis de refatorar 
 	public Jogador usarConceito(Jogador jogador, CartaBonificacao cartaUtilizada){
 		switch (cartaUtilizada.getTipoPrimeiroEfeito()){
 		
@@ -812,7 +802,7 @@ public final class Jogo{
 					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null){
 						continue;
 					}
-					//Encontra engenheiro que receberá efeito.
+					//Encontra engenheiro que receberÃ¡ efeito.
 					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
 						jogador.getTabuleiro().getMesas()[i].setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadePrimeiroEfeito());
 					}
@@ -838,7 +828,7 @@ public final class Jogo{
 						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null){
 							continue;
 						}
-						//Encontra engenheiro que receberá efeito.
+						//Encontra engenheiro que receberÃ¡ efeito.
 						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[j])){
 							String[] auxiliar = new String[2];
 							auxiliar[0] = engenheiro[j];
@@ -900,7 +890,7 @@ public final class Jogo{
 					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null){
 						continue;
 					}
-					//Encontra engenheiro que receberá efeito.
+					//Encontra engenheiro que receberÃ¡ efeito.
 					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
 						inspecionarArtefatoByEfeito(jogador, cartaUtilizada.getQuantidadePrimeiroEfeito());
 					}
@@ -1040,7 +1030,7 @@ public final class Jogo{
 						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
 							continue;
 						
-						//Encontra engenheiro que receberá efeito.
+						//Encontra engenheiro que receberÃ¡ efeito.
 						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[j])){
 							String[] auxiliar = new String[2];
 							auxiliar[0] = engenheiro[j];
@@ -1065,7 +1055,7 @@ public final class Jogo{
 					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
 						continue;
 					
-					//Encontra engenheiro que receberá efeito.
+					//Encontra engenheiro que receberÃ¡ efeito.
 					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
 						jogador.getTabuleiro().getMesas()[i].setEfeitoAumentarMaturidadeEngenheiro(cartaUtilizada.getQuantidadeSegundoEfeito());
 					}
@@ -1107,7 +1097,7 @@ public final class Jogo{
 					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
 						continue;
 					
-					//Encontra engenheiro que receberá efeito.
+					//Encontra engenheiro que receberÃ¡ efeito.
 					if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[0])){
 						inspecionarArtefatoByEfeito(jogador, cartaUtilizada.getQuantidadeSegundoEfeito());
 					}
@@ -1275,47 +1265,28 @@ public final class Jogo{
 				continue;
 			}
 			
+			Map<Integer, String> map = new HashMap<Integer, String>();
+			map.put(ArtefatoTipo.AJUDA.getCodigo(), "getAjudas");
+			map.put(ArtefatoTipo.CODIGO.getCodigo(), "getCodigos");
+			map.put(ArtefatoTipo.DESENHO.getCodigo(), "getDesenhos");
+			map.put(ArtefatoTipo.RASTRO.getCodigo(), "getRastros");
+			map.put(ArtefatoTipo.REQUISITO.getCodigo(), "getRequisitos");
+			
 			if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro)){//encontra engenheiro que recebera efeito
 				for (int j = 0; j < quantidade; j++){ //cedendo a quantidade de efeito da carta
-					if (tipoArtefato == ArtefatoTipo.AJUDA.getCodigo()){
+					String nomeMetodo = map.get(tipoArtefato);
+					Mesa am = jogador.getTabuleiro().getMesas()[i];
+					try {
+						Method m = am.getClass().getMethod(nomeMetodo);
+
 						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){
-							jogador.getTabuleiro().getMesas()[i].getAjudas().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());//inserindo efeito
+							((List<Artefato>)m.invoke(am)).add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());//inserindo efeito
 						}
 						else{
-							jogador.getTabuleiro().getMesas()[i].getAjudas().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
+							((List<Artefato>)m.invoke(am)).add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
 						}
-					}
-					if (tipoArtefato == ArtefatoTipo.CODIGO.getCodigo()){
-						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){//inserindo efeito
-							jogador.getTabuleiro().getMesas()[i].getCodigos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
-						}
-						else{
-							jogador.getTabuleiro().getMesas()[i].getCodigos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
-						}
-					}
-					if (tipoArtefato ==ArtefatoTipo.DESENHO.getCodigo()){
-						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){
-							jogador.getTabuleiro().getMesas()[i].getDesenhos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
-						}
-						else{
-							jogador.getTabuleiro().getMesas()[i].getDesenhos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
-						}
-					}
-					if (tipoArtefato == ArtefatoTipo.RASTRO.getCodigo()){
-						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){//inserindo efeito
-							jogador.getTabuleiro().getMesas()[i].getRastros().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
-						}
-						else{
-							jogador.getTabuleiro().getMesas()[i].getRastros().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
-						}
-					}
-					if (tipoArtefato == ArtefatoTipo.REQUISITO.getCodigo()){
-						if (sorteado == ArtefatoQualidade.BOM.getCodigo()){// inserindo efeito
-							jogador.getTabuleiro().getMesas()[i].getRequisitos().add(baralhoArtefatosBons[BARALHO_PRINCIPAL].darArtefato());
-						}
-						else{
-							jogador.getTabuleiro().getMesas()[i].getRequisitos().add(baralhoArtefatosRuins[BARALHO_PRINCIPAL].darArtefato());
-						}
+					} catch (Exception e) {
+						return;
 					}
 				}
 			}
@@ -1435,6 +1406,7 @@ public final class Jogo{
 
 	}
 
+	/* MQS 2019/1 - Tarefa #13, solucao #S2A - inicio do bloco de codigo */
 	public Jogador usarProblema(Jogador jogadorAtual, Jogador jogadorAlvo, CartaPenalizacao cartaUtilizada){
 		
 		boolean condicaoSatisfeita = verificarCondicao(jogadorAlvo, cartaUtilizada);
@@ -1447,578 +1419,467 @@ public final class Jogo{
 			return jogadorAtual; 
 		}
 
-		switch (cartaUtilizada.getTipoPrimeiroEfeito()){//insere PRIMEIRO efeito no tabuleiro do jogadorAlvo
-			
-			case (CardsConstants.NO_PROBLEM):
-				break;
-			
-			case (CardsConstants.ADD_DIFFICULTY_INSPECT_ARTIFACTS):{
-				jogadorAlvo.getTabuleiro()
-						.setEfeitoAdicionaDificuldadeInspecionarArtefatos(cartaUtilizada.getQuantidadePrimeiroEfeito());
-				break;
-			}
-			
-			case (CardsConstants.ADD_DIFFICULTY_REPAIR_ARTIFACTS):{
-				jogadorAlvo.getTabuleiro().setEfeitoAdicionaDificuldadeCorrigirArtefatos(cartaUtilizada.getQuantidadePrimeiroEfeito());
-				break;
-			}
-			
-			case (CardsConstants.ADD_POINTS_IN_COMPLEXITY):{
-				jogadorAlvo.getTabuleiro().setEfeitoAdicionaComplexidadeProjeto(cartaUtilizada.getQuantidadePrimeiroEfeito());
-				break;
-			}
-			
-			case (CardsConstants.ADD_PROJECT_QUALITY):{
-				jogadorAlvo.getTabuleiro().setEfeitoAdicionaQualidadeProjeto(cartaUtilizada.getQuantidadePrimeiroEfeito());
-				break;
-			}
-			
-			case (CardsConstants.ALL_ENGINEERS_LOSE_ARTIFACT):{
-				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(), ANY_ARTIFACTS);
-				break;
-			}
-			
-			case (CardsConstants.ALL_ENGINEERS_LOSE_DESIGN_ARTIFACT):{
-				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(),ArtefatoTipo.DESENHO.getCodigo());
-				break;
-			}
-			
-			case (CardsConstants.ALL_ENGINEERS_LOSE_TRAIL_ARTIFACT):{
-				allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(), ArtefatoTipo.RASTRO.getCodigo());
-				break;
-			}
-			
-			case (CardsConstants.ALL_ENGINEERS_NO_WORK):{
-				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
-					// colocando como se engenheiro ja estivesse trabalhado na rodada do jogadorAlvo
-					jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().setEngenheiroTrabalhouNestaRodada(true);
-					jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().setHabilidadeEngenheiroAtual(0);
-				}
-				break;
-			}
-			
-			case (CardsConstants.ALL_ENGINEERS_NOT_PRODUCE_ARTIFACTS):{
-				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
-					jogadorAlvo.getTabuleiro().getMesas()[i].setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(cartaUtilizada.getDuracaoEfeito());
-				}
-				break;
-			}
-			
-			case (CardsConstants.ALL_ENGINEERS_WITH_SKILL_LESS_THAN_2_NOT_INSPECT_ARTIFACTS):{
-				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
-					if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() < 2){
-						jogadorAlvo.getTabuleiro().getMesas()[i].setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(cartaUtilizada.getDuracaoEfeito());
-					}
-				}
-				break;
-			}
-			
-			case (CardsConstants.ALL_LOSES_EFFECTS_CONCEPT_CARDS_ON_BOARD):{
-				for (int i = 0; i < jogadores.length; i++){
-					jogadores[i].getTabuleiro().setEfeitoPositivoOrcamento(0); //retira efeito positivo sobre orcamento
-	
-					String[] vazia = new String[2];
-					vazia[0] = null;
-					vazia[1] = null;
-					jogadores[i].getTabuleiro().getEfeitoAumentarHabilidadeEngenheiroLater().clear(); //retira efeito de ter habilidade de engenheiro aumentada depois
-	
-					jogadores[i].getTabuleiro().setEfeitoHelpArtifactsNeutralizadoValidacao(false);
-					jogadores[i].getTabuleiro().setEfeitoModuloIntegradoNeutralizadoValidacao(false);
-					jogadores[i].getTabuleiro().setEfeitoProblemaArtefatoCodigoNeutralizado(false);
-					jogadores[i].getTabuleiro().setEfeitoProblemaArtefatoRastroNeutralizado(false);
-					jogadores[i].getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(false);
-	
-					for (int j = 0; j < jogadores[i].getTabuleiro().getMesas().length; j++){
-						jogadores[i].getTabuleiro().getMesas()[j].setEfeitoAumentarHabilidadeEngenheiro(0);
-						jogadores[i].getTabuleiro().getMesas()[j].setEfeitoAumentarMaturidadeEngenheiro(0);
-						jogadores[i].getTabuleiro().getMesas()[j].setEfeitoModuloIntegradoNeutralizado(false);
-					}
-				}
-				
-				break;
-			}
-			
-			case (CardsConstants.ALL_PLAYERS_WITH_MORE_2_ENGINEERS_DISMISS_ENGINEER):{
-				int contador = 0;
-				for (int i = 0; i < jogadores.length; i++){
-					for (int j = 0; j < jogadores[i].getTabuleiro().getMesas().length; j++){//conto quantos engenheiros  ele tem
-						if (jogadores[i].getTabuleiro().getMesas()[j].getCartaMesa() != null){
-							contador++;
-						}
-					}
-					
-					if (contador > 2){//se numero de engenheiros > 2
-						for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){ //demiti-se uma quantidade de engenheiros do jogador
-							Random sorteio = new Random();
-							int engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);//sorteia qual engenheiro sera demitido
-							boolean demitiu = false;
-							while (demitiu == false){
-								if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa() != null){
-									 // se o engenheiro trabalhou nesta rodada, significa que estamos no jogadorAtual, demitimos assim mesmo
-									if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().isEngenheiroTrabalhouNestaRodada() == true){
-										jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().setEngenheiroTrabalhouNestaRodada(false);
-									}
-									 // atualizacao da variavel para reusar a funcao abaixo
-	
-									despedirEngenheiro(jogadores[i], jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa());
-									demitiu = true;
-								} 
-								else{
-									engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-								}
-							}
-						}
-					}
-					contador = 0; // atualiza contador para conferir se proximo jogador deve demitir engenheiro
-				}
-				break;
-			}
-			
-			case (CardsConstants.ALL_PLAYERS_WITH_MORE_3_ENGINEERS_DISMISS_ENGINEER):{
-				int contador = 0;
-				for (int i = 0; i < jogadores.length; i++){
-					for (int j = 0; j < jogadores[i].getTabuleiro().getMesas().length; j++){//conto quantos engenheiros  ele tem
-						if (jogadores[i].getTabuleiro().getMesas()[j].getCartaMesa() != null){
-							contador++;
-						}
-					}
-					if (contador > 3){//se numero de engenheiros > 3 
-						for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){ // // demiti-se uma quantidade de engenheiros do jogador
-							Random sorteio = new Random();
-							int engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO); //sorteia qual engenheiro sera demitido
-							boolean demitiu = false;
-							while (demitiu == false){
-								if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa() != null){
-									// se o engenheiro trabalhou nesta rodada, significa que estamos no jogadorAtual, demitimos assim mesmo
-									if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().isEngenheiroTrabalhouNestaRodada() == true){
-										jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().setEngenheiroTrabalhouNestaRodada(false);
-									}
-
-									despedirEngenheiro(jogadores[i], jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa());
-									demitiu = true;
-								} else{
-									engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-								}
-							}
-						}
-					}
-					contador = 0; // atualiza contador para conferir se proximo jogador deve demitir engenheiro
-				}
-				break;
-			}
-			
-			case (CardsConstants.CHANGE_WHITE_DESIGN_ARTIFACTS_BY_GRAY_DESIGN_ARTIFACTS):{
-				changeWhiteArtifactsByGrayArtifacts(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
-				break;
-			}
-			
-			case (CardsConstants.ENGINEER_CHOSEN_IS_ONLY_QUANTITY_CODE_ARTIFACT):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
+		int tipoPrimeiroEfeito = cartaUtilizada.getTipoPrimeiroEfeito();
+		if (tipoPrimeiroEfeito >= CardsConstants.ENGINEER_CHOSEN_UNEMPLOYMENT_NOW &&
+				tipoPrimeiroEfeito <= CardsConstants.ENGINEER_CHOSEN_UNEMPLOYMENT_LATER) {
+			String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
+			for (int i = 0; i < engenheiro.length; i++){
+				if (engenheiro[i] == null)
+					continue;
+				for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
+					if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
 						continue;
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
-							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCodigos().size() > cartaUtilizada
-									.getQuantidadePrimeiroEfeito()) /**
-																	 * se ele ter
-																	 * mais que que
-																	 * a quantidade
-																	 * do limite
-																	 * inferior
-																	 */
-							{
-								for (int k = 0; k < (jogadorAlvo.getTabuleiro().getMesas()[j].getCodigos().size()
-										- cartaUtilizada.getQuantidadePrimeiroEfeito()); k++)/**
-																								 * 
-																								 * 
-																								 * retira
-																								 * o
-																								 * restante
-																								 * dos
-																								 * artefatos
-																								 * do
-																								 * engenheiro
-																								 */
+					
+					switch (tipoPrimeiroEfeito) {
+						case (CardsConstants.ENGINEER_CHOSEN_IS_ONLY_QUANTITY_CODE_ARTIFACT):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
+								if (jogadorAlvo.getTabuleiro().getMesas()[j].getCodigos().size() > cartaUtilizada
+										.getQuantidadePrimeiroEfeito()) /**
+																		 * se ele ter
+																		 * mais que que
+																		 * a quantidade
+																		 * do limite
+																		 * inferior
+																		 */
 								{
+									for (int k = 0; k < (jogadorAlvo.getTabuleiro().getMesas()[j].getCodigos().size()
+											- cartaUtilizada.getQuantidadePrimeiroEfeito()); k++)/**
+																									 * 
+																									 * 
+																									 * retira
+																									 * o
+																									 * restante
+																									 * dos
+																									 * artefatos
+																									 * do
+																									 * engenheiro
+																									 */
+									{
+										retirarArtefato(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
+									}
+								}
+							}
+						}
+						case (CardsConstants.ENGINEER_CHOSEN_LOSE_ALL_ARTIFACTS):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
+								retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.AJUDA.getCodigo());
+								retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
+								retirarTodosArtefatos(jogadorAlvo, j,ArtefatoTipo.DESENHO.getCodigo());
+								retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.RASTRO.getCodigo());
+								retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.REQUISITO.getCodigo());
+
+							}
+						}
+						case (CardsConstants.ENGINEER_CHOSEN_LOSE_ARTIFACT):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
+								for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){
+									Random sorteio = new Random();
+									retirarArtefato(jogadorAlvo, j, sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo()));
+								}
+							}
+						}
+						case (CardsConstants.ENGINEER_CHOSEN_LOSE_CODE_ARTIFACT):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
+								for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){
 									retirarArtefato(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
 								}
 							}
 						}
-	
-					}
-	
-				}
-				break;
-			}
-
-			case (CardsConstants.ENGINEER_CHOSEN_LOSE_ALL_ARTIFACTS):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
-						continue;
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
-							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.AJUDA.getCodigo());
-							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
-							retirarTodosArtefatos(jogadorAlvo, j,ArtefatoTipo.DESENHO.getCodigo());
-							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.RASTRO.getCodigo());
-							retirarTodosArtefatos(jogadorAlvo, j, ArtefatoTipo.REQUISITO.getCodigo());
-	
+						case (CardsConstants.ENGINEER_CHOSEN_NO_WORK):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
+								/**
+								 * colocando como se engenheiro ja estivesse trabalhado
+								 * na rodada do jogadorAlvo
+								 */
+								jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().setEngenheiroTrabalhouNestaRodada(true);
+								jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().setHabilidadeEngenheiroAtual(0);
+							}
 						}
-	
+						case (CardsConstants.ENGINEER_CHOSEN_PENALTY_GIVING_OR_RECEIVING_HELP):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
+								jogadorAlvo.getTabuleiro().getMesas()[j]
+										.setEfeitoPenalizarAjuda(cartaUtilizada.getQuantidadePrimeiroEfeito());
+							}
+						}
+						case (CardsConstants.ENGINEER_CHOSEN_PRODUCE_ONLY_GRAY_ARTIFACTS):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
+								jogadorAlvo.getTabuleiro().getMesas()[j].setDuracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts(cartaUtilizada.getDuracaoEfeito());
+							}
+						}
+						case (CardsConstants.ENGINEER_CHOSEN_PRODUCE_ONLY_WHITE_ARTIFACTS):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
+								jogadorAlvo.getTabuleiro().getMesas()[j].setDuracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts(
+										cartaUtilizada.getDuracaoEfeito());
+							}
+						}
+						case (CardsConstants.ENGINEER_CHOSEN_UNEMPLOYMENT_LATER):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[j])){//encontra engenheiro que sera demitido
+								jogadorAlvo.getTabuleiro().getEfeitoDemitirEngenheiroLater().add(engenheiro[j]);
+							}
+						}
+						case (CardsConstants.ENGINEER_CHOSEN_UNEMPLOYMENT_NOW):{
+							if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
+								despedirEngenheiro(jogadorAlvo, jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa()); // demite engenheiro
+							}
+						}
 					}
-	
 				}
-				break;
-			}
 
-			case (CardsConstants.ENGINEER_CHOSEN_LOSE_ARTIFACT):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
-						continue;
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
-							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){
+			}
+		} else {
+			switch (tipoPrimeiroEfeito){//insere PRIMEIRO efeito no tabuleiro do jogadorAlvo
+				case (CardsConstants.NO_PROBLEM):
+					break;
+				case (CardsConstants.ADD_DIFFICULTY_INSPECT_ARTIFACTS):{
+					jogadorAlvo.getTabuleiro()
+							.setEfeitoAdicionaDificuldadeInspecionarArtefatos(cartaUtilizada.getQuantidadePrimeiroEfeito());
+					break;
+				}
+				case (CardsConstants.ADD_DIFFICULTY_REPAIR_ARTIFACTS):{
+					jogadorAlvo.getTabuleiro().setEfeitoAdicionaDificuldadeCorrigirArtefatos(cartaUtilizada.getQuantidadePrimeiroEfeito());
+					break;
+				}
+				case (CardsConstants.ADD_POINTS_IN_COMPLEXITY):{
+					jogadorAlvo.getTabuleiro().setEfeitoAdicionaComplexidadeProjeto(cartaUtilizada.getQuantidadePrimeiroEfeito());
+					break;
+				}
+				case (CardsConstants.ADD_PROJECT_QUALITY):{
+					jogadorAlvo.getTabuleiro().setEfeitoAdicionaQualidadeProjeto(cartaUtilizada.getQuantidadePrimeiroEfeito());
+					break;
+				}
+				case (CardsConstants.ALL_ENGINEERS_LOSE_ARTIFACT):{
+					allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(), ANY_ARTIFACTS);
+					break;
+				}
+				case (CardsConstants.ALL_ENGINEERS_LOSE_DESIGN_ARTIFACT):{
+					allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(),ArtefatoTipo.DESENHO.getCodigo());
+					break;
+				}
+				case (CardsConstants.ALL_ENGINEERS_LOSE_TRAIL_ARTIFACT):{
+					allEngineerLoseArtifacts(jogadorAlvo, cartaUtilizada.getQuantidadePrimeiroEfeito(), ArtefatoTipo.RASTRO.getCodigo());
+					break;
+				}
+				
+				case (CardsConstants.ALL_ENGINEERS_NO_WORK):{
+					for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
+						// colocando como se engenheiro ja estivesse trabalhado na rodada do jogadorAlvo
+						jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().setEngenheiroTrabalhouNestaRodada(true);
+						jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().setHabilidadeEngenheiroAtual(0);
+					}
+					break;
+				}
+				
+				case (CardsConstants.ALL_ENGINEERS_NOT_PRODUCE_ARTIFACTS):{
+					for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
+						jogadorAlvo.getTabuleiro().getMesas()[i].setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(cartaUtilizada.getDuracaoEfeito());
+					}
+					break;
+				}
+				
+				case (CardsConstants.ALL_ENGINEERS_WITH_SKILL_LESS_THAN_2_NOT_INSPECT_ARTIFACTS):{
+					for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
+						if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() < 2){
+							jogadorAlvo.getTabuleiro().getMesas()[i].setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(cartaUtilizada.getDuracaoEfeito());
+						}
+					}
+					break;
+				}
+				
+				case (CardsConstants.ALL_LOSES_EFFECTS_CONCEPT_CARDS_ON_BOARD):{
+					for (int i = 0; i < jogadores.length; i++){
+						jogadores[i].getTabuleiro().setEfeitoPositivoOrcamento(0); //retira efeito positivo sobre orcamento
+		
+						String[] vazia = new String[2];
+						vazia[0] = null;
+						vazia[1] = null;
+						jogadores[i].getTabuleiro().getEfeitoAumentarHabilidadeEngenheiroLater().clear(); //retira efeito de ter habilidade de engenheiro aumentada depois
+		
+						jogadores[i].getTabuleiro().setEfeitoHelpArtifactsNeutralizadoValidacao(false);
+						jogadores[i].getTabuleiro().setEfeitoModuloIntegradoNeutralizadoValidacao(false);
+						jogadores[i].getTabuleiro().setEfeitoProblemaArtefatoCodigoNeutralizado(false);
+						jogadores[i].getTabuleiro().setEfeitoProblemaArtefatoRastroNeutralizado(false);
+						jogadores[i].getTabuleiro().setEfeitoProblemaArtefatoRequisitosNeutralizado(false);
+		
+						for (int j = 0; j < jogadores[i].getTabuleiro().getMesas().length; j++){
+							jogadores[i].getTabuleiro().getMesas()[j].setEfeitoAumentarHabilidadeEngenheiro(0);
+							jogadores[i].getTabuleiro().getMesas()[j].setEfeitoAumentarMaturidadeEngenheiro(0);
+							jogadores[i].getTabuleiro().getMesas()[j].setEfeitoModuloIntegradoNeutralizado(false);
+						}
+					}
+					
+					break;
+				}
+				
+				case (CardsConstants.ALL_PLAYERS_WITH_MORE_2_ENGINEERS_DISMISS_ENGINEER):{
+					int contador = 0;
+					for (int i = 0; i < jogadores.length; i++){
+						for (int j = 0; j < jogadores[i].getTabuleiro().getMesas().length; j++){//conto quantos engenheiros  ele tem
+							if (jogadores[i].getTabuleiro().getMesas()[j].getCartaMesa() != null){
+								contador++;
+							}
+						}
+						
+						if (contador > 2){//se numero de engenheiros > 2
+							for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){ //demiti-se uma quantidade de engenheiros do jogador
 								Random sorteio = new Random();
-								retirarArtefato(jogadorAlvo, j, sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo()));
+								int engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);//sorteia qual engenheiro sera demitido
+								boolean demitiu = false;
+								while (demitiu == false){
+									if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa() != null){
+										 // se o engenheiro trabalhou nesta rodada, significa que estamos no jogadorAtual, demitimos assim mesmo
+										if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().isEngenheiroTrabalhouNestaRodada() == true){
+											jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().setEngenheiroTrabalhouNestaRodada(false);
+										}
+										 // atualizacao da variavel para reusar a funcao abaixo
+		
+										despedirEngenheiro(jogadores[i], jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa());
+										demitiu = true;
+									} 
+									else{
+										engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+									}
+								}
 							}
 						}
-	
+						contador = 0; // atualiza contador para conferir se proximo jogador deve demitir engenheiro
 					}
-	
+					break;
 				}
-				break;
-			}
-
-			case (CardsConstants.ENGINEER_CHOSEN_LOSE_CODE_ARTIFACT):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
-						continue;
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
-							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){
-								retirarArtefato(jogadorAlvo, j, ArtefatoTipo.CODIGO.getCodigo());
+				
+				case (CardsConstants.ALL_PLAYERS_WITH_MORE_3_ENGINEERS_DISMISS_ENGINEER):{
+					int contador = 0;
+					for (int i = 0; i < jogadores.length; i++){
+						for (int j = 0; j < jogadores[i].getTabuleiro().getMesas().length; j++){//conto quantos engenheiros  ele tem
+							if (jogadores[i].getTabuleiro().getMesas()[j].getCartaMesa() != null){
+								contador++;
 							}
 						}
+						if (contador > 3){//se numero de engenheiros > 3 
+							for (int k = 0; k < cartaUtilizada.getQuantidadePrimeiroEfeito(); k++){ // // demiti-se uma quantidade de engenheiros do jogador
+								Random sorteio = new Random();
+								int engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO); //sorteia qual engenheiro sera demitido
+								boolean demitiu = false;
+								while (demitiu == false){
+									if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa() != null){
+										// se o engenheiro trabalhou nesta rodada, significa que estamos no jogadorAtual, demitimos assim mesmo
+										if (jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().isEngenheiroTrabalhouNestaRodada() == true){
+											jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa().setEngenheiroTrabalhouNestaRodada(false);
+										}
 	
-					}
-	
-				}
-				break;
-			}
-
-			case (CardsConstants.ENGINEER_CHOSEN_NO_WORK):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
-						continue;
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
-							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							/**
-							 * colocando como se engenheiro ja estivesse trabalhado
-							 * na rodada do jogadorAlvo
-							 */
-							jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().setEngenheiroTrabalhouNestaRodada(true);
-							jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().setHabilidadeEngenheiroAtual(0);
+										despedirEngenheiro(jogadores[i], jogadores[i].getTabuleiro().getMesas()[engenheiroDemitido].getCartaMesa());
+										demitiu = true;
+									} else{
+										engenheiroDemitido = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+									}
+								}
+							}
 						}
+						contador = 0; // atualiza contador para conferir se proximo jogador deve demitir engenheiro
+					}
+					break;
+				}
+				
+				case (CardsConstants.CHANGE_WHITE_DESIGN_ARTIFACTS_BY_GRAY_DESIGN_ARTIFACTS):{
+					changeWhiteArtifactsByGrayArtifacts(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
+					break;
+				}
 	
-					}
+				case (CardsConstants.LOSE_ALL_ARTIFACTS):{//todos os engenheiros perdem todos os artefatos
+					allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ANY_ARTIFACTS);
+					break;
+				}
 	
+				case (CardsConstants.LOSE_ALL_CODE_ARTIFACTS):{
+					allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ArtefatoTipo.CODIGO.getCodigo());
+					break;
 				}
-				break;
-			}
-
-			case (CardsConstants.ENGINEER_CHOSEN_PENALTY_GIVING_OR_RECEIVING_HELP):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
-						continue;
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
-							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							jogadorAlvo.getTabuleiro().getMesas()[j]
-									.setEfeitoPenalizarAjuda(cartaUtilizada.getQuantidadePrimeiroEfeito());
-						}
-					}
-				}
-				break;
-			}
-
-			case (CardsConstants.ENGINEER_CHOSEN_PRODUCE_ONLY_GRAY_ARTIFACTS):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
-						continue;
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
-							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							jogadorAlvo.getTabuleiro().getMesas()[j].setDuracaoEfeito_TEMPORARIO_ProduceOnlyGrayArtifacts(cartaUtilizada.getDuracaoEfeito());
-						}
-					}
-				}
-				break;
-			}
-
-			case (CardsConstants.ENGINEER_CHOSEN_PRODUCE_ONLY_WHITE_ARTIFACTS):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
-						continue;
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
-							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							jogadorAlvo.getTabuleiro().getMesas()[j].setDuracaoEfeito_TEMPORARIO_ProduceOnlyWhiteArtifacts(
-									cartaUtilizada.getDuracaoEfeito());
-						}
-					}
-				}
-				break;
-			}
-
-			case (CardsConstants.ENGINEER_CHOSEN_UNEMPLOYMENT_LATER):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
-						continue;
 	
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){//percorrendo mesas do tabuleiro
+				case (CardsConstants.LOSE_ALL_GRAY_DESIGN_ARTIFACTS):{
+					retirarTodosArtefatosCinzas(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
+					break;
+				}
+	
+				case (CardsConstants.LOSE_ALL_GRAY_REQUIREMENTS_ARTIFACTS):{
+					retirarTodosArtefatosCinzas(jogadorAlvo, ArtefatoTipo.REQUISITO.getCodigo());
+					break;
+				}
+	
+				case (CardsConstants.LOSE_ALL_DESIGN_ARTIFACTS):{
+					allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS,ArtefatoTipo.DESENHO.getCodigo());
+					break;
+				}
+	
+				case (CardsConstants.LOSE_ALL_REQUIREMENTS_ARTIFACTS):{
+					allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ArtefatoTipo.REQUISITO.getCodigo());
+					break;
+				}
+	
+				case (CardsConstants.LOSE_ARTIFACT):{
+					Random sorteio = new Random();
+					for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						int tipoArtefatoSorteado = sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo());
+						retirarArtefato(jogadorAlvo, mesaSorteada, tipoArtefatoSorteado);
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOSE_CODE_ARTIFACT):{
+					Random sorteio = new Random();
+					for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.CODIGO.getCodigo());
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOSE_DESIGN_ARTIFACT):{
+					Random sorteio = new Random();
+					for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						retirarArtefato(jogadorAlvo, mesaSorteada,ArtefatoTipo.DESENHO.getCodigo());
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOSE_HELP_ARTIFACT):{
+					Random sorteio = new Random();
+					for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.AJUDA.getCodigo());
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOSE_REQUIREMENTS_ARTIFACT):{
+					Random sorteio = new Random();
+					for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.REQUISITO.getCodigo());
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOSE_HALF_OF_ARTIFACTS):{
+					Random sorteio = new Random();
+					int totalArtefatos = 0;
+					totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.AJUDA.getCodigo());
+					totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.CODIGO.getCodigo());
+					totalArtefatos += contarArtefatos(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
+					totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.RASTRO.getCodigo());
+					totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.REQUISITO.getCodigo());
+		
+					int metadeArtefatos = (int) totalArtefatos / 2;
+		
+					for (int i = 0; i < metadeArtefatos; i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						int tipoArtefatoSorteado = sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo());
+						retirarArtefato(jogadorAlvo, mesaSorteada, tipoArtefatoSorteado);
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOSE_HALF_OF_CODE_ARTIFACTS):{
+					Random sorteio = new Random();
+					int totalArtefatosCodigo = contarArtefatos(jogadorAlvo, ArtefatoTipo.CODIGO.getCodigo());
+		
+					int metadeArtefatos = (int) totalArtefatosCodigo / 2;
+		
+					for (int i = 0; i < metadeArtefatos; i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.CODIGO.getCodigo());
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOSE_HALF_OF_DESIGN_ARTIFACTS):{
+					Random sorteio = new Random();
+					int totalArtefatosDesenho = contarArtefatos(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
+		
+					int metadeArtefatos = (int) totalArtefatosDesenho / 2;
+		
+					for (int i = 0; i < metadeArtefatos; i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						retirarArtefato(jogadorAlvo, mesaSorteada,ArtefatoTipo.DESENHO.getCodigo());
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOSE_REQUIREMENTS_ARTIFACTS_FOR_EACH_BUG):{
+					Random sorteio = new Random();
+					int totalArtefatosBug = contarBugs(jogadorAlvo);
+		
+					int quantidadeArtefatosPerdidos = totalArtefatosBug * cartaUtilizada.getQuantidadePrimeiroEfeito();
+		
+					for (int i = 0; i < quantidadeArtefatosPerdidos; i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.REQUISITO.getCodigo());
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOSE_TRAIL_ARTIFACT):{
+					Random sorteio = new Random();
+					for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
+						int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
+						retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.RASTRO.getCodigo());
+					}
+					break;
+				}
+	
+				case (CardsConstants.LOWER_MATURITY_ENGINEER_UNEMPLOYMENT):{
+					int maturidadeMinima = 100;
+					ArrayList<String> engenheiros = new ArrayList<String>();
+					for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){//percorre mesa
 						if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa() == null)
 							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro().equals(engenheiro[j])){//encontra engenheiro que sera demitido
-							jogadorAlvo.getTabuleiro().getEfeitoDemitirEngenheiroLater().add(engenheiro[j]);
+						if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() <= maturidadeMinima){ //encontrando qual a maturidade minima
+							maturidadeMinima = jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro();
 						}
 					}
-				}
-				break;
-			}
-
-			case (CardsConstants.ENGINEER_CHOSEN_UNEMPLOYMENT_NOW):{
-				String[] engenheiro = setupController.escolherEngenheiro(jogadorAlvo, 1);
-				for (int i = 0; i < engenheiro.length; i++){
-					if (engenheiro[i] == null)
-						continue;
-					for (int j = 0; j < jogadorAlvo.getTabuleiro().getMesas().length; j++){ //percorre mesa
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa() == null)
+					for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){//percorre mesa
+						if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa() == null)
 							continue;
-						if (jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa().getNomeEngenheiro().equals(engenheiro[i])){ //acha engenheiro
-							despedirEngenheiro(jogadorAlvo, jogadorAlvo.getTabuleiro().getMesas()[j].getCartaMesa()); // demite engenheiro
+						if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() == maturidadeMinima){  //encontrando engenheiros com maturidade minima
+							engenheiros.add(jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro());
 						}
 					}
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_ALL_ARTIFACTS):{//todos os engenheiros perdem todos os artefatos
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ANY_ARTIFACTS);
-				break;
-			}
-
-			case (CardsConstants.LOSE_ALL_CODE_ARTIFACTS):{
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ArtefatoTipo.CODIGO.getCodigo());
-				break;
-			}
-
-			case (CardsConstants.LOSE_ALL_GRAY_DESIGN_ARTIFACTS):{
-				retirarTodosArtefatosCinzas(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
-				break;
-			}
-
-			case (CardsConstants.LOSE_ALL_GRAY_REQUIREMENTS_ARTIFACTS):{
-				retirarTodosArtefatosCinzas(jogadorAlvo, ArtefatoTipo.REQUISITO.getCodigo());
-				break;
-			}
-
-			case (CardsConstants.LOSE_ALL_DESIGN_ARTIFACTS):{
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS,ArtefatoTipo.DESENHO.getCodigo());
-				break;
-			}
-
-			case (CardsConstants.LOSE_ALL_REQUIREMENTS_ARTIFACTS):{
-				allEngineerLoseArtifacts(jogadorAlvo, ALL_ARTIFACTS, ArtefatoTipo.REQUISITO.getCodigo());
-				break;
-			}
-
-			case (CardsConstants.LOSE_ARTIFACT):{
-				Random sorteio = new Random();
-				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					int tipoArtefatoSorteado = sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo());
-					retirarArtefato(jogadorAlvo, mesaSorteada, tipoArtefatoSorteado);
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_CODE_ARTIFACT):{
-				Random sorteio = new Random();
-				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.CODIGO.getCodigo());
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_DESIGN_ARTIFACT):{
-				Random sorteio = new Random();
-				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada,ArtefatoTipo.DESENHO.getCodigo());
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_HELP_ARTIFACT):{
-				Random sorteio = new Random();
-				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.AJUDA.getCodigo());
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_REQUIREMENTS_ARTIFACT):{
-				Random sorteio = new Random();
-				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.REQUISITO.getCodigo());
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_HALF_OF_ARTIFACTS):{
-				Random sorteio = new Random();
-				int totalArtefatos = 0;
-				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.AJUDA.getCodigo());
-				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.CODIGO.getCodigo());
-				totalArtefatos += contarArtefatos(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
-				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.RASTRO.getCodigo());
-				totalArtefatos += contarArtefatos(jogadorAlvo, ArtefatoTipo.REQUISITO.getCodigo());
-	
-				int metadeArtefatos = (int) totalArtefatos / 2;
-	
-				for (int i = 0; i < metadeArtefatos; i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					int tipoArtefatoSorteado = sorteio.nextInt(ArtefatoTipo.TOTAL.getCodigo());
-					retirarArtefato(jogadorAlvo, mesaSorteada, tipoArtefatoSorteado);
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_HALF_OF_CODE_ARTIFACTS):{
-				Random sorteio = new Random();
-				int totalArtefatosCodigo = contarArtefatos(jogadorAlvo, ArtefatoTipo.CODIGO.getCodigo());
-	
-				int metadeArtefatos = (int) totalArtefatosCodigo / 2;
-	
-				for (int i = 0; i < metadeArtefatos; i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.CODIGO.getCodigo());
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_HALF_OF_DESIGN_ARTIFACTS):{
-				Random sorteio = new Random();
-				int totalArtefatosDesenho = contarArtefatos(jogadorAlvo,ArtefatoTipo.DESENHO.getCodigo());
-	
-				int metadeArtefatos = (int) totalArtefatosDesenho / 2;
-	
-				for (int i = 0; i < metadeArtefatos; i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada,ArtefatoTipo.DESENHO.getCodigo());
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_REQUIREMENTS_ARTIFACTS_FOR_EACH_BUG):{
-				Random sorteio = new Random();
-				int totalArtefatosBug = contarBugs(jogadorAlvo);
-	
-				int quantidadeArtefatosPerdidos = totalArtefatosBug * cartaUtilizada.getQuantidadePrimeiroEfeito();
-	
-				for (int i = 0; i < quantidadeArtefatosPerdidos; i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.REQUISITO.getCodigo());
-				}
-				break;
-			}
-
-			case (CardsConstants.LOSE_TRAIL_ARTIFACT):{
-				Random sorteio = new Random();
-				for (int i = 0; i < cartaUtilizada.getQuantidadePrimeiroEfeito(); i++){
-					int mesaSorteada = sorteio.nextInt(Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO);
-					retirarArtefato(jogadorAlvo, mesaSorteada, ArtefatoTipo.RASTRO.getCodigo());
-				}
-				break;
-			}
-
-			case (CardsConstants.LOWER_MATURITY_ENGINEER_UNEMPLOYMENT):{
-				int maturidadeMinima = 100;
-				ArrayList<String> engenheiros = new ArrayList<String>();
-				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){//percorre mesa
-					if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-						continue;
-					if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() <= maturidadeMinima){ //encontrando qual a maturidade minima
-						maturidadeMinima = jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro();
+					Random sorteio = new Random();
+					int engenheiroSorteado = sorteio.nextInt(engenheiros.size()); // sorteando uma posicao do array cujo engenheiro sera demitido
+					String engenheiroDemitido = engenheiros.get(engenheiroSorteado - 1); // variavel contera nome do engenheiro sorteado a ser demitido 
+		
+					for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){//percorre mesa
+						if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()	.equals(engenheiroDemitido)){//acha engenheiro
+							despedirEngenheiro(jogadorAlvo,	jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa());
+						}
 					}
+					break;
 				}
-				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){//percorre mesa
-					if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-						continue;
-					if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() == maturidadeMinima){  //encontrando engenheiros com maturidade minima
-						engenheiros.add(jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro());
+				
+				case (CardsConstants.ONLY_INSPECT_ARTIFACTS):{
+					for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
+						jogadorAlvo.getTabuleiro().getMesas()[i]
+								.setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(cartaUtilizada.getDuracaoEfeito());
+						jogadorAlvo.getTabuleiro().getMesas()[i]
+								.setDuracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts(cartaUtilizada.getDuracaoEfeito());
 					}
+					break;
 				}
-				Random sorteio = new Random();
-				int engenheiroSorteado = sorteio.nextInt(engenheiros.size()); // sorteando uma posicao do array cujo engenheiro sera demitido
-				String engenheiroDemitido = engenheiros.get(engenheiroSorteado - 1); // variavel contera nome do engenheiro sorteado a ser demitido 
 	
-				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){//percorre mesa
-					if (jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa().getNomeEngenheiro()	.equals(engenheiroDemitido)){//acha engenheiro
-						despedirEngenheiro(jogadorAlvo,	jogadorAlvo.getTabuleiro().getMesas()[i].getCartaMesa());
-					}
+				case (CardsConstants.REDUCTION_IN_BUDGET):{
+					jogadorAlvo.getTabuleiro().setEfeitoNegativoOrcamento(cartaUtilizada.getQuantidadePrimeiroEfeito());
+					break;
 				}
-				break;
-			}
-
-			case (CardsConstants.ONLY_INSPECT_ARTIFACTS):{
-				for (int i = 0; i < jogadorAlvo.getTabuleiro().getMesas().length; i++){
-					jogadorAlvo.getTabuleiro().getMesas()[i]
-							.setDuracaoEfeito_TEMPORARIO_EnginnersNotProduceArtifacts(cartaUtilizada.getDuracaoEfeito());
-					jogadorAlvo.getTabuleiro().getMesas()[i]
-							.setDuracaoEfeito_TEMPORARIO_EnginnersNotCorrectArtifacts(cartaUtilizada.getDuracaoEfeito());
+	
+				case (CardsConstants.TABLE_CHOSEN_LOSE_ALL_CODE_ARTIFACT):{
+					int mesa = setupController.escolherMesaSofrerProblema();
+					retirarTodosArtefatos(jogadorAlvo, mesa, ArtefatoTipo.CODIGO.getCodigo());
+					break;
 				}
-				break;
+				
+				default: 
+					break;
 			}
-
-			case (CardsConstants.REDUCTION_IN_BUDGET):{
-				jogadorAlvo.getTabuleiro().setEfeitoNegativoOrcamento(cartaUtilizada.getQuantidadePrimeiroEfeito());
-				break;
-			}
-
-			case (CardsConstants.TABLE_CHOSEN_LOSE_ALL_CODE_ARTIFACT):{
-				int mesa = setupController.escolherMesaSofrerProblema();
-				retirarTodosArtefatos(jogadorAlvo, mesa, ArtefatoTipo.CODIGO.getCodigo());
-				break;
-			}
-			
-			default: 
-				break;
 		}
 		
 		switch (cartaUtilizada.getTipoSegundoEfeito()){ //insere SEGUNDO efeito no tabuleiro do jogador Alvo
@@ -2606,1815 +2467,801 @@ public final class Jogo{
 			/** removendo carta utilizada */
 			return jogadorAtual;
 		}
-	
-		public boolean verificarCondicao(Jogador jogador, CartaPenalizacao carta){
-			
-			switch (carta.getTipoPrimeiraCondicao()){//Conferindo PRIMEIRA condicao
-			
-				case (CardsConstants.AFFECTS_ALL_PLAYERS):{
-					return true;
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador) <= 2)
-						return false;
-					break;
-		
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_1):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_2):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_3):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_4):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_5):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_6):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_0):{
-					if (contarArtefatosCinzas(jogador) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_1):{
-					if (contarArtefatosCinzas(jogador) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_2):{
-					if (contarArtefatosCinzas(jogador) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_3):{
-					if (contarArtefatosCinzas(jogador) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_4):{
-					if (contarArtefatosCinzas(jogador) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5):{
-					if (contarArtefatosCinzas(jogador) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_6):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 6)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_6):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_1):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 1)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_2):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 2)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_3):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 3)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_4):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 4)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_5):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 5)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_6):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 6)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_1):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_2):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_3):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_4):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_5):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_6):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
-						return false;
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_1):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 1)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_2):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 2)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_3):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 3)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_4):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 4)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_5):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 5)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_1):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 1)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_2):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 2)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_3):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 3)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_4):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 4)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_5):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 5)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.TABLE_WITH_BUG_CODE_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_BUG_TRAIL_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_1):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_2):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_3):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_1):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_2):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_3):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_4):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_5):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_1):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 1)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_2):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 2)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_3):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 3)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_4):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 4)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_5):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 5)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-				default:
-					break;
-				}
-				switch (carta
-						.getTipoSegundaCondicao()) /** Conferindo SEGUNDA condicao */
-				{
-				case (CardsConstants.AFFECTS_ALL_PLAYERS):{
-					return true;
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador) <= 2)
-						return false;
-					break;
-		
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_1):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_2):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_3):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_4):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_5):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_1):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_2):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_3):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_4):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.CODE_LESS_THAN_5):{
-					if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_GREATER_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.DESIGN_LESS_THAN_6):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_0):{
-					if (contarArtefatosCinzas(jogador) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_1):{
-					if (contarArtefatosCinzas(jogador) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_2):{
-					if (contarArtefatosCinzas(jogador) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_3):{
-					if (contarArtefatosCinzas(jogador) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_4):{
-					if (contarArtefatosCinzas(jogador) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5):{
-					if (contarArtefatosCinzas(jogador) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_GREATER_THAN_6):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 6)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.HELP_LESS_THAN_6):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_1):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 1)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_2):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 2)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_3):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 3)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_4):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 4)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_5):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 5)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.MATURITY_LESS_THAN_6):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 6)
-							return false;
-					}
-		
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_1):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_2):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_3):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_4):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_5):{
-					if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_GREATER_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_1):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_2):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_3):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_4):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_5):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.REQUIREMENTS_LESS_THAN_6):{
-					if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
-						return false;
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_1):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 1)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_2):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 2)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_3):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 3)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_4):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 4)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_GREATER_THAN_5):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 5)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_1):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 1)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_2):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 2)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_3):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 3)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_4):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 4)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.SKILL_ENGINEER_LESS_THAN_5):{
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 5)
-							return false;
-					}
-				}
-	
-				case (CardsConstants.TABLE_WITH_BUG_CODE_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_BUG_TRAIL_ARTIFACTS):{
-					if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_CODE_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_1):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_2):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_3):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_1):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_2):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_3):{
-					if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_1):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_2):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_3):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_4):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_GREATER_THAN_5):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_1):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 1)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_2):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 2)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_3):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 3)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_4):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 4)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TRAIL_LESS_THAN_5):{
-					if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 5)
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_1):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 1)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_2):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 2)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_3):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 3)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_4):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 4)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-	
-				case (CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_5):{
-					int contador = 0;
-					for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
-							continue;
-						if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 5)
-							contador++;
-					}
-					if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
-						return false;
-					break;
-				}
-				default:
-					break;
-		}
+	/* MQS 2019/1 - Tarefa #13, solucao #S2A - fim do bloco de codigo */
 
+	/* MQS 2019/1 - Tarefa #13, solucao #S3A - inicio do bloco de codigo */
+	public boolean verificarCondicao(Jogador jogador, CartaPenalizacao carta){
+		int tipo1 = carta.getTipoPrimeiraCondicao();
+		int tipo2 = carta.getTipoSegundaCondicao();
+		
+		if (tipo1 == CardsConstants.AFFECTS_ALL_PLAYERS || tipo2 == CardsConstants.AFFECTS_ALL_PLAYERS){
+			return true;
+		}
+		else if ((tipo1 >= CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_1 && tipo1 <= CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_5)){
+			if (contarBugs(jogador) <= tipo1)
+				return false;
+		} else if ((tipo2 >= CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_1 && tipo2 <= CardsConstants.BUG_IN_ARTIFACTS_GREATER_THAN_5)) {
+			if (contarBugs(jogador) <= tipo2)
+				return false;
+		} else if (tipo1 >= CardsConstants.BUG_IN_CODE_ARTIFACTS && tipo1 <= CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_5){
+			if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= tipo1 - CardsConstants.BUG_IN_CODE_ARTIFACTS)
+				return false;
+		} else if (tipo2 >= CardsConstants.BUG_IN_CODE_ARTIFACTS && tipo2 <= CardsConstants.BUG_IN_CODE_ARTIFACTS_GREATER_THAN_5){
+			if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= tipo2 - CardsConstants.BUG_IN_CODE_ARTIFACTS)
+				return false;
+		} else if (tipo1 >= CardsConstants.BUG_IN_DESIGN_ARTIFACTS && tipo1 <= CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_5){
+			if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= tipo1 - CardsConstants.BUG_IN_DESIGN_ARTIFACTS)
+				return false;
+		} else if (tipo2 >= CardsConstants.BUG_IN_DESIGN_ARTIFACTS && tipo2 <= CardsConstants.BUG_IN_DESIGN_ARTIFACTS_GREATER_THAN_5){
+			if (contarBugs(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= tipo2 - CardsConstants.BUG_IN_DESIGN_ARTIFACTS)
+				return false;
+		}
+		else if (tipo1 >= CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS && tipo1 <= CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5){
+			if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= tipo1 - CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS)
+				return false;
+		} else if (tipo2 >= CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS && tipo2 <= CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5){
+			if (contarBugs(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= tipo2 - CardsConstants.BUG_IN_REQUIREMENTS_ARTIFACTS)
+				return false;
+		}
+	
+		else if (tipo1 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS || tipo2 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS){
+			if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_1 || tipo2 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_1){
+			if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_2 || tipo2 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_2){
+			if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_3 || tipo2 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_3){
+			if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_4 || tipo2 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_4){
+			if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_5 || tipo2 == CardsConstants.BUG_IN_TRAIL_ARTIFACTS_GREATER_THAN_5){
+			if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_GREATER_THAN_1 || tipo2 == CardsConstants.CODE_GREATER_THAN_1){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_GREATER_THAN_2 || tipo2 == CardsConstants.CODE_GREATER_THAN_2){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_GREATER_THAN_3 || tipo2 == CardsConstants.CODE_GREATER_THAN_3){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_GREATER_THAN_4 || tipo2 == CardsConstants.CODE_GREATER_THAN_4){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_GREATER_THAN_5 || tipo2 == CardsConstants.CODE_GREATER_THAN_5){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_LESS_THAN_1 || tipo2 == CardsConstants.CODE_LESS_THAN_1){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_LESS_THAN_2 || tipo2 == CardsConstants.CODE_LESS_THAN_2){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_LESS_THAN_3 || tipo2 == CardsConstants.CODE_LESS_THAN_3){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_LESS_THAN_4 || tipo2 == CardsConstants.CODE_LESS_THAN_4){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.CODE_LESS_THAN_5 || tipo2 == CardsConstants.CODE_LESS_THAN_5){
+			if (contarArtefatos(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_GREATER_THAN_1 || tipo2 == CardsConstants.DESIGN_GREATER_THAN_1){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_GREATER_THAN_2 || tipo2 == CardsConstants.DESIGN_GREATER_THAN_2){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_GREATER_THAN_3 || tipo2 == CardsConstants.DESIGN_GREATER_THAN_3){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_GREATER_THAN_4 || tipo2 == CardsConstants.DESIGN_GREATER_THAN_4){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_GREATER_THAN_5 || tipo2 == CardsConstants.DESIGN_GREATER_THAN_5){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_LESS_THAN_1 || tipo2 == CardsConstants.DESIGN_LESS_THAN_1){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_LESS_THAN_2 || tipo2 == CardsConstants.DESIGN_LESS_THAN_2){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_LESS_THAN_3 || tipo2 == CardsConstants.DESIGN_LESS_THAN_3){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_LESS_THAN_4 || tipo2 == CardsConstants.DESIGN_LESS_THAN_4){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_LESS_THAN_5 || tipo2 == CardsConstants.DESIGN_LESS_THAN_5){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.DESIGN_LESS_THAN_6 || tipo2 == CardsConstants.DESIGN_LESS_THAN_6){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_0 || tipo2 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_0){
+			if (contarArtefatosCinzas(jogador) <= 0)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_1 || tipo2 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_1){
+			if (contarArtefatosCinzas(jogador) <= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_2 || tipo2 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_2){
+			if (contarArtefatosCinzas(jogador) <= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_3 || tipo2 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_3){
+			if (contarArtefatosCinzas(jogador) <= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_4 || tipo2 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_4){
+			if (contarArtefatosCinzas(jogador) <= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5 || tipo2 == CardsConstants.GREY_REQUIREMENTS_ARTIFACTS_GREATER_THAN_5){
+			if (contarArtefatosCinzas(jogador) <= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_GREATER_THAN_1 || tipo2 == CardsConstants.HELP_GREATER_THAN_1){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_GREATER_THAN_2 || tipo2 == CardsConstants.HELP_GREATER_THAN_2){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_GREATER_THAN_3 || tipo2 == CardsConstants.HELP_GREATER_THAN_3){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_GREATER_THAN_4 || tipo2 == CardsConstants.HELP_GREATER_THAN_4){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_GREATER_THAN_5 || tipo2 == CardsConstants.HELP_GREATER_THAN_5){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_GREATER_THAN_6 || tipo2 == CardsConstants.HELP_GREATER_THAN_6){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 6)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_LESS_THAN_1 || tipo2 == CardsConstants.HELP_LESS_THAN_1){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_LESS_THAN_2 || tipo2 == CardsConstants.HELP_LESS_THAN_2){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_LESS_THAN_3 || tipo2 == CardsConstants.HELP_LESS_THAN_3){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_LESS_THAN_4 || tipo2 == CardsConstants.HELP_LESS_THAN_4){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_LESS_THAN_5 || tipo2 == CardsConstants.HELP_LESS_THAN_5){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.HELP_LESS_THAN_6 || tipo2 == CardsConstants.HELP_LESS_THAN_6){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.MATURITY_LESS_THAN_1 || tipo2 == CardsConstants.MATURITY_LESS_THAN_1){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 1)
+					return false;
+			}
+	
+			
+		}
+	
+		else if (tipo1 == CardsConstants.MATURITY_LESS_THAN_2 || tipo2 == CardsConstants.MATURITY_LESS_THAN_2){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 2)
+					return false;
+			}
+	
+			
+		}
+	
+		else if (tipo1 == CardsConstants.MATURITY_LESS_THAN_3 || tipo2 == CardsConstants.MATURITY_LESS_THAN_3){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 3)
+					return false;
+			}
+	
+			
+		}
+	
+		else if (tipo1 == CardsConstants.MATURITY_LESS_THAN_4 || tipo2 == CardsConstants.MATURITY_LESS_THAN_4){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 4)
+					return false;
+			}
+	
+			
+		}
+	
+		else if (tipo1 == CardsConstants.MATURITY_LESS_THAN_5 || tipo2 == CardsConstants.MATURITY_LESS_THAN_5){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 5)
+					return false;
+			}
+	
+			
+		}
+	
+		else if (tipo1 == CardsConstants.MATURITY_LESS_THAN_6 || tipo2 == CardsConstants.MATURITY_LESS_THAN_6){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 6)
+					return false;
+			}
+	
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED || tipo2 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED){
+			if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 0)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_1 || tipo2 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_1){
+			if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_2 || tipo2 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_2){
+			if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_3 || tipo2 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_3){
+			if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_4 || tipo2 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_4){
+			if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_5 || tipo2 == CardsConstants.REQUIREMENTS_ARE_NOT_INSPECTED_GREATER_THAN_5){
+			if (contarArtefatosNaoInspecionados(jogador, ArtefatoTipo.REQUISITO.getCodigo()) <= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_GREATER_THAN_1 || tipo2 == CardsConstants.REQUIREMENTS_GREATER_THAN_1){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_GREATER_THAN_2 || tipo2 == CardsConstants.REQUIREMENTS_GREATER_THAN_2){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_GREATER_THAN_3 || tipo2 == CardsConstants.REQUIREMENTS_GREATER_THAN_3){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_GREATER_THAN_4 || tipo2 == CardsConstants.REQUIREMENTS_GREATER_THAN_4){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_GREATER_THAN_5 || tipo2 == CardsConstants.REQUIREMENTS_GREATER_THAN_5){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_LESS_THAN_1 || tipo2 == CardsConstants.REQUIREMENTS_LESS_THAN_1){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_LESS_THAN_2 || tipo2 == CardsConstants.REQUIREMENTS_LESS_THAN_2){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_LESS_THAN_3 || tipo2 == CardsConstants.REQUIREMENTS_LESS_THAN_3){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_LESS_THAN_4 || tipo2 == CardsConstants.REQUIREMENTS_LESS_THAN_4){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_LESS_THAN_5 || tipo2 == CardsConstants.REQUIREMENTS_LESS_THAN_5){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.REQUIREMENTS_LESS_THAN_6 || tipo2 == CardsConstants.REQUIREMENTS_LESS_THAN_6){
+			if (contarArtefatos(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 6)
+				return false;
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_1 || tipo2 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_1){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 1)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_2 || tipo2 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_2){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 2)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_3 || tipo2 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_3){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 3)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_4 || tipo2 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_4){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 4)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_5 || tipo2 == CardsConstants.SKILL_ENGINEER_GREATER_THAN_5){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() <= 5)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_LESS_THAN_1 || tipo2 == CardsConstants.SKILL_ENGINEER_LESS_THAN_1){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 1)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_LESS_THAN_2 || tipo2 == CardsConstants.SKILL_ENGINEER_LESS_THAN_2){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 2)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_LESS_THAN_3 || tipo2 == CardsConstants.SKILL_ENGINEER_LESS_THAN_3){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 3)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_LESS_THAN_4 || tipo2 == CardsConstants.SKILL_ENGINEER_LESS_THAN_4){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 4)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.SKILL_ENGINEER_LESS_THAN_5 || tipo2 == CardsConstants.SKILL_ENGINEER_LESS_THAN_5){
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getHabilidadeEngenheiro() >= 5)
+					return false;
+			}
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_BUG_CODE_ARTIFACTS || tipo2 == CardsConstants.TABLE_WITH_BUG_CODE_ARTIFACTS){
+			if (contarBugs(jogador, ArtefatoTipo.CODIGO.getCodigo()) <= 0)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_BUG_TRAIL_ARTIFACTS || tipo2 == CardsConstants.TABLE_WITH_BUG_TRAIL_ARTIFACTS){
+			if (contarBugs(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 0)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_CODE_LESS_THAN_1 || tipo2 == CardsConstants.TABLE_WITH_CODE_LESS_THAN_1){
+			if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_CODE_LESS_THAN_2 || tipo2 == CardsConstants.TABLE_WITH_CODE_LESS_THAN_2){
+			if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_CODE_LESS_THAN_3 || tipo2 == CardsConstants.TABLE_WITH_CODE_LESS_THAN_3){
+			if (contarArtefatosMesa(jogador, ArtefatoTipo.CODIGO.getCodigo()) >= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_1 || tipo2 == CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_1){
+			if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_2 || tipo2 == CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_2){
+			if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_3 || tipo2 == CardsConstants.TABLE_WITH_DESIGN_GREATER_THAN_3){
+			if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) <= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_1 || tipo2 == CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_1){
+			if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_2 || tipo2 == CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_2){
+			if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_3 || tipo2 == CardsConstants.TABLE_WITH_DESIGN_LESS_THAN_3){
+			if (contarArtefatosMesa(jogador,ArtefatoTipo.DESENHO.getCodigo()) >= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_1 || tipo2 == CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_1){
+			if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_2 || tipo2 == CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_2){
+			if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_3 || tipo2 == CardsConstants.TABLE_WITH_REQUIREMENTS_LESS_THAN_3){
+			if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_1 || tipo2 == CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_1){
+			if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_2 || tipo2 == CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_2){
+			if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_3 || tipo2 == CardsConstants.TABLE_WITH_TRAILS_LESS_THAN_3){
+			if (contarArtefatosMesa(jogador, ArtefatoTipo.REQUISITO.getCodigo()) >= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_GREATER_THAN_1 || tipo2 == CardsConstants.TRAIL_GREATER_THAN_1){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_GREATER_THAN_2 || tipo2 == CardsConstants.TRAIL_GREATER_THAN_2){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_GREATER_THAN_3 || tipo2 == CardsConstants.TRAIL_GREATER_THAN_3){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_GREATER_THAN_4 || tipo2 == CardsConstants.TRAIL_GREATER_THAN_4){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_GREATER_THAN_5 || tipo2 == CardsConstants.TRAIL_GREATER_THAN_5){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) <= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_LESS_THAN_1 || tipo2 == CardsConstants.TRAIL_LESS_THAN_1){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 1)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_LESS_THAN_2 || tipo2 == CardsConstants.TRAIL_LESS_THAN_2){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 2)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_LESS_THAN_3 || tipo2 == CardsConstants.TRAIL_LESS_THAN_3){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 3)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_LESS_THAN_4 || tipo2 == CardsConstants.TRAIL_LESS_THAN_4){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 4)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TRAIL_LESS_THAN_5 || tipo2 == CardsConstants.TRAIL_LESS_THAN_5){
+			if (contarArtefatos(jogador, ArtefatoTipo.RASTRO.getCodigo()) >= 5)
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_1 || tipo2 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_1){
+			int contador = 0;
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 1)
+					contador++;
+			}
+			if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_2 || tipo2 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_2){
+			int contador = 0;
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 2)
+					contador++;
+			}
+			if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_3 || tipo2 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_3){
+			int contador = 0;
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 3)
+					contador++;
+			}
+			if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_4 || tipo2 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_4){
+			int contador = 0;
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 4)
+					contador++;
+			}
+			if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
+				return false;
+			
+		}
+	
+		else if (tipo1 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_5 || tipo2 == CardsConstants.TWO_ENGINEERS_MATURITY_LESS_THAN_5){
+			int contador = 0;
+			for (int i = 0; i < jogador.getTabuleiro().getMesas().length; i++){
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa() == null)
+					continue;
+				if (jogador.getTabuleiro().getMesas()[i].getCartaMesa().getMaturidadeEngenheiro() >= 5)
+					contador++;
+			}
+			if (contador > (Tabuleiro.NUMERO_MAX_MESAS_TABULEIRO - 2))
+				return false;
+			
+		}
+	
 		return true;
 	}
+	/* MQS 2019/1 - Tarefa #13, solucao #S3A - fim do bloco de codigo */
+
 
 	public int contarBugs(Jogador jogador){
 		int contador = 0;
